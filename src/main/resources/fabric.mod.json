@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "thewildupgrade",
+  "version": "${version}",
+
+  "name": "The Wild Upgrade",
+  "description": "Greatly improves, expands upon, and finishes one of Minecraft's most underwhelming updates",
+  "authors": [
+    "Ineffa"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/the-wild-upgrade",
+    "sources": "https://github.com/Ineffa/The-Wild-Upgrade",
+    "issues": "https://github.com/Ineffa/The-Wild-Upgrade/issues"
+  },
+
+  "license": "GNU Lesser General Public License v3.0",
+  "icon": "assets/thewildupgrade/the_wild_upgrade_logo.png",
+
+  "accessWidener" : "thewildupgrade.accesswidener",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ineffa.thewildupgrade.TheWildUpgrade"
+    ],
+    "client": [
+      "com.ineffa.thewildupgrade.client.TheWildUpgradeClient"
+    ]
+  },
+  "mixins": [
+    "thewildupgrade.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.5",
+    "fabric": "*",
+    "minecraft": "1.19.x",
+    "java": ">=17"
+  }
+}
