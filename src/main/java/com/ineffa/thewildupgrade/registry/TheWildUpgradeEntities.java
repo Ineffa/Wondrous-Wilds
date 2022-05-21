@@ -11,7 +11,9 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 
 public class TheWildUpgradeEntities {
@@ -29,7 +31,8 @@ public class TheWildUpgradeEntities {
 
         // Add to biome spawns
         BiomeModifications.addSpawn(context -> {
-            return (context.getBiome().hasHighHumidity() && context.getBiome().getTemperature() >= 0.5F) || context.getBiomeKey() == BiomeKeys.DARK_FOREST || context.getBiomeKey() == BiomeKeys.LUSH_CAVES;
+            RegistryKey<Biome> biomeKey = context.getBiomeKey();
+            return (context.getBiome().hasHighHumidity() && context.getBiome().getTemperature() >= 0.5F) || biomeKey == BiomeKeys.DARK_FOREST || biomeKey == BiomeKeys.LUSH_CAVES || biomeKey == BiomeKeys.RIVER;
         }, SpawnGroup.AMBIENT, FIREFLY, 100, 3, 6);
     }
 }
