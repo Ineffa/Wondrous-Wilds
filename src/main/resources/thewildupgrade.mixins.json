@@ -4,6 +4,7 @@
   "package": "com.ineffa.thewildupgrade.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlocksMixin"
   ],
   "client": [
   ],
