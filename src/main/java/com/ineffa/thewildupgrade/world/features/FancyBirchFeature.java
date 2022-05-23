@@ -138,6 +138,14 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
             }
         }
 
-        for (BlockPos pos : leaves) if (random.nextInt(15) != 0 && (world.isAir(pos) || world.isWater(pos))) this.setBlockState(world, pos, LEAVES_STATE);
+        for (BlockPos pos : leaves) {
+            if (random.nextInt(15) == 0 && !isPosTouchingLog(world, pos)) continue;
+            if (world.isAir(pos) || world.isWater(pos)) this.setBlockState(world, pos, LEAVES_STATE);
+        }
+    }
+
+    private static boolean isPosTouchingLog(WorldAccess world, BlockPos pos) {
+        for (Direction direction : Direction.values()) if (world.getBlockState(pos.offset(direction)).isOf(Blocks.BIRCH_LOG)) return true;
+        return false;
     }
 }
