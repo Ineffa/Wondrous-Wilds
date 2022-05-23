@@ -1,7 +1,6 @@
 package com.ineffa.thewildupgrade;
 
-import com.ineffa.thewildupgrade.registry.TheWildUpgradeEntities;
-import com.ineffa.thewildupgrade.registry.TheWildUpgradeItems;
+import com.ineffa.thewildupgrade.registry.*;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,5 +20,9 @@ public class TheWildUpgrade implements ModInitializer {
 
 		TheWildUpgradeEntities.initialize();
 		TheWildUpgradeItems.initialize();
+
+		TheWildUpgradeFeatures.initialize();
+		TheWildUpgradeConfiguredFeatures.initialize();
+		TheWildUpgradePlacedFeatures.initialize();
 	}
 }
