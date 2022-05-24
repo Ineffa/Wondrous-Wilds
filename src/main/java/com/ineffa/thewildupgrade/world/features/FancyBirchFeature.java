@@ -100,29 +100,45 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
             }
         }
 
-        this.generateLeaves(world, random, mutablePos);
+        this.generateLeaves(world, random, mutablePos, random.nextBoolean());
 
         return true;
     }
 
-    private void generateLeaves(WorldAccess world, AbstractRandom random, BlockPos origin) {
+    private void generateLeaves(WorldAccess world, AbstractRandom random, BlockPos origin, boolean isLarge) {
         Direction[] horizontalDirections = Arrays.stream(Direction.values()).filter((direction) -> direction.getAxis().isHorizontal()).toArray(Direction[]::new);
 
         List<BlockPos> leaves = new ArrayList<>();
 
-        for (int y = 0; y >= -5; --y) {
-            if (y == 0 || y == -5) {
-                if (y == 0) leaves.add(origin);
+        int upwardBound = 0;
+        int downwardBound = isLarge ? -7 : -5;
+        for (int y = upwardBound; y >= downwardBound; --y) {
+            boolean isTip = y == upwardBound || y == downwardBound;
+            if (isTip) {
+                if (y == upwardBound) leaves.add(origin);
                 for (Direction direction : horizontalDirections) leaves.add(origin.down(MathHelper.abs(y)).offset(direction));
             }
             else {
+                boolean isInMiddleRange = y <= upwardBound - 2 && y >= downwardBound + 2;
+                int increase = isInMiddleRange ? 1 : 0;
+
+                for (int x = -1 - increase; x <= 1 + increase; ++x) {
+                    for (int z = -1 - increase; z <= 1 + increase; ++z) {
+                        if (x == origin.getX() && z == origin.getZ()) continue;
+                        leaves.add(origin.add(x, y, z));
+                    }
+                }
+
                 for (Direction direction : horizontalDirections) {
-                    BlockPos offsetPos = origin.down(MathHelper.abs(y)).offset(direction, y == -2 || y == -3 ? 3 : 2);
+                    BlockPos offsetPos = origin.down(MathHelper.abs(y)).offset(direction, 2 + increase);
 
                     leaves.add(offsetPos);
-                    if (y != -2) {
-                        leaves.add(offsetPos.offset(direction.rotateYClockwise()));
-                        leaves.add(offsetPos.offset(direction.rotateYCounterclockwise()));
+                    if (y != upwardBound - 2 && !(isLarge && y == downwardBound + 2)) {
+                        int layersToAdd = y == downwardBound + 3 ? 2 : 1;
+                        for (int distance = 1; distance <= layersToAdd; ++distance) {
+                            leaves.add(offsetPos.offset(direction.rotateYClockwise(), distance));
+                            leaves.add(offsetPos.offset(direction.rotateYCounterclockwise(), distance));
+                        }
                     }
                 }
             }
