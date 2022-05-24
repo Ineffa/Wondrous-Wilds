@@ -19,7 +19,7 @@ public class TheWildUpgradeConfiguredFeatures {
         return TheWildUpgradeConfiguredFeatures.register(name, feature, FeatureConfig.DEFAULT);
     }
 
-    private static <FC extends FeatureConfig, F extends Feature<FC>> RegistryEntry<ConfiguredFeature<FC, ?>> register(String name, F feature, FC config) {
+    protected static <FC extends FeatureConfig, F extends Feature<FC>> RegistryEntry<ConfiguredFeature<FC, ?>> register(String name, F feature, FC config) {
         return BuiltinRegistries.addCasted(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier(TheWildUpgrade.MOD_ID, name).toString(), new ConfiguredFeature<FC, F>(feature, config));
     }
 
