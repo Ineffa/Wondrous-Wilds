@@ -3,8 +3,11 @@ package com.ineffa.thewildupgrade;
 import com.ineffa.thewildupgrade.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.*;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.VegetationPlacedFeatures;
 import org.slf4j.Logger;
@@ -44,6 +47,10 @@ public class TheWildUpgrade implements ModInitializer {
 		// Global modifications
 		birchForestModifier.add(ModificationPhase.REPLACEMENTS, ALL_BIRCH_FORESTS, context -> {
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradePlacedFeatures.BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
+		});
+
+		birchForestModifier.add(ModificationPhase.ADDITIONS, ALL_BIRCH_FORESTS, context -> {
+			context.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 6, 2, 4));
 		});
 
 		// Birch Forest modifications
