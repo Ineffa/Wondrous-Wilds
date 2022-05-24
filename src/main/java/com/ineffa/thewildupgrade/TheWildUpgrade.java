@@ -45,10 +45,6 @@ public class TheWildUpgrade implements ModInitializer {
 		final Predicate<BiomeSelectionContext> ALL_BIRCH_FORESTS = BiomeSelectors.includeByKey(BiomeKeys.BIRCH_FOREST, BiomeKeys.OLD_GROWTH_BIRCH_FOREST);
 
 		// Global modifications
-		birchForestModifier.add(ModificationPhase.REPLACEMENTS, ALL_BIRCH_FORESTS, context -> {
-			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradePlacedFeatures.BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
-		});
-
 		birchForestModifier.add(ModificationPhase.ADDITIONS, ALL_BIRCH_FORESTS, context -> {
 			context.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 6, 2, 4));
 		});
@@ -56,11 +52,13 @@ public class TheWildUpgrade implements ModInitializer {
 		// Birch Forest modifications
 		birchForestModifier.add(ModificationPhase.REPLACEMENTS, BIRCH_FOREST, context -> {
 			context.getGenerationSettings().removeBuiltInFeature(VegetationPlacedFeatures.TREES_BIRCH.value());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradePlacedFeatures.BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
 		});
 
 		// Old Growth Birch Forest modifications
 		birchForestModifier.add(ModificationPhase.REPLACEMENTS, OLD_GROWTH_BIRCH_FOREST, context -> {
 			context.getGenerationSettings().removeBuiltInFeature(VegetationPlacedFeatures.BIRCH_TALL.value());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradePlacedFeatures.OLD_GROWTH_BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
 		});
 	}
 }
