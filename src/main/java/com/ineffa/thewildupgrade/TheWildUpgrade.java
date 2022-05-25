@@ -32,8 +32,6 @@ public class TheWildUpgrade implements ModInitializer {
 		TheWildUpgradeItems.initialize();
 
 		TheWildUpgradeFeatures.initialize();
-		TheWildUpgradeConfiguredFeatures.initialize();
-		TheWildUpgradePlacedFeatures.initialize();
 		this.upgradeBirchForests();
 	}
 
@@ -52,13 +50,13 @@ public class TheWildUpgrade implements ModInitializer {
 		// Birch Forest modifications
 		birchForestModifier.add(ModificationPhase.REPLACEMENTS, BIRCH_FOREST, context -> {
 			context.getGenerationSettings().removeBuiltInFeature(VegetationPlacedFeatures.TREES_BIRCH.value());
-			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradePlacedFeatures.BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
 		});
 
 		// Old Growth Birch Forest modifications
 		birchForestModifier.add(ModificationPhase.REPLACEMENTS, OLD_GROWTH_BIRCH_FOREST, context -> {
 			context.getGenerationSettings().removeBuiltInFeature(VegetationPlacedFeatures.BIRCH_TALL.value());
-			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradePlacedFeatures.OLD_GROWTH_BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.OLD_GROWTH_BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
 		});
 	}
 }
