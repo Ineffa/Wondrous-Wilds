@@ -28,6 +28,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
     private static final BlockState LOG_STATE = Blocks.BIRCH_LOG.getDefaultState();
     private static final BlockState LEAVES_STATE = Blocks.BIRCH_LEAVES.getDefaultState();
     private static final BlockState NEST_STATE = Blocks.BEE_NEST.getDefaultState();
+    private static final BlockState WEB_STATE = Blocks.COBWEB.getDefaultState();
 
     public FancyBirchFeature() {
         super(FancyBirchFeatureConfig.CODEC);
@@ -97,6 +98,10 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
 
                     hasPlacedBees = true;
                 }
+            }
+            else if (random.nextInt(15) == 0) {
+                BlockPos webPos = branchPos.down();
+                if (world.isAir(webPos)) this.setBlockState(world, webPos, WEB_STATE);
             }
         }
 
