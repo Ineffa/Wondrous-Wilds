@@ -42,7 +42,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
 
         boolean hasBees = config.hasBees;
         int branches = hasBees ? 1 : 0; while (branches < 3) if (random.nextBoolean()) ++branches; else break;
-        int treeHeight = random.nextBetween(12, 20);
+        int treeHeight = random.nextBetween(config.minHeight, config.maxHeight);
 
         return this.generateLogs(world, random, origin, treeHeight, branches, hasBees);
     }

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface TreeConfiguredFeaturesInvoker {
 
     @Invoker("superBirch")
-    static TreeFeatureConfig.Builder getTallBirch() {
+    static TreeFeatureConfig.Builder tallBirchConfig() {
         throw new AssertionError();
     }
 }
