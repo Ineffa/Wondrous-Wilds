@@ -3,7 +3,6 @@
   "values": [
     "#minecraft:leaves",
     "#minecraft:logs",
-    "minecraft:grass_block",
-    "minecraft:moss_block"
+    "#minecraft:dirt"
   ]
 }
