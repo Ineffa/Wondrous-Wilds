@@ -160,7 +160,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
         }
 
         for (BlockPos pos : leaves) {
-            if (random.nextInt(15) == 0 && !isPosTouchingLog(world, pos)) continue;
+            if (random.nextInt(40) == 0 && !isPosTouchingLog(world, pos)) continue;
             if (world.isAir(pos) || world.isWater(pos)) this.setBlockState(world, pos, LEAVES_STATE);
         }
     }
