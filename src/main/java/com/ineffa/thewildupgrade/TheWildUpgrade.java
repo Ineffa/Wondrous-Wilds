@@ -29,6 +29,7 @@ public class TheWildUpgrade implements ModInitializer {
 		GeckoLibMod.DISABLE_IN_DEV = true;
 
 		TheWildUpgradeEntities.initialize();
+		TheWildUpgradeBlocks.initialize();
 		TheWildUpgradeItems.initialize();
 
 		TheWildUpgradeFeatures.initialize();
