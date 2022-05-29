@@ -30,6 +30,8 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
     private static final BlockState NEST_STATE = Blocks.BEE_NEST.getDefaultState();
     private static final BlockState WEB_STATE = Blocks.COBWEB.getDefaultState();
 
+    private static final Direction[] HORIZONTAL_DIRECTIONS = Arrays.stream(Direction.values()).filter((direction) -> direction.getAxis().isHorizontal()).toArray(Direction[]::new);
+
     public FancyBirchFeature() {
         super(FancyBirchFeatureConfig.CODEC);
     }
@@ -113,8 +115,6 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
     }
 
     private void generateLeaves(WorldAccess world, AbstractRandom random, BlockPos origin, boolean isLarge) {
-        Direction[] horizontalDirections = Arrays.stream(Direction.values()).filter((direction) -> direction.getAxis().isHorizontal()).toArray(Direction[]::new);
-
         List<BlockPos> leaves = new ArrayList<>();
 
         int upwardBound = 0;
@@ -123,7 +123,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
             boolean isTip = y == upwardBound || y == downwardBound;
             if (isTip) {
                 if (y == upwardBound) leaves.add(origin);
-                for (Direction direction : horizontalDirections) leaves.add(origin.down(MathHelper.abs(y)).offset(direction));
+                for (Direction direction : HORIZONTAL_DIRECTIONS) leaves.add(origin.down(MathHelper.abs(y)).offset(direction));
             }
             else {
                 boolean isInMiddleRange = y <= upwardBound - 2 && y >= downwardBound + 2;
@@ -136,7 +136,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
                     }
                 }
 
-                for (Direction direction : horizontalDirections) {
+                for (Direction direction : HORIZONTAL_DIRECTIONS) {
                     BlockPos offsetPos = origin.down(MathHelper.abs(y)).offset(direction, 2 + increase);
 
                     leaves.add(offsetPos);
