@@ -69,6 +69,8 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
         int branchCount = 0;
         List<BlockPos> logsWithBranches = new ArrayList<>();
         while (branchCount < branches) {
+            if (logsWithBranches.size() >= logs.size()) break;
+
             BlockPos tryBranchPos = logs.get(random.nextInt(logs.size()));
             if (logsWithBranches.contains(tryBranchPos)) continue;
 
