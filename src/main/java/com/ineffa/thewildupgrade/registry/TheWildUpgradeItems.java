@@ -13,11 +13,13 @@ public class TheWildUpgradeItems {
 
     public static final Item FIREFLY_SPAWN_EGG = new SpawnEggItem(TheWildUpgradeEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(ItemGroup.MISC));
 
+    public static final BlockItem SMALL_POLYPORE = new BlockItem(TheWildUpgradeBlocks.SMALL_POLYPORE, new FabricItemSettings().group(ItemGroup.DECORATIONS));
     public static final BlockItem BIG_POLYPORE = new BlockItem(TheWildUpgradeBlocks.BIG_POLYPORE, new FabricItemSettings().group(ItemGroup.DECORATIONS));
 
     public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
 
+        Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "small_polypore"), SMALL_POLYPORE);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "big_polypore"), BIG_POLYPORE);
     }
 }

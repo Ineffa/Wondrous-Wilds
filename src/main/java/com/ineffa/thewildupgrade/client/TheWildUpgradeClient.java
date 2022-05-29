@@ -17,6 +17,7 @@ public class TheWildUpgradeClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(TheWildUpgradeEntities.FIREFLY, FireflyRenderer::new);
 
+        BlockRenderLayerMap.INSTANCE.putBlock(TheWildUpgradeBlocks.SMALL_POLYPORE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(TheWildUpgradeBlocks.BIG_POLYPORE, RenderLayer.getCutout());
     }
 }

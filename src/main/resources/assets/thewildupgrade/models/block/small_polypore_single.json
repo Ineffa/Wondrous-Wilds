@@ -1,0 +1,19 @@
+{
+	"texture_size": [8, 14],
+	"textures": {
+		"texture": "thewildupgrade:block/small_polypore",
+		"particle": "thewildupgrade:block/small_polypore"
+	},
+	"elements": [
+		{
+			"name": "polypore",
+			"from": [4, 8, 9],
+			"to": [12, 8, 16],
+			"shade": false,
+			"faces": {
+				"up": {"uv": [16, 8, 0, 0], "texture": "#texture"},
+				"down": {"uv": [16, 8, 0, 16], "texture": "#texture"}
+			}
+		}
+	]
+}
