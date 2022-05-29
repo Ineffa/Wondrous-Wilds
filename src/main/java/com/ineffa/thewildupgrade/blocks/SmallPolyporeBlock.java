@@ -6,6 +6,7 @@ import net.minecraft.block.LadderBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
 
 public class SmallPolyporeBlock extends LadderBlock {
@@ -17,7 +18,7 @@ public class SmallPolyporeBlock extends LadderBlock {
 
     public SmallPolyporeBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(POLYPORES, MIN_POLYPORES));
+        this.setDefaultState(this.stateManager.getDefaultState().with(POLYPORES, MIN_POLYPORES).with(FACING, Direction.NORTH).with(WATERLOGGED, false));
     }
 
     @Override
