@@ -1,5 +1,8 @@
 package com.ineffa.thewildupgrade.world.features;
 
+import com.ineffa.thewildupgrade.blocks.BigPolyporeBlock;
+import com.ineffa.thewildupgrade.blocks.SmallPolyporeBlock;
+import com.ineffa.thewildupgrade.registry.TheWildUpgradeBlocks;
 import com.ineffa.thewildupgrade.world.features.configs.FancyBirchFeatureConfig;
 import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.BlockState;
@@ -29,6 +32,8 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
     private static final BlockState LEAVES_STATE = Blocks.BIRCH_LEAVES.getDefaultState();
     private static final BlockState NEST_STATE = Blocks.BEE_NEST.getDefaultState();
     private static final BlockState WEB_STATE = Blocks.COBWEB.getDefaultState();
+    private static final BlockState SMALL_POLYPORE_STATE = TheWildUpgradeBlocks.SMALL_POLYPORE.getDefaultState();
+    private static final BlockState BIG_POLYPORE_STATE = TheWildUpgradeBlocks.BIG_POLYPORE.getDefaultState();
 
     private static final Direction[] HORIZONTAL_DIRECTIONS = Arrays.stream(Direction.values()).filter((direction) -> direction.getAxis().isHorizontal()).toArray(Direction[]::new);
 
@@ -111,6 +116,41 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
 
         this.generateLeaves(world, random, mutablePos, random.nextBoolean());
 
+        int polyporeClusterAttempts = 0; while (polyporeClusterAttempts < 3) if (random.nextBoolean()) ++polyporeClusterAttempts; else break;
+        List<BlockPos> attemptedPolyporeClusterPositions = new ArrayList<>();
+        for (int attemptCount = 0; attemptCount < polyporeClusterAttempts; ++attemptCount) {
+            if (attemptedPolyporeClusterPositions.size() >= logs.size()) break;
+
+            BlockPos tryPolyporeClusterPos = logs.get(random.nextInt(logs.size()));
+            if (attemptedPolyporeClusterPositions.contains(tryPolyporeClusterPos)) continue;
+
+            attemptedPolyporeClusterPositions.add(tryPolyporeClusterPos);
+
+            int steps = 1 + random.nextInt(3);
+            Direction nextOffsetDirection = random.nextBoolean() ? Direction.UP : Direction.DOWN;
+            int nextUpOffset = 0;
+            int nextDownOffset = 0;
+            for (int step = 0; step <= steps; ++step) {
+                BlockPos polyporesCenter = tryPolyporeClusterPos.offset(nextOffsetDirection, nextOffsetDirection == Direction.UP ? nextUpOffset : nextDownOffset);
+
+                if (nextOffsetDirection == Direction.UP) ++nextUpOffset;
+                else if (nextOffsetDirection == Direction.DOWN) ++nextDownOffset;
+                nextOffsetDirection = nextOffsetDirection.getOpposite();
+
+                if (!isPosSuitableForPolypores(world, polyporesCenter)) continue;
+
+                for (Direction polyporeDirection : HORIZONTAL_DIRECTIONS) {
+                    int polyporeScale = random.nextInt(5);
+                    if (polyporeScale <= 0) continue;
+
+                    BlockPos polyporePos = polyporesCenter.offset(polyporeDirection);
+                    if (!(world.isAir(polyporePos) || world.isWater(polyporePos))) continue;
+
+                    this.setBlockState(world, polyporePos, polyporeScale > 3 ? BIG_POLYPORE_STATE.with(BigPolyporeBlock.FACING, polyporeDirection) : SMALL_POLYPORE_STATE.with(SmallPolyporeBlock.POLYPORES, polyporeScale).with(SmallPolyporeBlock.FACING, polyporeDirection));
+                }
+            }
+        }
+
         return true;
     }
 
@@ -165,6 +205,21 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
             if (random.nextInt(40) == 0 && !isPosTouchingLog(world, pos)) continue;
             if (world.isAir(pos) || world.isWater(pos)) this.setBlockState(world, pos, LEAVES_STATE);
         }
+    }
+
+    private static boolean isPosSuitableForPolypores(WorldAccess world, BlockPos center) {
+        if (world.getBlockState(center) != LOG_STATE) return false;
+
+        boolean hasOpenSpace = false;
+        for (Direction direction : HORIZONTAL_DIRECTIONS) {
+            BlockPos offsetPos = center.offset(direction);
+            if (world.isAir(offsetPos) || world.isWater(offsetPos)) {
+                hasOpenSpace = true;
+                break;
+            }
+        }
+
+        return hasOpenSpace;
     }
 
     private static boolean isPosTouchingLog(WorldAccess world, BlockPos pos) {
