@@ -2,7 +2,9 @@ package com.ineffa.thewildupgrade.registry;
 
 import com.ineffa.thewildupgrade.TheWildUpgrade;
 import com.ineffa.thewildupgrade.mixin.TreeConfiguredFeaturesInvoker;
+import com.ineffa.thewildupgrade.world.features.FallenLogFeature;
 import com.ineffa.thewildupgrade.world.features.FancyBirchFeature;
+import com.ineffa.thewildupgrade.world.features.configs.FallenLogFeatureConfig;
 import com.ineffa.thewildupgrade.world.features.configs.FancyBirchFeatureConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
@@ -10,7 +12,8 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.placementmodifier.PlacementModifier;
+import net.minecraft.world.gen.placementmodifier.*;
+import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 
 import java.util.List;
 
@@ -36,6 +39,10 @@ public class TheWildUpgradeFeatures {
     public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(new RandomFeatureEntry(TALL_BIRCH_PLACED, 0.15F), new RandomFeatureEntry(TALL_FANCY_BIRCH_WITH_BEES_PLACED, 0.015F)), TALL_FANCY_BIRCH_PLACED));
     public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1f, 1), Blocks.BIRCH_SAPLING));
 
+    public static final Feature<FallenLogFeatureConfig> FALLEN_LOG = new FallenLogFeature();
+    public static final RegistryEntry<ConfiguredFeature<FallenLogFeatureConfig, ?>> FALLEN_BIRCH_LOG_CONFIGURED = registerConfigured("fallen_birch_log", FALLEN_LOG, fallenBirchLogConfig());
+    public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(RarityFilterPlacementModifier.of(12), Blocks.BIRCH_SAPLING));
+
     private static FancyBirchFeatureConfig fancyBirchConfig() {
         return new FancyBirchFeatureConfig(false, 10, 20);
     }
@@ -50,6 +57,10 @@ public class TheWildUpgradeFeatures {
 
     private static FancyBirchFeatureConfig tallFancyBirchWithBeesConfig() {
         return new FancyBirchFeatureConfig(true, 10, 26);
+    }
+
+    private static FallenLogFeatureConfig fallenBirchLogConfig() {
+        return new FallenLogFeatureConfig(BlockStateProvider.of(Blocks.BIRCH_LOG), 3, 8);
     }
 
     private static <FC extends FeatureConfig, F extends Feature<FC>> RegistryEntry<ConfiguredFeature<FC, ?>> registerConfigured(String name, F feature, FC config) {
@@ -67,5 +78,7 @@ public class TheWildUpgradeFeatures {
 
     public static void initialize() {
         Registry.register(Registry.FEATURE, new Identifier(TheWildUpgrade.MOD_ID, "fancy_birch"), FANCY_BIRCH);
+
+        Registry.register(Registry.FEATURE, new Identifier(TheWildUpgrade.MOD_ID, "fallen_log"), FALLEN_LOG);
     }
 }
