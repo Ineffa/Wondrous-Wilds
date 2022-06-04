@@ -108,7 +108,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
                     hasPlacedBees = true;
                 }
             }
-            else if (random.nextInt(15) == 0) {
+            else if (random.nextInt(30) == 0) {
                 BlockPos webPos = branchPos.down();
                 if (world.isAir(webPos)) this.setBlockState(world, webPos, WEB_STATE);
             }
