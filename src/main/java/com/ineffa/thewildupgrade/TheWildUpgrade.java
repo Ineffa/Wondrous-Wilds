@@ -52,6 +52,7 @@ public class TheWildUpgrade implements ModInitializer {
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.PURPLE_VIOLETS_PLACED.getKey().orElseThrow());
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.PINK_VIOLETS_PLACED.getKey().orElseThrow());
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.RED_VIOLETS_PLACED.getKey().orElseThrow());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.WHITE_VIOLETS_PLACED.getKey().orElseThrow());
 
 			context.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 6, 2, 4));
 		});
