@@ -74,7 +74,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     }
 
     public static boolean canFireflySpawn(EntityType<FireflyEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, AbstractRandom random) {
-        if (!world.getBlockState(pos.down()).isIn(TheWildUpgradeTags.FIREFLIES_SPAWNABLE_ON) || !FireflyEntity.canMobSpawn(type, world, spawnReason, pos, random)) return false;
+        if (!world.getBlockState(pos.down()).isIn(TheWildUpgradeTags.BlockTags.FIREFLIES_SPAWNABLE_ON) || !FireflyEntity.canMobSpawn(type, world, spawnReason, pos, random)) return false;
 
         // Try to spawn where there is no skylight if the biome is lush caves
         RegistryKey<Biome> biome = world.getBiome(pos).getKey().orElse(null);

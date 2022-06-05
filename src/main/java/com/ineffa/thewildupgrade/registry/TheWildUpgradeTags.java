@@ -8,7 +8,9 @@ import net.minecraft.util.registry.Registry;
 
 public class TheWildUpgradeTags {
 
-    public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = createBlockTag("fireflies_spawnable_on");
+    public static class BlockTags {
+        public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = createBlockTag("fireflies_spawnable_on");
+    }
 
     private static TagKey<Block> createBlockTag(String name) {
         return TagKey.of(Registry.BLOCK_KEY, new Identifier(TheWildUpgrade.MOD_ID, name));
