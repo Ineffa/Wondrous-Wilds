@@ -4,8 +4,10 @@ import com.ineffa.thewildupgrade.TheWildUpgrade;
 import com.ineffa.thewildupgrade.mixin.TreeConfiguredFeaturesInvoker;
 import com.ineffa.thewildupgrade.world.features.FallenLogFeature;
 import com.ineffa.thewildupgrade.world.features.FancyBirchFeature;
+import com.ineffa.thewildupgrade.world.features.VioletPatchFeature;
 import com.ineffa.thewildupgrade.world.features.configs.FallenLogFeatureConfig;
 import com.ineffa.thewildupgrade.world.features.configs.FancyBirchFeatureConfig;
+import com.ineffa.thewildupgrade.world.features.configs.VioletPatchFeatureConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -43,6 +45,7 @@ public class TheWildUpgradeFeatures {
     public static final RegistryEntry<ConfiguredFeature<FallenLogFeatureConfig, ?>> FALLEN_BIRCH_LOG_CONFIGURED = registerConfigured("fallen_birch_log", FALLEN_LOG, fallenBirchLogConfig());
     public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(RarityFilterPlacementModifier.of(12), Blocks.BIRCH_SAPLING));
 
+    public static final Feature<VioletPatchFeatureConfig> VIOLET_PATCH = new VioletPatchFeature();
     private static FancyBirchFeatureConfig fancyBirchConfig() {
         return new FancyBirchFeatureConfig(false, 10, 20);
     }
@@ -80,5 +83,7 @@ public class TheWildUpgradeFeatures {
         Registry.register(Registry.FEATURE, new Identifier(TheWildUpgrade.MOD_ID, "fancy_birch"), FANCY_BIRCH);
 
         Registry.register(Registry.FEATURE, new Identifier(TheWildUpgrade.MOD_ID, "fallen_log"), FALLEN_LOG);
+
+        Registry.register(Registry.FEATURE, new Identifier(TheWildUpgrade.MOD_ID, "violet_patch"), VIOLET_PATCH);
     }
 }

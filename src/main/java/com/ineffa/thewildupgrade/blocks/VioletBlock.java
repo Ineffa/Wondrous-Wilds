@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class VioletBlock extends FlowerBlock {
 
-    private static final int MIN_VIOLETS = 1;
-    private static final int MAX_VIOLETS = 4;
+    public static final int MIN_VIOLETS = 1;
+    public static final int MAX_VIOLETS = 4;
 
     public static final IntProperty VIOLETS = IntProperty.of("violets", MIN_VIOLETS, MAX_VIOLETS);
 
