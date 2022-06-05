@@ -46,6 +46,8 @@ public class TheWildUpgradeFeatures {
     public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(RarityFilterPlacementModifier.of(12), Blocks.BIRCH_SAPLING));
 
     public static final Feature<VioletPatchFeatureConfig> VIOLET_PATCH = new VioletPatchFeature();
+    public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> PURPLE_VIOLETS_CONFIGURED = registerConfigured("purple_violets", VIOLET_PATCH, purpleVioletPatchConfig());
+    public static final RegistryEntry<PlacedFeature> PURPLE_VIOLETS_PLACED = registerPlaced("purple_violets", PURPLE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
     private static FancyBirchFeatureConfig fancyBirchConfig() {
         return new FancyBirchFeatureConfig(false, 10, 20);
     }
@@ -64,6 +66,10 @@ public class TheWildUpgradeFeatures {
 
     private static FallenLogFeatureConfig fallenBirchLogConfig() {
         return new FallenLogFeatureConfig(BlockStateProvider.of(Blocks.BIRCH_LOG), 3, 8);
+    }
+
+    private static VioletPatchFeatureConfig purpleVioletPatchConfig() {
+        return new VioletPatchFeatureConfig(BlockStateProvider.of(TheWildUpgradeBlocks.PURPLE_VIOLET));
     }
 
     private static <FC extends FeatureConfig, F extends Feature<FC>> RegistryEntry<ConfiguredFeature<FC, ?>> registerConfigured(String name, F feature, FC config) {
