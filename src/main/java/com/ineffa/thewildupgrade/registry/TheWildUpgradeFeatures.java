@@ -47,7 +47,9 @@ public class TheWildUpgradeFeatures {
 
     public static final Feature<VioletPatchFeatureConfig> VIOLET_PATCH = new VioletPatchFeature();
     public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> PURPLE_VIOLETS_CONFIGURED = registerConfigured("purple_violets", VIOLET_PATCH, purpleVioletPatchConfig());
+    public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> PINK_VIOLETS_CONFIGURED = registerConfigured("pink_violets", VIOLET_PATCH, pinkVioletPatchConfig());
     public static final RegistryEntry<PlacedFeature> PURPLE_VIOLETS_PLACED = registerPlaced("purple_violets", PURPLE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> PINK_VIOLETS_PLACED = registerPlaced("pink_violets", PINK_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
     private static FancyBirchFeatureConfig fancyBirchConfig() {
         return new FancyBirchFeatureConfig(false, 10, 20);
     }
@@ -70,6 +72,10 @@ public class TheWildUpgradeFeatures {
 
     private static VioletPatchFeatureConfig purpleVioletPatchConfig() {
         return new VioletPatchFeatureConfig(BlockStateProvider.of(TheWildUpgradeBlocks.PURPLE_VIOLET));
+    }
+
+    private static VioletPatchFeatureConfig pinkVioletPatchConfig() {
+        return new VioletPatchFeatureConfig(BlockStateProvider.of(TheWildUpgradeBlocks.PINK_VIOLET));
     }
 
     private static <FC extends FeatureConfig, F extends Feature<FC>> RegistryEntry<ConfiguredFeature<FC, ?>> registerConfigured(String name, F feature, FC config) {
