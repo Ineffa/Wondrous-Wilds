@@ -1,0 +1,6 @@
+{
+  "parent": "thewildupgrade:block/violet_double",
+  "textures": {
+    "texture": "thewildupgrade:block/pink_violet"
+  }
+}
