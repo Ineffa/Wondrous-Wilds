@@ -49,6 +49,7 @@ public class TheWildUpgrade implements ModInitializer {
 		// Global modifications
 		birchForestModifier.add(ModificationPhase.ADDITIONS, ALL_BIRCH_FORESTS, context -> {
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.FALLEN_BIRCH_LOG_PLACED.getKey().orElseThrow());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, TheWildUpgradeFeatures.PURPLE_VIOLETS_PLACED.getKey().orElseThrow());
 
 			context.getSpawnSettings().addSpawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(EntityType.FOX, 6, 2, 4));
 		});
