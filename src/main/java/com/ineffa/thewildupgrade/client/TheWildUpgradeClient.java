@@ -19,5 +19,7 @@ public class TheWildUpgradeClient implements ClientModInitializer {
 
         BlockRenderLayerMap.INSTANCE.putBlock(TheWildUpgradeBlocks.SMALL_POLYPORE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(TheWildUpgradeBlocks.BIG_POLYPORE, RenderLayer.getCutout());
+
+        BlockRenderLayerMap.INSTANCE.putBlock(TheWildUpgradeBlocks.PURPLE_VIOLET, RenderLayer.getCutout());
     }
 }
