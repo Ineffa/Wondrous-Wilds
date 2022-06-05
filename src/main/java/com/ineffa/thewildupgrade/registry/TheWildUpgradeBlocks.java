@@ -18,6 +18,7 @@ public class TheWildUpgradeBlocks {
 
     public static final VioletBlock PURPLE_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final VioletBlock PINK_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
+    public static final VioletBlock RED_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
 
     public static void initialize() {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "small_polypore"), SMALL_POLYPORE);
@@ -25,5 +26,6 @@ public class TheWildUpgradeBlocks {
 
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "purple_violet"), PURPLE_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "pink_violet"), PINK_VIOLET);
+        Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "red_violet"), RED_VIOLET);
     }
 }
