@@ -10,6 +10,7 @@ public class TheWildUpgradeTags {
 
     public static class BlockTags {
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = createBlockTag("fireflies_spawnable_on");
+        public static final TagKey<Block> VIOLETS = createBlockTag("violets");
     }
 
     private static TagKey<Block> createBlockTag(String name) {
