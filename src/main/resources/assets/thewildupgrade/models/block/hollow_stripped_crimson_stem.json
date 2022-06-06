@@ -1,0 +1,8 @@
+{
+  "parent": "thewildupgrade:block/hollow_log",
+  "textures": {
+    "end": "minecraft:block/stripped_crimson_stem_top",
+    "outer": "minecraft:block/stripped_crimson_stem",
+    "inner": "minecraft:block/stripped_crimson_stem"
+  }
+}
