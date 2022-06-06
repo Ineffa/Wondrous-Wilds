@@ -20,6 +20,7 @@ public class TheWildUpgradeBlocks {
     public static final VioletBlock RED_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final VioletBlock WHITE_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
 
+    public static final HollowLogBlock HOLLOW_OAK_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_BIRCH_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG).nonOpaque());
 
     public static void initialize() {
@@ -31,6 +32,7 @@ public class TheWildUpgradeBlocks {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "red_violet"), RED_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "white_violet"), WHITE_VIOLET);
 
+        Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_oak_log"), HOLLOW_OAK_LOG);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_birch_log"), HOLLOW_BIRCH_LOG);
     }
 }
