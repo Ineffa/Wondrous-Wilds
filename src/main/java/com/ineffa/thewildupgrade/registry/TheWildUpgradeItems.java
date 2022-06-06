@@ -21,6 +21,8 @@ public class TheWildUpgradeItems {
     public static final BlockItem RED_VIOLET = new BlockItem(TheWildUpgradeBlocks.RED_VIOLET, new FabricItemSettings().group(ItemGroup.DECORATIONS));
     public static final BlockItem WHITE_VIOLET = new BlockItem(TheWildUpgradeBlocks.WHITE_VIOLET, new FabricItemSettings().group(ItemGroup.DECORATIONS));
 
+    public static final BlockItem HOLLOW_BIRCH_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_BIRCH_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
+
     public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
 
@@ -31,5 +33,7 @@ public class TheWildUpgradeItems {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "pink_violet"), PINK_VIOLET);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "red_violet"), RED_VIOLET);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "white_violet"), WHITE_VIOLET);
+
+        Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_birch_log"), HOLLOW_BIRCH_LOG);
     }
 }

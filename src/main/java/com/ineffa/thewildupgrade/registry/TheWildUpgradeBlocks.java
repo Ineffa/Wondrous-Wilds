@@ -1,10 +1,9 @@
 package com.ineffa.thewildupgrade.registry;
 
 import com.ineffa.thewildupgrade.TheWildUpgrade;
-import com.ineffa.thewildupgrade.blocks.BigPolyporeBlock;
-import com.ineffa.thewildupgrade.blocks.SmallPolyporeBlock;
-import com.ineffa.thewildupgrade.blocks.VioletBlock;
+import com.ineffa.thewildupgrade.blocks.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
@@ -21,6 +20,8 @@ public class TheWildUpgradeBlocks {
     public static final VioletBlock RED_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final VioletBlock WHITE_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
 
+    public static final HollowLogBlock HOLLOW_BIRCH_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG).nonOpaque());
+
     public static void initialize() {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "small_polypore"), SMALL_POLYPORE);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "big_polypore"), BIG_POLYPORE);
@@ -29,5 +30,7 @@ public class TheWildUpgradeBlocks {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "pink_violet"), PINK_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "red_violet"), RED_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "white_violet"), WHITE_VIOLET);
+
+        Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_birch_log"), HOLLOW_BIRCH_LOG);
     }
 }
