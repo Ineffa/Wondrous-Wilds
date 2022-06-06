@@ -33,6 +33,7 @@ public class TheWildUpgradeItems {
     public static final BlockItem HOLLOW_STRIPPED_OAK_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_STRIPPED_OAK_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
     public static final BlockItem HOLLOW_STRIPPED_SPRUCE_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_STRIPPED_SPRUCE_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
     public static final BlockItem HOLLOW_STRIPPED_BIRCH_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_STRIPPED_BIRCH_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
+    public static final BlockItem HOLLOW_STRIPPED_JUNGLE_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_STRIPPED_JUNGLE_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
 
     public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
@@ -57,5 +58,6 @@ public class TheWildUpgradeItems {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_oak_log"), HOLLOW_STRIPPED_OAK_LOG);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_spruce_log"), HOLLOW_STRIPPED_SPRUCE_LOG);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_birch_log"), HOLLOW_STRIPPED_BIRCH_LOG);
+        Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_jungle_log"), HOLLOW_STRIPPED_JUNGLE_LOG);
     }
 }
