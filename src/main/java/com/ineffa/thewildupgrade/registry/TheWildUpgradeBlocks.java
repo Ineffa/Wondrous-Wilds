@@ -33,6 +33,7 @@ public class TheWildUpgradeBlocks {
     public static final HollowLogBlock HOLLOW_STRIPPED_SPRUCE_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_SPRUCE_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_STRIPPED_BIRCH_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_BIRCH_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_STRIPPED_JUNGLE_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_JUNGLE_LOG).nonOpaque());
+    public static final HollowLogBlock HOLLOW_STRIPPED_ACACIA_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_ACACIA_LOG).nonOpaque());
 
     public static void initialize() {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "small_polypore"), SMALL_POLYPORE);
@@ -56,5 +57,6 @@ public class TheWildUpgradeBlocks {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_spruce_log"), HOLLOW_STRIPPED_SPRUCE_LOG);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_birch_log"), HOLLOW_STRIPPED_BIRCH_LOG);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_jungle_log"), HOLLOW_STRIPPED_JUNGLE_LOG);
+        Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_stripped_acacia_log"), HOLLOW_STRIPPED_ACACIA_LOG);
     }
 }
