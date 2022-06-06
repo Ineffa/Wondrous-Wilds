@@ -28,6 +28,7 @@ public class TheWildUpgradeBlocks {
     public static final HollowLogBlock HOLLOW_DARK_OAK_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.DARK_OAK_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_MANGROVE_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.MANGROVE_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_CRIMSON_STEM = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.CRIMSON_STEM).nonOpaque());
+    public static final HollowLogBlock HOLLOW_WARPED_STEM = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.WARPED_STEM).nonOpaque());
 
     public static void initialize() {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "small_polypore"), SMALL_POLYPORE);
@@ -46,5 +47,6 @@ public class TheWildUpgradeBlocks {
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_dark_oak_log"), HOLLOW_DARK_OAK_LOG);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_mangrove_log"), HOLLOW_MANGROVE_LOG);
         Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_crimson_stem"), HOLLOW_CRIMSON_STEM);
+        Registry.register(Registry.BLOCK, new Identifier(TheWildUpgrade.MOD_ID, "hollow_warped_stem"), HOLLOW_WARPED_STEM);
     }
 }
