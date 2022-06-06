@@ -25,6 +25,7 @@ public class TheWildUpgradeItems {
     public static final BlockItem HOLLOW_SPRUCE_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_SPRUCE_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
     public static final BlockItem HOLLOW_BIRCH_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_BIRCH_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
     public static final BlockItem HOLLOW_JUNGLE_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_JUNGLE_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
+    public static final BlockItem HOLLOW_ACACIA_LOG = new BlockItem(TheWildUpgradeBlocks.HOLLOW_ACACIA_LOG, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS));
 
     public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
@@ -41,5 +42,6 @@ public class TheWildUpgradeItems {
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_spruce_log"), HOLLOW_SPRUCE_LOG);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_birch_log"), HOLLOW_BIRCH_LOG);
         Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_jungle_log"), HOLLOW_JUNGLE_LOG);
+        Registry.register(Registry.ITEM, new Identifier(TheWildUpgrade.MOD_ID, "hollow_acacia_log"), HOLLOW_ACACIA_LOG);
     }
 }
