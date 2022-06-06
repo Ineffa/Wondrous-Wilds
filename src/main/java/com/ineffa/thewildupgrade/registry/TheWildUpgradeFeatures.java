@@ -72,7 +72,7 @@ public class TheWildUpgradeFeatures {
     }
 
     private static FallenLogFeatureConfig fallenBirchLogConfig() {
-        return new FallenLogFeatureConfig(BlockStateProvider.of(Blocks.BIRCH_LOG), 3, 8);
+        return new FallenLogFeatureConfig(BlockStateProvider.of(TheWildUpgradeBlocks.HOLLOW_BIRCH_LOG), 3, 8);
     }
 
     private static VioletPatchFeatureConfig purpleVioletPatchConfig() {
