@@ -1,8 +1,12 @@
 package com.ineffa.thewildupgrade.registry;
 
 import com.ineffa.thewildupgrade.TheWildUpgrade;
-import com.ineffa.thewildupgrade.blocks.*;
+import com.ineffa.thewildupgrade.blocks.BigPolyporeBlock;
+import com.ineffa.thewildupgrade.blocks.HollowLogBlock;
+import com.ineffa.thewildupgrade.blocks.SmallPolyporeBlock;
+import com.ineffa.thewildupgrade.blocks.VioletBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
