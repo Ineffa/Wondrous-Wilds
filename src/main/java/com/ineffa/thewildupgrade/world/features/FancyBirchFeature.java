@@ -15,7 +15,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.AbstractRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.WorldAccess;
@@ -43,7 +43,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
 
     @Override
     public boolean generate(FeatureContext<FancyBirchFeatureConfig> context) {
-        AbstractRandom random = context.getRandom();
+        Random random = context.getRandom();
         StructureWorldAccess world = context.getWorld();
         BlockPos origin = context.getOrigin();
         FancyBirchFeatureConfig config = context.getConfig();
@@ -55,7 +55,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
         return this.generateLogs(world, random, origin, treeHeight, branches, hasBees);
     }
 
-    private boolean generateLogs(WorldAccess world, AbstractRandom random, BlockPos origin, int height, int branches, boolean hasBees) {
+    private boolean generateLogs(WorldAccess world, Random random, BlockPos origin, int height, int branches, boolean hasBees) {
         boolean hasPlacedBees = false;
 
         BlockPos.Mutable mutablePos = origin.mutableCopy();
@@ -154,7 +154,7 @@ public class FancyBirchFeature extends Feature<FancyBirchFeatureConfig> {
         return true;
     }
 
-    private void generateLeaves(WorldAccess world, AbstractRandom random, BlockPos origin, boolean isLarge) {
+    private void generateLeaves(WorldAccess world, Random random, BlockPos origin, boolean isLarge) {
         List<BlockPos> leaves = new ArrayList<>();
 
         int upwardBound = 0;

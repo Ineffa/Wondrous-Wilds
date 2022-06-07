@@ -25,7 +25,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.AbstractRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.LightType;
 import net.minecraft.world.ServerWorldAccess;
@@ -73,7 +73,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         this.setPathfindingPenalty(PathNodeType.FENCE, -1.0f);
     }
 
-    public static boolean canFireflySpawn(EntityType<FireflyEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, AbstractRandom random) {
+    public static boolean canFireflySpawn(EntityType<FireflyEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
         if (!world.getBlockState(pos.down()).isIn(TheWildUpgradeTags.BlockTags.FIREFLIES_SPAWNABLE_ON) || !FireflyEntity.canMobSpawn(type, world, spawnReason, pos, random)) return false;
 
         // Try to spawn where there is no skylight if the biome is lush caves

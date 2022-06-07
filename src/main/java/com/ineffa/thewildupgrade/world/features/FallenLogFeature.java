@@ -6,7 +6,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.AbstractRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
@@ -24,7 +24,7 @@ public class FallenLogFeature extends Feature<FallenLogFeatureConfig> {
 
     @Override
     public boolean generate(FeatureContext<FallenLogFeatureConfig> context) {
-        AbstractRandom random = context.getRandom();
+        Random random = context.getRandom();
         StructureWorldAccess world = context.getWorld();
         BlockPos origin = context.getOrigin();
         FallenLogFeatureConfig config = context.getConfig();
