@@ -55,6 +55,8 @@ public class TheWildUpgradeFeatures {
     public static final RegistryEntry<PlacedFeature> RED_VIOLETS_PLACED = registerPlaced("red_violets", RED_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
     public static final RegistryEntry<PlacedFeature> WHITE_VIOLETS_PLACED = registerPlaced("white_violets", WHITE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
+    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_ROCK = registerPlaced("birch_forest_rock", MiscConfiguredFeatures.FOREST_ROCK, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+
     private static FancyBirchFeatureConfig fancyBirchConfig() {
         return new FancyBirchFeatureConfig(false, 10, 20);
     }
