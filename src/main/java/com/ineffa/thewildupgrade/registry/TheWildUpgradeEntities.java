@@ -29,7 +29,7 @@ public class TheWildUpgradeEntities {
     public static void initialize() {
         BiomeModifications.addSpawn(context -> {
             RegistryKey<Biome> biomeKey = context.getBiomeKey();
-            return (context.getBiome().hasHighHumidity() && context.getBiome().getTemperature() >= 0.5F) || biomeKey == BiomeKeys.DARK_FOREST || biomeKey == BiomeKeys.LUSH_CAVES || biomeKey == BiomeKeys.RIVER;
+            return (context.getBiome().hasHighHumidity() && context.getBiome().getTemperature() >= 0.5F) || biomeKey == BiomeKeys.LUSH_CAVES || biomeKey == BiomeKeys.RIVER;
         }, SpawnGroup.AMBIENT, FIREFLY, 100, 3, 6);
     }
 }
