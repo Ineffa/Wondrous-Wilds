@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "wondrouswilds:block/big_polypore",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "wondrouswilds:block/big_polypore"
+    },
+    "facing=south": {
+      "model": "wondrouswilds:block/big_polypore",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wondrouswilds:block/big_polypore",
+      "y": 270
+    }
+  }
+}

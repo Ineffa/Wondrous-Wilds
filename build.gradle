@@ -25,7 +25,7 @@ dependencies {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/thewildupgrade.accesswidener")
+	accessWidenerPath = file("src/main/resources/wondrouswilds.accesswidener")
 }
 
 processResources {

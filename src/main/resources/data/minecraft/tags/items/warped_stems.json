@@ -1,7 +1,6 @@
 {
-  "replace": false,
   "values": [
-    "thewildupgrade:hollow_warped_stem",
-    "thewildupgrade:hollow_stripped_warped_stem"
+    "wondrouswilds:hollow_warped_stem",
+    "wondrouswilds:hollow_stripped_warped_stem"
   ]
 }

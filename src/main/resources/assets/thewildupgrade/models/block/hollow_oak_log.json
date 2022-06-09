@@ -1,8 +1,0 @@
-{
-  "parent": "thewildupgrade:block/hollow_log",
-  "textures": {
-    "end": "minecraft:block/oak_log_top",
-    "outer": "minecraft:block/oak_log",
-    "inner": "minecraft:block/stripped_oak_log"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "values": [
-    "#thewildupgrade:spawns_fireflies_on_surface_only_in_rain",
-    "#c:swamp",
-    "#c:jungle",
-    "minecraft:mushroom_fields",
-    "minecraft:river"
-  ]
-}

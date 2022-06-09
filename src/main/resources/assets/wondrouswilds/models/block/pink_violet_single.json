@@ -1,0 +1,6 @@
+{
+  "parent": "wondrouswilds:block/violet_single",
+  "textures": {
+    "texture": "wondrouswilds:block/pink_violet"
+  }
+}

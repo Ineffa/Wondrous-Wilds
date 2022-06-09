@@ -1,0 +1,8 @@
+{
+  "parent": "wondrouswilds:block/hollow_log",
+  "textures": {
+    "end": "minecraft:block/stripped_warped_stem_top",
+    "outer": "minecraft:block/stripped_warped_stem",
+    "inner": "minecraft:block/stripped_warped_stem"
+  }
+}

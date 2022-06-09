@@ -1,35 +1,35 @@
 {
   "schemaVersion": 1,
-  "id": "thewildupgrade",
+  "id": "wondrouswilds",
   "version": "${version}",
 
-  "name": "The Wild Upgrade",
+  "name": "Wondrous Wilds",
   "description": "Greatly improves, expands upon, and finishes one of Minecraft's most underwhelming updates",
   "authors": [
     "Ineffa"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/the-wild-upgrade",
-    "sources": "https://github.com/Ineffa/The-Wild-Upgrade",
-    "issues": "https://github.com/Ineffa/The-Wild-Upgrade/issues"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/wondrous-wilds",
+    "sources": "https://github.com/Ineffa/Wondrous-Wilds",
+    "issues": "https://github.com/Ineffa/Wondrous-Wilds/issues"
   },
 
   "license": "GNU Lesser General Public License v3.0",
-  "icon": "assets/thewildupgrade/the_wild_upgrade_logo.png",
+  "icon": "assets/wondrouswilds/wondrous_wilds_logo.png",
 
-  "accessWidener" : "thewildupgrade.accesswidener",
+  "accessWidener" : "wondrouswilds.accesswidener",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.ineffa.thewildupgrade.TheWildUpgrade"
+      "com.ineffa.wondrouswilds.WondrousWilds"
     ],
     "client": [
-      "com.ineffa.thewildupgrade.client.TheWildUpgradeClient"
+      "com.ineffa.wondrouswilds.client.WondrousWildsClient"
     ]
   },
   "mixins": [
-    "thewildupgrade.mixins.json"
+    "wondrouswilds.mixins.json"
   ],
 
   "depends": {

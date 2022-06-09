@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "violets=1": [
+      {"model": "wondrouswilds:block/purple_violet_single"},
+      {"model": "wondrouswilds:block/purple_violet_single", "y": 90},
+      {"model": "wondrouswilds:block/purple_violet_single", "y": 180},
+      {"model": "wondrouswilds:block/purple_violet_single", "y": 270}
+    ],
+    "violets=2": [
+      {"model": "wondrouswilds:block/purple_violet_double"},
+      {"model": "wondrouswilds:block/purple_violet_double", "y": 90},
+      {"model": "wondrouswilds:block/purple_violet_double", "y": 180},
+      {"model": "wondrouswilds:block/purple_violet_double", "y": 270}
+    ],
+    "violets=3": [
+      {"model": "wondrouswilds:block/purple_violet_triple"},
+      {"model": "wondrouswilds:block/purple_violet_triple", "y": 90},
+      {"model": "wondrouswilds:block/purple_violet_triple", "y": 180},
+      {"model": "wondrouswilds:block/purple_violet_triple", "y": 270}
+    ],
+    "violets=4": [
+      {"model": "wondrouswilds:block/purple_violet_quadruple"},
+      {"model": "wondrouswilds:block/purple_violet_quadruple", "y": 90},
+      {"model": "wondrouswilds:block/purple_violet_quadruple", "y": 180},
+      {"model": "wondrouswilds:block/purple_violet_quadruple", "y": 270}
+    ]
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "parent": "thewildupgrade:block/hollow_log",
-  "textures": {
-    "end": "minecraft:block/jungle_log_top",
-    "outer": "minecraft:block/jungle_log",
-    "inner": "minecraft:block/stripped_jungle_log"
-  }
-}
