@@ -6,8 +6,11 @@ import com.ineffa.wondrouswilds.registry.WondrousWildsFeatures;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.*;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.SpawnSettings;
@@ -23,6 +26,8 @@ import java.util.function.Predicate;
 public class WondrousWilds implements ModInitializer {
 	public static final String MOD_ID = "wondrouswilds";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static final ItemGroup WONDROUS_WILDS_ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(WondrousWilds.MOD_ID, "wondrous_wilds"), () -> new ItemStack(WondrousWildsItems.PURPLE_VIOLET));
 
 	@Override
 	public void onInitialize() {
