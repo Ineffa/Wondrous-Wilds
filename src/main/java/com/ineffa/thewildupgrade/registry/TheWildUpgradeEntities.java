@@ -4,16 +4,14 @@ import com.ineffa.thewildupgrade.TheWildUpgrade;
 import com.ineffa.thewildupgrade.entities.FireflyEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 
 public class TheWildUpgradeEntities {
 
@@ -27,9 +25,6 @@ public class TheWildUpgradeEntities {
     );
 
     public static void initialize() {
-        BiomeModifications.addSpawn(context -> {
-            RegistryKey<Biome> biomeKey = context.getBiomeKey();
-            return (context.getBiome().hasHighHumidity() && context.getBiome().getTemperature() >= 0.5F) || biomeKey == BiomeKeys.LUSH_CAVES || biomeKey == BiomeKeys.RIVER;
-        }, SpawnGroup.AMBIENT, FIREFLY, 100, 3, 6);
+        BiomeModifications.addSpawn(context -> context.hasTag(ConventionalBiomeTags.IN_OVERWORLD), SpawnGroup.AMBIENT, FIREFLY, 100, 3, 6);
     }
 }

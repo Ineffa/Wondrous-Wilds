@@ -26,13 +26,12 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.LightType;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -73,15 +72,22 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         this.setPathfindingPenalty(PathNodeType.FENCE, -1.0f);
     }
 
-    public static boolean canFireflySpawn(EntityType<FireflyEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-        if (!world.getBlockState(pos.down()).isIn(TheWildUpgradeTags.BlockTags.FIREFLIES_SPAWNABLE_ON) || !FireflyEntity.canMobSpawn(type, world, spawnReason, pos, random)) return false;
+    public static boolean canFireflySpawn(EntityType<FireflyEntity> entityType, ServerWorldAccess world, SpawnReason spawnReason, BlockPos spawnAttemptPos, Random random) {
+        if (!world.getBlockState(spawnAttemptPos.down()).isIn(TheWildUpgradeTags.BlockTags.FIREFLIES_SPAWNABLE_ON) || !FireflyEntity.canMobSpawn(entityType, world, spawnReason, spawnAttemptPos, random)) return false;
 
-        // Try to spawn where there is no skylight if the biome is lush caves
-        RegistryKey<Biome> biome = world.getBiome(pos).getKey().orElse(null);
-        if (biome == BiomeKeys.LUSH_CAVES) return world.getLightLevel(LightType.SKY, pos) <= 0;
+        RegistryEntry<Biome> biome = world.getBiome(spawnAttemptPos);
+        int skylightLevel = world.getLightLevel(LightType.SKY, spawnAttemptPos);
 
-        // Otherwise, only spawn near sky exposure at nighttime with clear weather
-        return world.getLightLevel(LightType.SKY, pos) > 5 && world.toServerWorld().isNight() && !world.toServerWorld().isRaining();
+        // Spawn immediately if the spawn position is underground and the biome allows underground spawning
+        if (skylightLevel <= 0 && biome.isIn(TheWildUpgradeTags.BiomeTags.SPAWNS_FIREFLIES_UNDERGROUND)) return true;
+
+        // Otherwise, if it's not raining and the biome requires rain for surface spawning, prevent spawning
+        ServerWorld serverWorld = world.toServerWorld();
+
+        if (!serverWorld.isRaining() && biome.isIn(TheWildUpgradeTags.BiomeTags.SPAWNS_FIREFLIES_ON_SURFACE_ONLY_IN_RAIN)) return false;
+
+        // Finally, spawn if basic surface spawning conditions are met
+        return serverWorld.isNight() && skylightLevel >= 6 && world.getLightLevel(LightType.BLOCK, spawnAttemptPos) <= 0 && biome.isIn(TheWildUpgradeTags.BiomeTags.SPAWNS_FIREFLIES_ON_SURFACE);
     }
 
     // Removes the light level restriction set by AnimalEntity
