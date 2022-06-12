@@ -81,13 +81,17 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         // Spawn immediately if the spawn position is underground and the biome allows underground spawning
         if (skylightLevel <= 0 && biome.isIn(WondrousWildsTags.BiomeTags.SPAWNS_FIREFLIES_UNDERGROUND)) return true;
 
-        // Otherwise, if it's not raining and the biome requires rain for surface spawning, prevent spawning
         ServerWorld serverWorld = world.toServerWorld();
 
-        if (!serverWorld.isRaining() && biome.isIn(WondrousWildsTags.BiomeTags.SPAWNS_FIREFLIES_ON_SURFACE_ONLY_IN_RAIN)) return false;
+        // Otherwise, cancel if it is not raining and the biome requires it
+        if (biome.isIn(WondrousWildsTags.BiomeTags.SPAWNS_FIREFLIES_ON_SURFACE_ONLY_IN_RAIN)) {
+            if (!serverWorld.isRaining()) return false;
+        }
+        // Otherwise, cancel if the biome does not allow surface spawning at all
+        else if (!biome.isIn(WondrousWildsTags.BiomeTags.SPAWNS_FIREFLIES_ON_SURFACE)) return false;
 
         // Finally, spawn if basic surface spawning conditions are met
-        return serverWorld.isNight() && skylightLevel >= 6 && world.getLightLevel(LightType.BLOCK, spawnAttemptPos) <= 0 && biome.isIn(WondrousWildsTags.BiomeTags.SPAWNS_FIREFLIES_ON_SURFACE);
+        return serverWorld.isNight() && skylightLevel >= 6 && world.getLightLevel(LightType.BLOCK, spawnAttemptPos) <= 0;
     }
 
     // Removes the light level restriction set by AnimalEntity

@@ -19,12 +19,12 @@ public class WondrousWildsEntities {
             .entityFactory(FireflyEntity::new)
             .defaultAttributes(FireflyEntity::createFireflyAttributes)
             .dimensions(EntityDimensions.fixed(0.3125F, 0.375F))
-            .spawnGroup(SpawnGroup.AMBIENT)
+            .spawnGroup(SpawnGroup.WATER_AMBIENT)
             .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, FireflyEntity::canFireflySpawn)
             .build()
     );
 
     public static void initialize() {
-        BiomeModifications.addSpawn(context -> context.hasTag(ConventionalBiomeTags.IN_OVERWORLD), SpawnGroup.AMBIENT, FIREFLY, 100, 3, 6);
+        BiomeModifications.addSpawn(context -> context.hasTag(ConventionalBiomeTags.IN_OVERWORLD), SpawnGroup.WATER_AMBIENT, FIREFLY, 100, 3, 6);
     }
 }
