@@ -26,6 +26,7 @@ public class WondrousWildsBlocks {
     public static final VioletBlock WHITE_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final FlowerPotBlock POTTED_PURPLE_VIOLET = new FlowerPotBlock(PURPLE_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
     public static final FlowerPotBlock POTTED_PINK_VIOLET = new FlowerPotBlock(PINK_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
+    public static final FlowerPotBlock POTTED_RED_VIOLET = new FlowerPotBlock(RED_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
 
     public static final HollowLogBlock HOLLOW_OAK_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_SPRUCE_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.SPRUCE_LOG).nonOpaque());
@@ -56,6 +57,7 @@ public class WondrousWildsBlocks {
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "white_violet"), WHITE_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_purple_violet"), POTTED_PURPLE_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_pink_violet"), POTTED_PINK_VIOLET);
+        Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_red_violet"), POTTED_RED_VIOLET);
 
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "hollow_oak_log"), HOLLOW_OAK_LOG);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "hollow_spruce_log"), HOLLOW_SPRUCE_LOG);
