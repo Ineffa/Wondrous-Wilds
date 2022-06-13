@@ -8,6 +8,7 @@ import com.ineffa.wondrouswilds.blocks.VioletBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
@@ -23,6 +24,7 @@ public class WondrousWildsBlocks {
     public static final VioletBlock PINK_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final VioletBlock RED_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
     public static final VioletBlock WHITE_VIOLET = new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS));
+    public static final FlowerPotBlock POTTED_PURPLE_VIOLET = new FlowerPotBlock(PURPLE_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
 
     public static final HollowLogBlock HOLLOW_OAK_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_SPRUCE_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.SPRUCE_LOG).nonOpaque());
@@ -51,6 +53,7 @@ public class WondrousWildsBlocks {
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "pink_violet"), PINK_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "red_violet"), RED_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "white_violet"), WHITE_VIOLET);
+        Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_purple_violet"), POTTED_PURPLE_VIOLET);
 
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "hollow_oak_log"), HOLLOW_OAK_LOG);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "hollow_spruce_log"), HOLLOW_SPRUCE_LOG);
