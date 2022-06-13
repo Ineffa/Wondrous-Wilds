@@ -25,5 +25,6 @@ public class WondrousWildsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.RED_VIOLET, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.WHITE_VIOLET, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.POTTED_PURPLE_VIOLET, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.POTTED_PINK_VIOLET, RenderLayer.getCutout());
     }
 }
