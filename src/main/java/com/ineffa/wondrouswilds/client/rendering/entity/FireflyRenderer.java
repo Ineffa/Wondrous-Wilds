@@ -30,7 +30,7 @@ public class FireflyRenderer extends GeoEntityRenderer<FireflyEntity> {
         return RenderLayer.getEntityTranslucent(this.getTextureResource(entity));
     }
 
-    private class FireflyGlowLayer extends GeoLayerRenderer<FireflyEntity> {
+    private static class FireflyGlowLayer extends GeoLayerRenderer<FireflyEntity> {
         private static final Identifier GLOW_TEXTURE = new Identifier(WondrousWilds.MOD_ID, "textures/entity/firefly/firefly_glow.png");
 
         public FireflyGlowLayer(IGeoRenderer<FireflyEntity> renderer) {
