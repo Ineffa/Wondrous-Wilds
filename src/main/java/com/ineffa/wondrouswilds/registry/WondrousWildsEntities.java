@@ -18,7 +18,7 @@ public class WondrousWildsEntities {
     public static final EntityType<FireflyEntity> FIREFLY = Registry.register(Registry.ENTITY_TYPE, new Identifier(WondrousWilds.MOD_ID, "firefly"), FabricEntityTypeBuilder.createMob()
             .entityFactory(FireflyEntity::new)
             .defaultAttributes(FireflyEntity::createFireflyAttributes)
-            .dimensions(EntityDimensions.fixed(0.3125F, 0.375F))
+            .dimensions(EntityDimensions.fixed(0.1875F, 0.25F))
             .spawnGroup(SpawnGroup.WATER_AMBIENT)
             .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, FireflyEntity::canFireflySpawn)
             .build()
