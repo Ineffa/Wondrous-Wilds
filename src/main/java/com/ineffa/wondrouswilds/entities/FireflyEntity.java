@@ -260,23 +260,24 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
 
     @Override
     public void registerControllers(AnimationData animationData) {
-        AnimationController<FireflyEntity> animationController = new AnimationController<>(this, "animationController", 2, this::animationPredicate);
-        AnimationController<FireflyEntity> antennaController = new AnimationController<>(this, "antennaController", 2, this::antennaPredicate);
+        AnimationController<FireflyEntity> molangAnimationController = new AnimationController<>(this, "molangAnimationController", 2, this::molangAnimationPredicate);
 
-        animationData.addAnimationController(animationController);
-        animationData.addAnimationController(antennaController);
+        AnimationController<FireflyEntity> antennaMolangController = new AnimationController<>(this, "antennaMolangController", 2, this::antennaMolangPredicate);
+
+        animationData.addAnimationController(molangAnimationController);
+        animationData.addAnimationController(antennaMolangController);
     }
 
-    private <ENTITY extends IAnimatable> PlayState animationPredicate(AnimationEvent<ENTITY> event) {
-        if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("fly"));
+    private <ENTITY extends IAnimatable> PlayState molangAnimationPredicate(AnimationEvent<ENTITY> event) {
+        if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingMolang"));
 
-        else event.getController().setAnimation(new AnimationBuilder().addAnimation("grounded"));
+        else event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedMolang"));
 
         return PlayState.CONTINUE;
     }
 
-    private <ENTITY extends IAnimatable> PlayState antennaPredicate(AnimationEvent<ENTITY> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("antennaeIdle"));
+    private <ENTITY extends IAnimatable> PlayState antennaMolangPredicate(AnimationEvent<ENTITY> event) {
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("antennaeMolang"));
 
         return PlayState.CONTINUE;
     }
