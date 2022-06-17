@@ -12,6 +12,8 @@ public class WondrousWildsTags {
 
     public static class BlockTags {
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = createBlockTag("fireflies_spawnable_on");
+        public static final TagKey<Block> FIREFLIES_HIDE_IN = createBlockTag("fireflies_hide_in");
+
         public static final TagKey<Block> VIOLETS = createBlockTag("violets");
     }
 

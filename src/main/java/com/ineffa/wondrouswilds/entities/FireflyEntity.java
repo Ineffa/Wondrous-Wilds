@@ -1,5 +1,6 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.entities.ai.FireflyHideGoal;
 import com.ineffa.wondrouswilds.entities.ai.FireflyWanderFlyingGoal;
 import com.ineffa.wondrouswilds.entities.ai.FireflyWanderLandGoal;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
@@ -151,8 +152,9 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0D));
-        this.goalSelector.add(2, new FireflyWanderLandGoal(this, 1.0D));
-        this.goalSelector.add(2, new FireflyWanderFlyingGoal(this));
+        this.goalSelector.add(2, new FireflyHideGoal(this, 1.0D, 16, 16));
+        this.goalSelector.add(3, new FireflyWanderLandGoal(this, 1.0D));
+        this.goalSelector.add(3, new FireflyWanderFlyingGoal(this));
     }
 
     @Override
