@@ -22,7 +22,7 @@ public class FireflyWanderFlyingGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        if (!this.firefly.isFlying()) return false;
+        if (!this.firefly.isFlying() || !this.firefly.canWander()) return false;
 
         return this.firefly.getNavigation().isIdle() && this.firefly.getRandom().nextInt(10) == 0;
     }

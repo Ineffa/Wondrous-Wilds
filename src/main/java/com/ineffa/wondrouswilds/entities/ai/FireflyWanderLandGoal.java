@@ -15,7 +15,7 @@ public class FireflyWanderLandGoal extends WanderAroundFarGoal {
 
     @Override
     public boolean canStart() {
-        if (this.firefly.isFlying()) return false;
+        if (this.firefly.isFlying() || !this.firefly.canWander()) return false;
 
         return super.canStart();
     }

@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.entities.ai.FireflyHideGoal;
+import com.ineffa.wondrouswilds.entities.ai.FireflyLandOnEntityGoal;
 import com.ineffa.wondrouswilds.entities.ai.FireflyWanderFlyingGoal;
 import com.ineffa.wondrouswilds.entities.ai.FireflyWanderLandGoal;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
@@ -20,9 +21,13 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.decoration.ArmorStandEntity;
+import net.minecraft.entity.mob.*;
+import net.minecraft.entity.passive.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -46,6 +51,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
 
     private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(FireflyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> WANTS_TO_LAND = DataTracker.registerData(FireflyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> LAND_ON_ENTITY_COOLDOWN = DataTracker.registerData(FireflyEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     private final FlightMoveControl airMoveControl;
     private final MoveControl landMoveControl;
@@ -114,6 +120,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
 
         this.dataTracker.startTracking(IS_FLYING, false);
         this.dataTracker.startTracking(WANTS_TO_LAND, false);
+        this.dataTracker.startTracking(LAND_ON_ENTITY_COOLDOWN, 0);
     }
 
     @Override
@@ -122,6 +129,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
 
         this.setIsFlying(nbt.getBoolean("IsFlying"));
         this.setWantsToLand(nbt.getBoolean("WantsToLand"));
+        this.setLandOnEntityCooldown(nbt.getInt("LandOnEntityCooldown"));
     }
 
     @Override
@@ -130,6 +138,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
 
         nbt.putBoolean("IsFlying", this.isFlying());
         nbt.putBoolean("WantsToLand", this.wantsToLand());
+        nbt.putInt("LandOnEntityCooldown", this.getLandOnEntityCooldown());
     }
 
     public boolean isFlying() {
@@ -148,13 +157,22 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         this.dataTracker.set(WANTS_TO_LAND, wantsToLand);
     }
 
+    public int getLandOnEntityCooldown() {
+        return this.dataTracker.get(LAND_ON_ENTITY_COOLDOWN);
+    }
+
+    public void setLandOnEntityCooldown(int ticks) {
+        this.dataTracker.set(LAND_ON_ENTITY_COOLDOWN, ticks);
+    }
+
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0D));
         this.goalSelector.add(2, new FireflyHideGoal(this, 1.0D, 16, 16));
-        this.goalSelector.add(3, new FireflyWanderLandGoal(this, 1.0D));
-        this.goalSelector.add(3, new FireflyWanderFlyingGoal(this));
+        this.goalSelector.add(3, new FireflyLandOnEntityGoal(this, LivingEntity.class));
+        this.goalSelector.add(4, new FireflyWanderLandGoal(this, 1.0D));
+        this.goalSelector.add(4, new FireflyWanderFlyingGoal(this));
     }
 
     @Override
@@ -186,12 +204,19 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     @Override
     public void tick() {
         super.tick();
+
+        if (this.hasVehicle()) {
+            if (!this.getWorld().isClient() && (this.getRandom().nextInt(600) == 0 || this.shouldHide())) this.stopRiding();
+        }
+        else if (this.getLandOnEntityCooldown() > 0) this.setLandOnEntityCooldown(this.getLandOnEntityCooldown() - 1);
     }
 
     @Override
     public boolean damage(DamageSource source, float amount) {
         if (super.damage(source, amount)) {
-            if (!this.isFlying()) this.setFlying(true);
+            if (this.hasVehicle()) this.stopRiding();
+
+            else if (!this.isFlying()) this.setFlying(true);
 
             return true;
         }
@@ -221,6 +246,69 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     @Override
     protected boolean hasWings() {
         return this.isFlying();
+    }
+
+    public boolean canWander() {
+        return !this.hasVehicle();
+    }
+
+    public boolean canSearchForEntityToLandOn() {
+        return this.getLandOnEntityCooldown() <= 0 && !this.hasVehicle() && !this.shouldHide();
+    }
+
+    public boolean shouldHide() {
+        return this.getWorld().isDay() && this.getWorld().getLightLevel(LightType.SKY, this.getBlockPos()) >= 6;
+    }
+
+    @Override
+    public void stopRiding() {
+        if (!this.isFlying()) this.setFlying(true);
+
+        Entity vehicle = this.getVehicle();
+
+        super.stopRiding();
+
+        if (!this.getWorld().isClient()) {
+            if (vehicle instanceof PlayerEntity) {
+                ServerWorld serverWorld = (ServerWorld) this.getWorld();
+                for (ServerPlayerEntity player : serverWorld.getPlayers()) player.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(vehicle));
+            }
+        }
+    }
+
+    @Override
+    public double getHeightOffset() {
+        double offset = 0.0D;
+
+        if (this.hasVehicle()) {
+            Entity vehicle = this.getVehicle();
+            if (vehicle == null) return offset;
+
+            else if (vehicle instanceof ZombieVillagerEntity || vehicle instanceof EndermanEntity) offset = 0.6D;
+            else if (vehicle instanceof PlayerEntity || vehicle instanceof ZombieEntity || vehicle instanceof SkeletonEntity || vehicle instanceof SpiderEntity || vehicle instanceof MerchantEntity || vehicle instanceof IllagerEntity) offset = 0.5D;
+
+            else if (vehicle instanceof CreeperEntity || vehicle instanceof CowEntity || vehicle instanceof ChickenEntity) offset = 0.3D;
+            else if (vehicle instanceof SheepEntity || vehicle instanceof PigEntity) offset = 0.2D;
+            else if (vehicle instanceof WitchEntity) offset = 1.0D;
+            else if (vehicle instanceof AllayEntity) offset = 0.1D;
+            else if (vehicle instanceof IronGolemEntity) offset = 0.65D;
+
+            else if (vehicle instanceof SnowGolemEntity) {
+                offset = 0.45D;
+
+                if (!((SnowGolemEntity) vehicle).hasPumpkin()) offset -= 0.175D;
+            }
+
+            else if (vehicle instanceof ArmorStandEntity) {
+                offset = 0.4D;
+
+                if (!((ArmorStandEntity) vehicle).getEquippedStack(EquipmentSlot.HEAD).isEmpty()) offset += 0.1D;
+            }
+
+            if (vehicle.isSneaking()) offset -= 0.15D;
+        }
+
+        return offset;
     }
 
     @Override

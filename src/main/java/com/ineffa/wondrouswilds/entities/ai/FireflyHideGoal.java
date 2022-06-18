@@ -5,8 +5,6 @@ import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
@@ -18,12 +16,7 @@ public class FireflyHideGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        World world = this.mob.getWorld();
-
-        if (!world.isDay()) return false;
-
-        int skyLightLevel = world.getLightLevel(LightType.SKY, this.mob.getBlockPos());
-        if (skyLightLevel <= 5) return false;
+        if (!((FireflyEntity) this.mob).shouldHide()) return false;
 
         return super.canStart();
     }
