@@ -285,9 +285,9 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
             if (vehicle == null) return offset;
 
             else if (vehicle instanceof ZombieVillagerEntity || vehicle instanceof EndermanEntity) offset = 0.6D;
-            else if (vehicle instanceof PlayerEntity || vehicle instanceof ZombieEntity || vehicle instanceof SkeletonEntity || vehicle instanceof SpiderEntity || vehicle instanceof MerchantEntity || vehicle instanceof IllagerEntity) offset = 0.5D;
+            else if (vehicle instanceof PlayerEntity || vehicle instanceof ZombieEntity || vehicle instanceof SkeletonEntity || vehicle instanceof MerchantEntity || vehicle instanceof IllagerEntity) offset = 0.5D;
 
-            else if (vehicle instanceof CreeperEntity || vehicle instanceof CowEntity || vehicle instanceof ChickenEntity) offset = 0.3D;
+            else if (vehicle instanceof CreeperEntity || vehicle instanceof SpiderEntity || vehicle instanceof CowEntity || vehicle instanceof ChickenEntity) offset = 0.3D;
             else if (vehicle instanceof SheepEntity || vehicle instanceof PigEntity) offset = 0.2D;
             else if (vehicle instanceof WitchEntity) offset = 1.0D;
             else if (vehicle instanceof AllayEntity) offset = 0.1D;
