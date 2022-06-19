@@ -4,7 +4,7 @@
 		"groundedMolang": {
 			"loop": true,
 			"bones": {
-				"body": {
+				"bodyMolang": {
 					"rotation": {
 						"vector": ["(math.sin(query.limb_swing * 200) * 1.2) * query.limb_swing_amount", "(math.cos(query.limb_swing * 100) * 2) * query.limb_swing_amount", 0]
 					},
@@ -12,7 +12,7 @@
 						"vector": ["(math.sin(query.limb_swing * 100) * -0.03) * query.limb_swing_amount", "(math.sin(query.limb_swing * 400) * 0.025) * query.limb_swing_amount", 0]
 					}
 				},
-				"legs": {
+				"legsMolang": {
 					"rotation": {
 						"vector": ["(math.sin(query.limb_swing * 200) * -1.2) * query.limb_swing_amount", "(math.cos(query.limb_swing * 100) * -2) * query.limb_swing_amount", 0]
 					},
@@ -20,7 +20,7 @@
 						"vector": ["(math.sin(query.limb_swing * 100) * 0.03) * query.limb_swing_amount", "(math.sin(query.limb_swing * 400) * -0.025) * query.limb_swing_amount", 0]
 					}
 				},
-				"rightFrontLeg": {
+				"rightFrontLegMolang": {
 					"rotation": {
 						"vector": ["(math.sin((query.limb_swing - 12) * 200) * 25) * query.limb_swing_amount", 0, 0]
 					},
@@ -28,7 +28,7 @@
 						"vector": [0, "math.clamp(math.cos((query.limb_swing - 12) * 200) * -0.25, 0.0, 1.0) * query.limb_swing_amount", "(math.sin((query.limb_swing - 12) * 200) * 0.1) * query.limb_swing_amount"]
 					}
 				},
-				"rightMiddleLeg": {
+				"rightMiddleLegMolang": {
 					"rotation": {
 						"vector": ["(math.sin((query.limb_swing - 6) * 200) * 25) * query.limb_swing_amount", 0, 0]
 					},
@@ -36,7 +36,7 @@
 						"vector": [0, "math.clamp(math.cos((query.limb_swing - 6) * 200) * -0.25, 0.0, 1.0) * query.limb_swing_amount", "(math.sin((query.limb_swing - 6) * 200) * 0.1) * query.limb_swing_amount"]
 					}
 				},
-				"rightBackLeg": {
+				"rightBackLegMolang": {
 					"rotation": {
 						"vector": ["(math.sin(query.limb_swing * 200) * 25) * query.limb_swing_amount", 0, 0]
 					},
@@ -44,7 +44,7 @@
 						"vector": [0, "math.clamp(math.cos(query.limb_swing * 200) * -0.25, 0.0, 1.0) * query.limb_swing_amount", "(math.sin(query.limb_swing * 200) * 0.1) * query.limb_swing_amount"]
 					}
 				},
-				"leftFrontLeg": {
+				"leftFrontLegMolang": {
 					"rotation": {
 						"vector": ["(math.sin((query.limb_swing - 12) * 200) * -25) * query.limb_swing_amount", 0, 0]
 					},
@@ -52,7 +52,7 @@
 						"vector": [0, "math.clamp(math.cos((query.limb_swing - 12) * 200) * 0.25, 0.0, 1.0) * query.limb_swing_amount", "(math.sin((query.limb_swing - 12) * 200) * -0.1) * query.limb_swing_amount"]
 					}
 				},
-				"leftMiddleLeg": {
+				"leftMiddleLegMolang": {
 					"rotation": {
 						"vector": ["(math.sin((query.limb_swing - 6) * 200) * -25) * query.limb_swing_amount", 0, 0]
 					},
@@ -60,7 +60,7 @@
 						"vector": [0, "math.clamp(math.cos((query.limb_swing - 6) * 200) * 0.25, 0.0, 1.0) * query.limb_swing_amount", "(math.sin((query.limb_swing - 6) * 200) * -0.1) * query.limb_swing_amount"]
 					}
 				},
-				"leftBackLeg": {
+				"leftBackLegMolang": {
 					"rotation": {
 						"vector": ["(math.sin(query.limb_swing * 200) * -25) * query.limb_swing_amount", 0, 0]
 					},
