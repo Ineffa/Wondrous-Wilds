@@ -40,7 +40,7 @@ public class FireflyModel extends AnimatedGeoModel<FireflyEntity> {
         float limbSwing = fireflyEntity.limbAngle - fireflyEntity.limbDistance * (1.0F - delta);
         float limbSwingAmount = MathHelper.lerp(delta, fireflyEntity.lastLimbDistance, fireflyEntity.limbDistance);
 
-        parser.setValue("query.limb_swing", limbSwing);
+        parser.setValue("query.limb_swing", limbSwing * 1.25D);
         parser.setValue("query.limb_swing_amount", limbSwingAmount + (0.9F * MathHelper.clamp(limbSwingAmount * 10.0F, 0.0F, 1.0F)));
     }
 }
