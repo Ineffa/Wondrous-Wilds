@@ -205,8 +205,10 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     public void tick() {
         super.tick();
 
-        if (this.hasVehicle()) {
+        if (this.getVehicle() != null) {
             if (!this.getWorld().isClient() && (this.getRandom().nextInt(600) == 0 || this.shouldHide())) this.stopRiding();
+
+            this.setHeadYaw(this.getVehicle().getHeadYaw());
         }
         else if (this.getLandOnEntityCooldown() > 0) this.setLandOnEntityCooldown(this.getLandOnEntityCooldown() - 1);
     }
