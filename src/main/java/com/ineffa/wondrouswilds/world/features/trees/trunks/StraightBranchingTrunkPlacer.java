@@ -90,11 +90,17 @@ public class StraightBranchingTrunkPlacer extends TrunkPlacer {
             Direction branchDirection = Direction.fromHorizontal(random.nextInt(4));
 
             int nextBranchLogDistance = 1;
-            while (nextBranchLogDistance <= this.maxBranchLength || nextBranchLogDistance <= this.minBranchLength) {
+            boolean isNotMinimumLength = nextBranchLogDistance <= this.minBranchLength;
+            boolean isNotMaximumLength = nextBranchLogDistance <= this.maxBranchLength;
+            while (isNotMaximumLength || isNotMinimumLength) {
+                if (!isNotMinimumLength && random.nextBoolean()) break;
+
                 BlockPos branchPos = trunkLogWithBranchPos.offset(branchDirection, nextBranchLogDistance);
                 if (!this.getAndSetState(world, replacer, random, branchPos, config, state -> state.with(PillarBlock.AXIS, branchDirection.getAxis()))) break;
 
                 ++nextBranchLogDistance;
+                isNotMinimumLength = nextBranchLogDistance <= this.minBranchLength;
+                isNotMaximumLength = nextBranchLogDistance <= this.maxBranchLength;
             }
 
             trunkLogsWithBranches.add(trunkLogWithBranchPos);
