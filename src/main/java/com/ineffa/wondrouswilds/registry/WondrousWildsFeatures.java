@@ -1,47 +1,128 @@
 package com.ineffa.wondrouswilds.registry;
 
+import com.google.common.collect.ImmutableList;
 import com.ineffa.wondrouswilds.WondrousWilds;
+import com.ineffa.wondrouswilds.mixin.FoliagePlacerTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TreeConfiguredFeaturesInvoker;
+import com.ineffa.wondrouswilds.mixin.TreeDecoratorTypeInvoker;
+import com.ineffa.wondrouswilds.mixin.TrunkPlacerTypeInvoker;
 import com.ineffa.wondrouswilds.world.features.FallenLogFeature;
-import com.ineffa.wondrouswilds.world.features.FancyBirchFeature;
 import com.ineffa.wondrouswilds.world.features.VioletPatchFeature;
 import com.ineffa.wondrouswilds.world.features.configs.FallenLogFeatureConfig;
-import com.ineffa.wondrouswilds.world.features.configs.FancyBirchFeatureConfig;
 import com.ineffa.wondrouswilds.world.features.configs.VioletPatchFeatureConfig;
+import com.ineffa.wondrouswilds.world.features.trees.decorators.CobwebTreeDecorator;
+import com.ineffa.wondrouswilds.world.features.trees.decorators.HangingBeeNestTreeDecorator;
+import com.ineffa.wondrouswilds.world.features.trees.decorators.PolyporeTreeDecorator;
+import com.ineffa.wondrouswilds.world.features.trees.foliage.FancyBirchFoliagePlacer;
+import com.ineffa.wondrouswilds.world.features.trees.trunks.StraightBranchingTrunkPlacer;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.ClampedIntProvider;
+import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
+import net.minecraft.world.gen.foliage.FoliagePlacerType;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+import net.minecraft.world.gen.treedecorator.TreeDecorator;
+import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import net.minecraft.world.gen.trunk.TrunkPlacerType;
 
 import java.util.List;
 
 public class WondrousWildsFeatures {
 
-    public static final Feature<FancyBirchFeatureConfig> FANCY_BIRCH = new FancyBirchFeature();
-    public static final RegistryEntry<ConfiguredFeature<FancyBirchFeatureConfig, ?>> FANCY_BIRCH_CONFIGURED = registerConfigured("fancy_birch", FANCY_BIRCH, fancyBirchConfig());
-    public static final RegistryEntry<PlacedFeature> FANCY_BIRCH_PLACED = registerPlaced("fancy_birch", FANCY_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
-    public static final RegistryEntry<ConfiguredFeature<FancyBirchFeatureConfig, ?>> FANCY_BIRCH_WITH_BEES_CONFIGURED = registerConfigured("fancy_birch_with_bees", FANCY_BIRCH, fancyBirchWithBeesConfig());
-    public static final RegistryEntry<PlacedFeature> FANCY_BIRCH_WITH_BEES_PLACED = registerPlaced("fancy_birch_with_bees", FANCY_BIRCH_WITH_BEES_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+    public static final class Trees {
 
-    public static final RegistryEntry<ConfiguredFeature<FancyBirchFeatureConfig, ?>> TALL_FANCY_BIRCH_CONFIGURED = registerConfigured("tall_fancy_birch", FANCY_BIRCH, tallFancyBirchConfig());
-    public static final RegistryEntry<PlacedFeature> TALL_FANCY_BIRCH_PLACED = registerPlaced("tall_fancy_birch", TALL_FANCY_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
-    public static final RegistryEntry<ConfiguredFeature<FancyBirchFeatureConfig, ?>> TALL_FANCY_BIRCH_WITH_BEES_CONFIGURED = registerConfigured("tall_fancy_birch_with_bees", FANCY_BIRCH, tallFancyBirchWithBeesConfig());
-    public static final RegistryEntry<PlacedFeature> TALL_FANCY_BIRCH_WITH_BEES_PLACED = registerPlaced("tall_fancy_birch_with_bees", TALL_FANCY_BIRCH_WITH_BEES_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+        public static final class TrunkPlacers {
+            public static final TrunkPlacerType<StraightBranchingTrunkPlacer> STRAIGHT_BRANCHING_TRUNK = TrunkPlacerTypeInvoker.registerTrunkPlacer("straight_branching_trunk_placer", StraightBranchingTrunkPlacer.CODEC);
 
-    public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> TALL_BIRCH_CONFIGURED = registerConfigured("tall_birch", Feature.TREE, TreeConfiguredFeaturesInvoker.tallBirchConfig().build());
-    public static final RegistryEntry<PlacedFeature> TALL_BIRCH_PLACED = registerPlaced("tall_birch", TALL_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+            public static void init() {}
+        }
 
-    public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(new RandomFeatureEntry(TreePlacedFeatures.BIRCH_CHECKED, 0.15F), new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.015F)), FANCY_BIRCH_PLACED));
-    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING));
+        public static final class FoliagePlacers {
+            public static final FoliagePlacerType<FancyBirchFoliagePlacer> FANCY_BIRCH = FoliagePlacerTypeInvoker.registerFoliagePlacer("fancy_birch_foliage_placer", FancyBirchFoliagePlacer.CODEC);
 
-    public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(new RandomFeatureEntry(TALL_BIRCH_PLACED, 0.15F), new RandomFeatureEntry(TALL_FANCY_BIRCH_WITH_BEES_PLACED, 0.015F)), TALL_FANCY_BIRCH_PLACED));
-    public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING));
+            public static void init() {}
+        }
+
+        public static final class Decorators {
+            public static final TreeDecoratorType<HangingBeeNestTreeDecorator> HANGING_BEE_NEST_TYPE = TreeDecoratorTypeInvoker.registerTreeDecorator("hanging_bee_nest", HangingBeeNestTreeDecorator.CODEC);
+            public static final TreeDecoratorType<PolyporeTreeDecorator> POLYPORE_TYPE = TreeDecoratorTypeInvoker.registerTreeDecorator("polypores", PolyporeTreeDecorator.CODEC);
+            public static final TreeDecoratorType<CobwebTreeDecorator> COBWEB_TYPE = TreeDecoratorTypeInvoker.registerTreeDecorator("cobwebs", CobwebTreeDecorator.CODEC);
+
+            public static final TreeDecorator HANGING_BEE_NEST = HangingBeeNestTreeDecorator.INSTANCE;
+            public static final TreeDecorator POLYPORES = PolyporeTreeDecorator.INSTANCE;
+            public static final TreeDecorator COBWEBS = CobwebTreeDecorator.INSTANCE;
+
+            public static void init() {}
+        }
+
+        public static final class Configs {
+            private static TreeFeatureConfig.Builder fancyBirchConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG),
+                        new StraightBranchingTrunkPlacer(10, 10, 0, 0, 3, 1, 1),
+                        BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 2)
+                ).decorators(ImmutableList.of(Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
+            }
+
+            private static TreeFeatureConfig.Builder fancyBirchWithBeesConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG),
+                        new StraightBranchingTrunkPlacer(10, 10, 0, 1, 3, 1, 1),
+                        BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 2)
+                ).decorators(ImmutableList.of(Decorators.HANGING_BEE_NEST, Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
+            }
+
+            private static TreeFeatureConfig.Builder tallFancyBirchConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG),
+                        new StraightBranchingTrunkPlacer(10, 16, 0, 0, 3, 1, 1),
+                        BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 2)
+                ).decorators(ImmutableList.of(Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
+            }
+
+            private static TreeFeatureConfig.Builder tallFancyBirchWithBeesConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG),
+                        new StraightBranchingTrunkPlacer(10, 16, 0, 1, 3, 1, 1),
+                        BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 2)
+                ).decorators(ImmutableList.of(Decorators.HANGING_BEE_NEST, Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
+            }
+
+            public static void init() {}
+        }
+
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> FANCY_BIRCH_CONFIGURED = registerConfigured("fancy_birch", Feature.TREE, Configs.fancyBirchConfig().build());
+        public static final RegistryEntry<PlacedFeature> FANCY_BIRCH_PLACED = registerPlaced("fancy_birch", FANCY_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> FANCY_BIRCH_WITH_BEES_CONFIGURED = registerConfigured("fancy_birch_with_bees", Feature.TREE, Configs.fancyBirchWithBeesConfig().build());
+        public static final RegistryEntry<PlacedFeature> FANCY_BIRCH_WITH_BEES_PLACED = registerPlaced("fancy_birch_with_bees", FANCY_BIRCH_WITH_BEES_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> TALL_FANCY_BIRCH_CONFIGURED = registerConfigured("tall_fancy_birch", Feature.TREE, Configs.tallFancyBirchConfig().build());
+        public static final RegistryEntry<PlacedFeature> TALL_FANCY_BIRCH_PLACED = registerPlaced("tall_fancy_birch", TALL_FANCY_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> TALL_FANCY_BIRCH_WITH_BEES_CONFIGURED = registerConfigured("tall_fancy_birch_with_bees", Feature.TREE, Configs.tallFancyBirchWithBeesConfig().build());
+        public static final RegistryEntry<PlacedFeature> TALL_FANCY_BIRCH_WITH_BEES_PLACED = registerPlaced("tall_fancy_birch_with_bees", TALL_FANCY_BIRCH_WITH_BEES_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> TALL_BIRCH_CONFIGURED = registerConfigured("tall_birch", Feature.TREE, TreeConfiguredFeaturesInvoker.tallBirchConfig().build());
+        public static final RegistryEntry<PlacedFeature> TALL_BIRCH_PLACED = registerPlaced("tall_birch", TALL_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+
+        public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(new RandomFeatureEntry(TreePlacedFeatures.BIRCH_CHECKED, 0.15F), new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.015F)), FANCY_BIRCH_PLACED));
+        public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING));
+
+        public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(new RandomFeatureEntry(TALL_BIRCH_PLACED, 0.15F), new RandomFeatureEntry(TALL_FANCY_BIRCH_WITH_BEES_PLACED, 0.015F)), TALL_FANCY_BIRCH_PLACED));
+        public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING));
+
+        public static void init() {}
+    }
 
     public static final Feature<FallenLogFeatureConfig> FALLEN_LOG = new FallenLogFeature();
     public static final RegistryEntry<ConfiguredFeature<FallenLogFeatureConfig, ?>> FALLEN_BIRCH_LOG_CONFIGURED = registerConfigured("fallen_birch_log", FALLEN_LOG, fallenBirchLogConfig());
@@ -59,22 +140,6 @@ public class WondrousWildsFeatures {
     public static final RegistryEntry<PlacedFeature> WHITE_VIOLETS_PLACED = registerPlaced("white_violets", WHITE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
     public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_ROCK = registerPlaced("birch_forest_rock", MiscConfiguredFeatures.FOREST_ROCK, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
-
-    private static FancyBirchFeatureConfig fancyBirchConfig() {
-        return new FancyBirchFeatureConfig(false, 10, 20);
-    }
-
-    private static FancyBirchFeatureConfig fancyBirchWithBeesConfig() {
-        return new FancyBirchFeatureConfig(true, 10, 20);
-    }
-
-    private static FancyBirchFeatureConfig tallFancyBirchConfig() {
-        return new FancyBirchFeatureConfig(false, 10, 26);
-    }
-
-    private static FancyBirchFeatureConfig tallFancyBirchWithBeesConfig() {
-        return new FancyBirchFeatureConfig(true, 10, 26);
-    }
 
     private static FallenLogFeatureConfig fallenBirchLogConfig() {
         return new FallenLogFeatureConfig(BlockStateProvider.of(WondrousWildsBlocks.HOLLOW_BIRCH_LOG), 3, 8);
@@ -110,7 +175,11 @@ public class WondrousWildsFeatures {
     }
 
     public static void initialize() {
-        Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "fancy_birch"), FANCY_BIRCH);
+        Trees.TrunkPlacers.init();
+        Trees.FoliagePlacers.init();
+        Trees.Decorators.init();
+        Trees.Configs.init();
+        Trees.init();
 
         Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "fallen_log"), FALLEN_LOG);
 

@@ -6,8 +6,11 @@
   "mixins": [
     "BlocksMixin",
     "BodyControlMixin",
+    "FoliagePlacerTypeInvoker",
     "MobEntityMixin",
-    "TreeConfiguredFeaturesInvoker"
+    "TreeConfiguredFeaturesInvoker",
+    "TreeDecoratorTypeInvoker",
+    "TrunkPlacerTypeInvoker"
   ],
   "client": [
   ],
