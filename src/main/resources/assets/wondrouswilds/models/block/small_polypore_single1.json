@@ -1,0 +1,19 @@
+{
+  "texture_size": [10, 16],
+  "textures": {
+    "medium_texture": "wondrouswilds:block/medium_polypore",
+    "particle": "#medium_texture"
+  },
+  "elements": [
+    {
+      "name": "polypore",
+      "from": [3, 8, 8],
+      "to": [13, 8, 16],
+      "shade": false,
+      "faces": {
+        "up": {"uv": [16, 8, 0, 0], "texture": "#medium_texture"},
+        "down": {"uv": [16, 8, 0, 16], "texture": "#medium_texture"}
+      }
+    }
+  ]
+}

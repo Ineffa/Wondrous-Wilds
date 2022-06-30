@@ -1,18 +1,19 @@
 {
   "variants": {
-    "facing=north,polypores=1": {
-      "model": "wondrouswilds:block/small_polypore_single"
-    },
+    "facing=north,polypores=1": [
+      {"model": "wondrouswilds:block/small_polypore_single0"},
+      {"model": "wondrouswilds:block/small_polypore_single1"}
+    ],
     "facing=north,polypores=2": {
       "model": "wondrouswilds:block/small_polypore_dual"
     },
     "facing=north,polypores=3": {
       "model": "wondrouswilds:block/small_polypore_triple"
     },
-    "facing=east,polypores=1": {
-      "model": "wondrouswilds:block/small_polypore_single",
-      "y": 90
-    },
+    "facing=east,polypores=1": [
+      {"model": "wondrouswilds:block/small_polypore_single0", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_single1", "y": 90}
+    ],
     "facing=east,polypores=2": {
       "model": "wondrouswilds:block/small_polypore_dual",
       "y": 90
@@ -21,10 +22,10 @@
       "model": "wondrouswilds:block/small_polypore_triple",
       "y": 90
     },
-    "facing=south,polypores=1": {
-      "model": "wondrouswilds:block/small_polypore_single",
-      "y": 180
-    },
+    "facing=south,polypores=1": [
+      {"model": "wondrouswilds:block/small_polypore_single0", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_single1", "y": 180}
+    ],
     "facing=south,polypores=2": {
       "model": "wondrouswilds:block/small_polypore_dual",
       "y": 180
@@ -33,10 +34,10 @@
       "model": "wondrouswilds:block/small_polypore_triple",
       "y": 180
     },
-    "facing=west,polypores=1": {
-      "model": "wondrouswilds:block/small_polypore_single",
-      "y": 270
-    },
+    "facing=west,polypores=1": [
+      {"model": "wondrouswilds:block/small_polypore_single0", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_single1", "y": 270}
+    ],
     "facing=west,polypores=2": {
       "model": "wondrouswilds:block/small_polypore_dual",
       "y": 270
