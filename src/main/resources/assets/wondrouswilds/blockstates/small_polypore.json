@@ -4,9 +4,16 @@
       {"model": "wondrouswilds:block/small_polypore_single0"},
       {"model": "wondrouswilds:block/small_polypore_single1"}
     ],
-    "facing=north,polypores=2": {
-      "model": "wondrouswilds:block/small_polypore_dual"
-    },
+    "facing=north,polypores=2": [
+      {"model": "wondrouswilds:block/small_polypore_dual0"},
+      {"model": "wondrouswilds:block/small_polypore_dual1"},
+      {"model": "wondrouswilds:block/small_polypore_dual2"},
+      {"model": "wondrouswilds:block/small_polypore_dual3"},
+      {"model": "wondrouswilds:block/small_polypore_dual4"},
+      {"model": "wondrouswilds:block/small_polypore_dual5"},
+      {"model": "wondrouswilds:block/small_polypore_dual6"},
+      {"model": "wondrouswilds:block/small_polypore_dual7"}
+    ],
     "facing=north,polypores=3": {
       "model": "wondrouswilds:block/small_polypore_triple"
     },
@@ -14,10 +21,16 @@
       {"model": "wondrouswilds:block/small_polypore_single0", "y": 90},
       {"model": "wondrouswilds:block/small_polypore_single1", "y": 90}
     ],
-    "facing=east,polypores=2": {
-      "model": "wondrouswilds:block/small_polypore_dual",
-      "y": 90
-    },
+    "facing=east,polypores=2": [
+      {"model": "wondrouswilds:block/small_polypore_dual0", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual1", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual2", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual3", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual4", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual5", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual6", "y": 90},
+      {"model": "wondrouswilds:block/small_polypore_dual7", "y": 90}
+    ],
     "facing=east,polypores=3": {
       "model": "wondrouswilds:block/small_polypore_triple",
       "y": 90
@@ -26,10 +39,16 @@
       {"model": "wondrouswilds:block/small_polypore_single0", "y": 180},
       {"model": "wondrouswilds:block/small_polypore_single1", "y": 180}
     ],
-    "facing=south,polypores=2": {
-      "model": "wondrouswilds:block/small_polypore_dual",
-      "y": 180
-    },
+    "facing=south,polypores=2": [
+      {"model": "wondrouswilds:block/small_polypore_dual0", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual1", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual2", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual3", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual4", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual5", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual6", "y": 180},
+      {"model": "wondrouswilds:block/small_polypore_dual7", "y": 180}
+    ],
     "facing=south,polypores=3": {
       "model": "wondrouswilds:block/small_polypore_triple",
       "y": 180
@@ -38,10 +57,16 @@
       {"model": "wondrouswilds:block/small_polypore_single0", "y": 270},
       {"model": "wondrouswilds:block/small_polypore_single1", "y": 270}
     ],
-    "facing=west,polypores=2": {
-      "model": "wondrouswilds:block/small_polypore_dual",
-      "y": 270
-    },
+    "facing=west,polypores=2": [
+      {"model": "wondrouswilds:block/small_polypore_dual0", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual1", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual2", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual3", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual4", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual5", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual6", "y": 270},
+      {"model": "wondrouswilds:block/small_polypore_dual7", "y": 270}
+    ],
     "facing=west,polypores=3": {
       "model": "wondrouswilds:block/small_polypore_triple",
       "y": 270
