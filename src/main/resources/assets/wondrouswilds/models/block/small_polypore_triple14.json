@@ -1,0 +1,36 @@
+{
+	"texture_size": [10, 16],
+	"textures": {
+		"medium_texture": "wondrouswilds:block/medium_polypore",
+		"particle": "#medium_texture"
+	},
+	"elements": [
+		{
+			"from": [5, 12, 8],
+			"to": [15, 12, 16],
+			"shade": false,
+			"faces": {
+				"up": {"uv": [16, 8, 0, 0], "texture": "#medium_texture"},
+				"down": {"uv": [16, 8, 0, 16], "texture": "#medium_texture"}
+			}
+		},
+		{
+			"from": [1, 8, 8],
+			"to": [11, 8, 16],
+			"shade": false,
+			"faces": {
+				"up": {"uv": [16, 8, 0, 0], "texture": "#medium_texture"},
+				"down": {"uv": [16, 8, 0, 16], "texture": "#medium_texture"}
+			}
+		},
+		{
+			"from": [5, 4, 8],
+			"to": [15, 4, 16],
+			"shade": false,
+			"faces": {
+				"up": {"uv": [16, 8, 0, 0], "texture": "#medium_texture"},
+				"down": {"uv": [16, 8, 0, 16], "texture": "#medium_texture"}
+			}
+		}
+	]
+}
