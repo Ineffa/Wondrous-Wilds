@@ -45,7 +45,7 @@ public class FallenLogFeature extends Feature<FallenLogFeatureConfig> {
 
             if (!oneDirectional) nextOffsetDirection = nextOffsetDirection.getOpposite();
 
-            if (!TreeFeature.canReplace(world, tryLogPos) || TreeFeature.canReplace(world, tryLogPos.down())) {
+            if (!TreeFeature.canReplace(world, tryLogPos) || !(world.testBlockState(tryLogPos.down(), state -> state.isOpaqueFullCube(world, tryLogPos.down())))) {
                 if (oneDirectional) break;
 
                 oneDirectional = true;
