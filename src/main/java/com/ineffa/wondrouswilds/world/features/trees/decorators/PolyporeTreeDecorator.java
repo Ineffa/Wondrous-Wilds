@@ -40,15 +40,13 @@ public class PolyporeTreeDecorator extends TreeDecorator {
         Random random = generator.getRandom();
         TestableWorld world = generator.getWorld();
 
-        List<BlockPos> verticalLogs = generator.getLogPositions().stream().filter(pos -> world.testBlockState(pos, state -> state.contains(PillarBlock.AXIS) && state.get(PillarBlock.AXIS).isVertical())).collect(Collectors.toList());
+        List<BlockPos> verticalLogs = generator.getLogPositions().stream().filter(pos -> world.testBlockState(pos, state -> state.contains(PillarBlock.AXIS) && state.get(PillarBlock.AXIS).isVertical()) && canPlacePolyporesAround(generator, world, pos)).collect(Collectors.toList());
         Collections.shuffle(verticalLogs);
 
-        int clustersToPlace = 0; while (clustersToPlace < 3) if (random.nextBoolean()) ++clustersToPlace; else break;
+        int clusterLimit = 0; while (clusterLimit < 3) if (random.nextBoolean()) ++clusterLimit; else break;
         int clustersPlaced = 0;
-        clusterStarter: for (BlockPos logPos : verticalLogs) {
-            if (clustersPlaced >= clustersToPlace) break;
-
-            boolean clusterSuccessful = false;
+        for (BlockPos logPos : verticalLogs) {
+            if (clustersPlaced >= clusterLimit) break;
 
             int steps = 1 + random.nextInt(3);
             Direction nextOffsetDirection = random.nextBoolean() ? Direction.UP : Direction.DOWN;
@@ -57,11 +55,11 @@ public class PolyporeTreeDecorator extends TreeDecorator {
             for (int step = 0; step <= steps; ++step) {
                 BlockPos polyporesCenter = logPos.offset(nextOffsetDirection, nextOffsetDirection == Direction.UP ? nextUpOffset : nextDownOffset);
 
-                if (!canPlacePolyporesAround(generator, world, polyporesCenter)) continue;
-
                 if (nextOffsetDirection == Direction.UP) ++nextUpOffset;
                 else if (nextOffsetDirection == Direction.DOWN) ++nextDownOffset;
                 nextOffsetDirection = nextOffsetDirection.getOpposite();
+
+                if (!canPlacePolyporesAround(generator, world, polyporesCenter)) continue;
 
                 for (Direction polyporeDirection : HORIZONTAL_DIRECTIONS) {
                     int polyporeScale = random.nextInt(5);
@@ -72,11 +70,9 @@ public class PolyporeTreeDecorator extends TreeDecorator {
 
                     generator.replace(polyporePos, polyporeScale > 3 ? BIG_POLYPORE_STATE.with(BigPolyporeBlock.FACING, polyporeDirection) : SMALL_POLYPORE_STATE.with(SmallPolyporeBlock.POLYPORES, polyporeScale).with(SmallPolyporeBlock.FACING, polyporeDirection));
                 }
-
-                clusterSuccessful = true;
             }
 
-            if (clusterSuccessful) ++clustersPlaced;
+            ++clustersPlaced;
         }
     }
 
