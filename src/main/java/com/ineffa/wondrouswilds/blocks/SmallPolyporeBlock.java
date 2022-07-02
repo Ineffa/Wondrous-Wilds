@@ -11,8 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class SmallPolyporeBlock extends LadderBlock {
 
-    private static final int MIN_POLYPORES = 1;
-    private static final int MAX_POLYPORES = 3;
+    public static final int MIN_POLYPORES = 1;
+    public static final int MAX_POLYPORES = 3;
 
     public static final IntProperty POLYPORES = IntProperty.of("polypores", MIN_POLYPORES, MAX_POLYPORES);
 
