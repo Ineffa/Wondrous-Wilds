@@ -70,22 +70,23 @@ public class StraightBranchingTrunkPlacer extends TrunkPlacer {
     public List<FoliagePlacer.TreeNode> generate(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, int height, BlockPos startPos, TreeFeatureConfig config) {
         StraightTrunkPlacer.setToDirt(world, replacer, random, startPos.down(), config);
 
-        List<BlockPos> trunkLogs = new ArrayList<>();
+        BlockPos topTrunkLog = startPos.up(height);
+
+        List<BlockPos> trunkLogsSuitableForBranch = new ArrayList<>();
 
         for (int currentHeight = 0; currentHeight < height; ++currentHeight) {
             BlockPos logPos = startPos.up(currentHeight);
-            if (this.getAndSetState(world, replacer, random, logPos, config)) trunkLogs.add(logPos);
+            if (this.getAndSetState(world, replacer, random, logPos, config) && logPos.getY() < topTrunkLog.up().getY() - 7) trunkLogsSuitableForBranch.add(logPos);
         }
 
         int branches = this.minBranches; while (branches < this.maxBranches) if (random.nextBoolean()) ++branches; else break;
 
-        int branchCount = 0;
-        List<BlockPos> trunkLogsWithBranches = new ArrayList<>();
-        while (branchCount < branches) {
-            if (trunkLogsWithBranches.size() >= trunkLogs.size()) break;
+        List<BlockPos> trunkLogsWithBranchAttempts = new ArrayList<>();
+        while (trunkLogsWithBranchAttempts.size() < branches) {
+            if (trunkLogsWithBranchAttempts.size() >= trunkLogsSuitableForBranch.size()) break;
 
-            BlockPos trunkLogWithBranchPos = trunkLogs.get(random.nextInt(trunkLogs.size()));
-            if (trunkLogsWithBranches.contains(trunkLogWithBranchPos)) continue;
+            BlockPos trunkLogWithBranchPos = trunkLogsSuitableForBranch.get(random.nextInt(trunkLogsSuitableForBranch.size()));
+            if (trunkLogsWithBranchAttempts.contains(trunkLogWithBranchPos)) continue;
 
             Direction branchDirection = Direction.fromHorizontal(random.nextInt(4));
 
@@ -103,10 +104,9 @@ public class StraightBranchingTrunkPlacer extends TrunkPlacer {
                 isNotMaximumLength = nextBranchLogDistance <= this.maxBranchLength;
             }
 
-            trunkLogsWithBranches.add(trunkLogWithBranchPos);
-            ++branchCount;
+            trunkLogsWithBranchAttempts.add(trunkLogWithBranchPos);
         }
 
-        return ImmutableList.of(new FoliagePlacer.TreeNode(startPos.up(height), 0, false));
+        return ImmutableList.of(new FoliagePlacer.TreeNode(topTrunkLog, 0, false));
     }
 }
