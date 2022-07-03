@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
+
 public class StraightBranchingTrunkPlacer extends TrunkPlacer {
 
     public static final Codec<StraightBranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance -> StraightBranchingTrunkPlacer.fillTrunkPlacerFields(instance).and(instance.group(
@@ -81,6 +83,7 @@ public class StraightBranchingTrunkPlacer extends TrunkPlacer {
 
         int branches = this.minBranches; while (branches < this.maxBranches) if (random.nextBoolean()) ++branches; else break;
 
+        List<BlockPos> successfulBranchPositions = new ArrayList<>();
         List<BlockPos> trunkLogsWithBranchAttempts = new ArrayList<>();
         while (trunkLogsWithBranchAttempts.size() < branches) {
             if (trunkLogsWithBranchAttempts.size() >= trunkLogsSuitableForBranch.size()) break;
@@ -88,7 +91,20 @@ public class StraightBranchingTrunkPlacer extends TrunkPlacer {
             BlockPos trunkLogWithBranchPos = trunkLogsSuitableForBranch.get(random.nextInt(trunkLogsSuitableForBranch.size()));
             if (trunkLogsWithBranchAttempts.contains(trunkLogWithBranchPos)) continue;
 
-            Direction branchDirection = Direction.fromHorizontal(random.nextInt(4));
+            trunkLogsWithBranchAttempts.add(trunkLogWithBranchPos);
+
+            Direction branchDirection;
+
+            List<Direction> suitableBranchDirections = new ArrayList<>();
+            for (Direction checkDirection : HORIZONTAL_DIRECTIONS) {
+                BlockPos checkPos = trunkLogWithBranchPos.offset(checkDirection);
+
+                if (successfulBranchPositions.contains(checkPos.down()) || successfulBranchPositions.contains(checkPos.up())) continue;
+
+                suitableBranchDirections.add(checkDirection);
+            }
+            if (suitableBranchDirections.isEmpty()) continue;
+            else branchDirection = suitableBranchDirections.get(random.nextInt(suitableBranchDirections.size()));
 
             int nextBranchLogDistance = 1;
             boolean isNotMinimumLength = nextBranchLogDistance <= this.minBranchLength;
@@ -98,13 +114,12 @@ public class StraightBranchingTrunkPlacer extends TrunkPlacer {
 
                 BlockPos branchPos = trunkLogWithBranchPos.offset(branchDirection, nextBranchLogDistance);
                 if (!this.getAndSetState(world, replacer, random, branchPos, config, state -> state.with(PillarBlock.AXIS, branchDirection.getAxis()))) break;
+                else successfulBranchPositions.add(branchPos);
 
                 ++nextBranchLogDistance;
                 isNotMinimumLength = nextBranchLogDistance <= this.minBranchLength;
                 isNotMaximumLength = nextBranchLogDistance <= this.maxBranchLength;
             }
-
-            trunkLogsWithBranchAttempts.add(trunkLogWithBranchPos);
         }
 
         return ImmutableList.of(new FoliagePlacer.TreeNode(topTrunkLog, 0, false));
