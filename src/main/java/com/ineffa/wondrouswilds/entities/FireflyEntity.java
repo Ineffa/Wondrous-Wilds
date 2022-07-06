@@ -22,8 +22,9 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.SnowGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
@@ -46,6 +47,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.Objects;
 
 public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatable {
 
@@ -283,31 +286,30 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         double offset = 0.0D;
 
         if (this.hasVehicle()) {
-            Entity vehicle = this.getVehicle();
-            if (vehicle == null) return offset;
+            EntityType<?> vehicleType = Objects.requireNonNull(this.getVehicle()).getType();
 
-            else if (vehicle instanceof ZombieVillagerEntity || vehicle instanceof EndermanEntity) offset = 0.6D;
-            else if (vehicle instanceof PlayerEntity || vehicle instanceof ZombieEntity || vehicle instanceof SkeletonEntity || vehicle instanceof MerchantEntity || vehicle instanceof IllagerEntity) offset = 0.5D;
+            if (vehicleType == EntityType.ZOMBIE_VILLAGER || vehicleType == EntityType.ENDERMAN) offset = 0.6D;
+            else if (vehicleType == EntityType.PLAYER || vehicleType == EntityType.ZOMBIE || vehicleType == EntityType.SKELETON || vehicleType == EntityType.VILLAGER || vehicleType == EntityType.WANDERING_TRADER || vehicleType == EntityType.PILLAGER || vehicleType == EntityType.VINDICATOR || vehicleType == EntityType.EVOKER || vehicleType == EntityType.ILLUSIONER) offset = 0.5D;
 
-            else if (vehicle instanceof CreeperEntity || vehicle instanceof SpiderEntity || vehicle instanceof CowEntity || vehicle instanceof ChickenEntity) offset = 0.3D;
-            else if (vehicle instanceof SheepEntity || vehicle instanceof PigEntity) offset = 0.2D;
-            else if (vehicle instanceof WitchEntity) offset = 1.0D;
-            else if (vehicle instanceof AllayEntity) offset = 0.1D;
-            else if (vehicle instanceof IronGolemEntity) offset = 0.65D;
+            else if (vehicleType == EntityType.CREEPER || vehicleType == EntityType.SPIDER || vehicleType == EntityType.COW || vehicleType == EntityType.CHICKEN) offset = 0.3D;
+            else if (vehicleType == EntityType.SHEEP || vehicleType == EntityType.PIG) offset = 0.2D;
+            else if (vehicleType == EntityType.WITCH) offset = 1.0D;
+            else if (vehicleType == EntityType.ALLAY) offset = 0.1D;
+            else if (vehicleType == EntityType.IRON_GOLEM) offset = 0.65D;
 
-            else if (vehicle instanceof SnowGolemEntity) {
+            else if (vehicleType == EntityType.SNOW_GOLEM) {
                 offset = 0.45D;
 
-                if (!((SnowGolemEntity) vehicle).hasPumpkin()) offset -= 0.175D;
+                if (!((SnowGolemEntity) this.getVehicle()).hasPumpkin()) offset -= 0.175D;
             }
 
-            else if (vehicle instanceof ArmorStandEntity) {
+            else if (vehicleType == EntityType.ARMOR_STAND) {
                 offset = 0.4D;
 
-                if (!((ArmorStandEntity) vehicle).getEquippedStack(EquipmentSlot.HEAD).isEmpty()) offset += 0.1D;
+                if (!((ArmorStandEntity) this.getVehicle()).getEquippedStack(EquipmentSlot.HEAD).isEmpty()) offset += 0.1D;
             }
 
-            if (vehicle.isSneaking()) offset -= 0.15D;
+            if (this.getVehicle().isSneaking()) offset -= 0.15D;
         }
 
         return offset;
