@@ -127,7 +127,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
 
-        this.setIsFlying(nbt.getBoolean("IsFlying"));
+        this.setFlying(nbt.getBoolean("IsFlying"));
         this.setWantsToLand(nbt.getBoolean("WantsToLand"));
         this.setLandOnEntityCooldown(nbt.getInt("LandOnEntityCooldown"));
     }
