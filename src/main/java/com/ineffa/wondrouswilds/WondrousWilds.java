@@ -33,8 +33,8 @@ public class WondrousWilds implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Wondrous Wilds initializing!");
 
-		GeckoLib.initialize();
 		GeckoLibMod.DISABLE_IN_DEV = true;
+		GeckoLib.initialize();
 
 		WondrousWildsEntities.initialize();
 		WondrousWildsBlocks.initialize();
