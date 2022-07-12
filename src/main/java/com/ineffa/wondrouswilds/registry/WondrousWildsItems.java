@@ -11,6 +11,7 @@ import net.minecraft.util.registry.Registry;
 public class WondrousWildsItems {
 
     public static final Item FIREFLY_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final Item WOODPECKER_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
     public static final BlockItem PURPLE_VIOLET = new BlockItem(WondrousWildsBlocks.PURPLE_VIOLET, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem PINK_VIOLET = new BlockItem(WondrousWildsBlocks.PINK_VIOLET, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
@@ -41,6 +42,7 @@ public class WondrousWildsItems {
 
     public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "purple_violet"), PURPLE_VIOLET);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "pink_violet"), PINK_VIOLET);

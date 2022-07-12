@@ -1,5 +1,6 @@
 {
   "entity.wondrouswilds.firefly": "Firefly",
+  "entity.wondrouswilds.woodpecker": "Woodpecker",
   "block.wondrouswilds.small_polypore": "Small Polypore",
   "block.wondrouswilds.big_polypore": "Big Polypore",
   "block.wondrouswilds.purple_violet": "Violet",
@@ -29,5 +30,6 @@
   "block.wondrouswilds.hollow_stripped_crimson_stem": "Hollow Stripped Crimson Stem",
   "block.wondrouswilds.hollow_stripped_warped_stem": "Hollow Stripped Warped Stem",
   "itemGroup.wondrouswilds.wondrous_wilds": "Wondrous Wilds",
-  "item.wondrouswilds.firefly_spawn_egg": "Firefly Spawn Egg"
+  "item.wondrouswilds.firefly_spawn_egg": "Firefly Spawn Egg",
+  "item.wondrouswilds.woodpecker_spawn_egg": "Woodpecker Spawn Egg"
 }

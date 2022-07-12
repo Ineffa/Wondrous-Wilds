@@ -1,0 +1,285 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 34,
+				"texture_height": 26,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "core",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "bodyConstant",
+					"parent": "core",
+					"pivot": [0, 2, 0]
+				},
+				{
+					"name": "bodyOverlap",
+					"parent": "bodyConstant",
+					"pivot": [0, 2, 0]
+				},
+				{
+					"name": "body",
+					"parent": "bodyOverlap",
+					"pivot": [0, 2, 0],
+					"cubes": [
+						{"origin": [-2.5, 2, -4], "size": [5, 4, 8], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "headConstant",
+					"parent": "body",
+					"pivot": [0, 5.5, -4]
+				},
+				{
+					"name": "headOverlap",
+					"parent": "headConstant",
+					"pivot": [0, 5.5, -4]
+				},
+				{
+					"name": "head",
+					"parent": "headOverlap",
+					"pivot": [0, 5.5, -4],
+					"cubes": [
+						{"origin": [-1.5, 5, -7], "size": [3, 3, 5], "uv": [0, 16]}
+					]
+				},
+				{
+					"name": "beakConstant",
+					"parent": "head",
+					"pivot": [0, 6.5, -7]
+				},
+				{
+					"name": "beakOverlap",
+					"parent": "beakConstant",
+					"pivot": [0, 6.5, -7]
+				},
+				{
+					"name": "beak",
+					"parent": "beakOverlap",
+					"pivot": [0, 6.5, -7],
+					"cubes": [
+						{"origin": [-0.5, 6, -10], "size": [1, 1, 3], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "crestConstant",
+					"parent": "head",
+					"pivot": [0, 8, -4.5]
+				},
+				{
+					"name": "crestOverlap",
+					"parent": "crestConstant",
+					"pivot": [0, 8, -4.5]
+				},
+				{
+					"name": "crest",
+					"parent": "crestOverlap",
+					"pivot": [0, 8, -4.5],
+					"cubes": [
+						{"origin": [-0.5, 7, -7.5], "size": [1, 2, 6], "uv": [16, 16]}
+					]
+				},
+				{
+					"name": "crestTipConstant",
+					"parent": "crest",
+					"pivot": [0, 9, -4.5]
+				},
+				{
+					"name": "crestTipOverlap",
+					"parent": "crestTipConstant",
+					"pivot": [0, 9, -4.5]
+				},
+				{
+					"name": "crestTip",
+					"parent": "crestTipOverlap",
+					"pivot": [0, 9, -4.5],
+					"cubes": [
+						{"origin": [0, 9, -7.5], "size": [0, 2, 6], "uv": [0, 18]}
+					]
+				},
+				{
+					"name": "wingsConstant",
+					"parent": "body",
+					"pivot": [0, 4, -2]
+				},
+				{
+					"name": "wingsOverlap",
+					"parent": "wingsConstant",
+					"pivot": [0, 4, -2]
+				},
+				{
+					"name": "wings",
+					"parent": "wingsOverlap",
+					"pivot": [0, 4, -2]
+				},
+				{
+					"name": "rightWingConstant",
+					"parent": "wings",
+					"pivot": [-2.5, 5.5, -3.5]
+				},
+				{
+					"name": "rightWingOverlap",
+					"parent": "rightWingConstant",
+					"pivot": [-2.5, 5.5, -3.5]
+				},
+				{
+					"name": "rightWing",
+					"parent": "rightWingOverlap",
+					"pivot": [-2.5, 5.5, -3.5],
+					"cubes": [
+						{"origin": [-2.5, 2, -4], "size": [0, 4, 12], "inflate": 0.001, "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "leftWingConstant",
+					"parent": "wings",
+					"pivot": [2.5, 5.5, -3.5]
+				},
+				{
+					"name": "leftWingOverlap",
+					"parent": "leftWingConstant",
+					"pivot": [2.5, 5.5, -3.5]
+				},
+				{
+					"name": "leftWing",
+					"parent": "leftWingOverlap",
+					"pivot": [2.5, 5.5, -3.5],
+					"cubes": [
+						{"origin": [2.5, 2, -4], "size": [0, 4, 12], "inflate": 0.001, "uv": [0, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "tailConstant",
+					"parent": "body",
+					"pivot": [0, 6, 4]
+				},
+				{
+					"name": "tailOverlap",
+					"parent": "tailConstant",
+					"pivot": [0, 6, 4]
+				},
+				{
+					"name": "tail",
+					"parent": "tailOverlap",
+					"pivot": [0, 6, 4],
+					"cubes": [
+						{"origin": [-2, 5, 4], "size": [4, 1, 4], "uv": [18, 0]}
+					]
+				},
+				{
+					"name": "tailTipConstant",
+					"parent": "tail",
+					"pivot": [0, 5.5, 8]
+				},
+				{
+					"name": "tailTipOverlap",
+					"parent": "tailTipConstant",
+					"pivot": [0, 5.5, 8]
+				},
+				{
+					"name": "tailTip",
+					"parent": "tailTipOverlap",
+					"pivot": [0, 5.5, 8],
+					"cubes": [
+						{"origin": [-2, 5.5, 8], "size": [4, 0, 3], "uv": [15, 5]}
+					]
+				},
+				{
+					"name": "legsConstant",
+					"parent": "core",
+					"pivot": [0, 2, 0]
+				},
+				{
+					"name": "legsOverlap",
+					"parent": "legsConstant",
+					"pivot": [0, 2, 0]
+				},
+				{
+					"name": "legs",
+					"parent": "legsOverlap",
+					"pivot": [0, 2, 0]
+				},
+				{
+					"name": "rightLegConstant",
+					"parent": "legs",
+					"pivot": [-1, 2, 0]
+				},
+				{
+					"name": "rightLegOverlap",
+					"parent": "rightLegConstant",
+					"pivot": [-1, 2, 0]
+				},
+				{
+					"name": "rightLeg",
+					"parent": "rightLegOverlap",
+					"pivot": [-1, 2, 0],
+					"cubes": [
+						{"origin": [-1.5, 0, 0], "size": [1, 4, 0], "uv": [0, 4]}
+					]
+				},
+				{
+					"name": "rightFootConstant",
+					"parent": "rightLeg",
+					"pivot": [-1, 0, 0]
+				},
+				{
+					"name": "rightFootOverlap",
+					"parent": "rightFootConstant",
+					"pivot": [-1, 0, 0]
+				},
+				{
+					"name": "rightFoot",
+					"parent": "rightFootOverlap",
+					"pivot": [-1, 0, 0],
+					"cubes": [
+						{"origin": [-1.5, 0, -1], "size": [1, 0, 1], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "leftLegConstant",
+					"parent": "legs",
+					"pivot": [1, 2, 0]
+				},
+				{
+					"name": "leftLegOverlap",
+					"parent": "leftLegConstant",
+					"pivot": [1, 2, 0]
+				},
+				{
+					"name": "leftLeg",
+					"parent": "leftLegOverlap",
+					"pivot": [1, 2, 0],
+					"cubes": [
+						{"origin": [0.5, 0, 0], "size": [1, 4, 0], "uv": [0, 4], "mirror": true}
+					]
+				},
+				{
+					"name": "leftFootConstant",
+					"parent": "leftLeg",
+					"pivot": [1, 0, 0]
+				},
+				{
+					"name": "leftFootOverlap",
+					"parent": "leftFootConstant",
+					"pivot": [1, 0, 0]
+				},
+				{
+					"name": "leftFoot",
+					"parent": "leftFootOverlap",
+					"pivot": [1, 0, 0],
+					"cubes": [
+						{"origin": [0.5, 0, -1], "size": [1, 0, 1], "uv": [0, 0], "mirror": true}
+					]
+				}
+			]
+		}
+	]
+}

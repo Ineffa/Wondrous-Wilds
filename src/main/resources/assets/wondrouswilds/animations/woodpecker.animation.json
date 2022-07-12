@@ -1,0 +1,55 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"groundedConstant": {
+			"loop": true,
+			"bones": {
+				"bodyConstant": {
+					"rotation": {
+						"vector": ["(math.sin(query.anim_time * 80) * 0.6) + ((math.cos(query.limb_swing * 600) * 1.5) * query.limb_swing_amount)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "(math.cos((query.anim_time - 4) * 80) * 0.05) + ((math.sin(query.limb_swing * 600) * 1.5) * query.limb_swing_amount)", 0]
+					}
+				},
+				"headConstant": {
+					"rotation": {
+						"vector": ["(query.head_pitch * 0.8) + (math.cos(query.anim_time * 80) * 0.8) + ((math.sin((query.limb_swing - 2) * 600) * 2) * query.limb_swing_amount)", "query.head_yaw * 0.6", 0]
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"wingsConstant": {
+					"rotation": {
+						"vector": [7.5, 0, 0]
+					}
+				},
+				"tailConstant": {
+					"rotation": {
+						"vector": ["-30 + (math.cos(query.anim_time * 80) * 1.2)", 0, 0]
+					}
+				},
+				"legsConstant": {
+					"rotation": {
+						"vector": ["(math.cos(query.limb_swing * 600) * 25) * query.limb_swing_amount", 0, 0]
+					},
+					"position": {
+						"vector": [0, "math.clamp((math.cos((query.limb_swing - 5) * 600) * 2) * query.limb_swing_amount, 0, 5)", "(math.cos(query.limb_swing * 600) * 0.6) * query.limb_swing_amount"]
+					}
+				},
+				"rightFootConstant": {
+					"rotation": {
+						"vector": ["(math.cos(query.limb_swing * 600) * 25) * -query.limb_swing_amount", 0, 0]
+					}
+				},
+				"leftFootConstant": {
+					"rotation": {
+						"vector": ["(math.cos(query.limb_swing * 600) * 25) * -query.limb_swing_amount", 0, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

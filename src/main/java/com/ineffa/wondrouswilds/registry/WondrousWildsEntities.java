@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.entities.FireflyEntity;
+import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
@@ -9,6 +10,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
@@ -21,6 +23,15 @@ public class WondrousWildsEntities {
             .dimensions(EntityDimensions.fixed(0.1875F, 0.25F))
             .spawnGroup(SpawnGroup.WATER_AMBIENT)
             .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, FireflyEntity::canFireflySpawn)
+            .build()
+    );
+
+    public static final EntityType<WoodpeckerEntity> WOODPECKER = Registry.register(Registry.ENTITY_TYPE, new Identifier(WondrousWilds.MOD_ID, "woodpecker"), FabricEntityTypeBuilder.createMob()
+            .entityFactory(WoodpeckerEntity::new)
+            .defaultAttributes(WoodpeckerEntity::createWoodpeckerAttributes)
+            .dimensions(EntityDimensions.fixed(0.3125F, 0.5F))
+            .spawnGroup(SpawnGroup.CREATURE)
+            .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::isValidNaturalSpawn)
             .build()
     );
 

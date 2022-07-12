@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.client;
 
 import com.ineffa.wondrouswilds.client.rendering.entity.FireflyRenderer;
+import com.ineffa.wondrouswilds.client.rendering.entity.WoodpeckerRenderer;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import net.fabricmc.api.ClientModInitializer;
@@ -16,6 +17,7 @@ public class WondrousWildsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityRendererRegistry.register(WondrousWildsEntities.FIREFLY, FireflyRenderer::new);
+        EntityRendererRegistry.register(WondrousWildsEntities.WOODPECKER, WoodpeckerRenderer::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.SMALL_POLYPORE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.BIG_POLYPORE, RenderLayer.getCutout());
