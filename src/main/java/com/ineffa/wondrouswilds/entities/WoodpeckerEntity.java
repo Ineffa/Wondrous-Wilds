@@ -64,7 +64,10 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     }
 
     @Override
-    protected void fall(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition) {}
+    @Override
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        return false;
+    }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {}
