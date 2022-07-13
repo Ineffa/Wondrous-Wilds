@@ -316,7 +316,9 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     }
 
     @Override
-    protected void fall(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition) {}
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        return false;
+    }
 
     @Nullable
     @Override
