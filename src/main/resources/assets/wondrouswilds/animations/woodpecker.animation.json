@@ -6,15 +6,15 @@
 			"bones": {
 				"bodyConstant": {
 					"rotation": {
-						"vector": ["(math.sin(query.anim_time * 80) * 0.6) + ((math.cos(query.limb_swing * 600) * 1.5) * query.limb_swing_amount)", 0, 0]
+						"vector": ["(math.sin(query.anim_time * 80) * 0.6) + ((math.cos(query.swing * 600) * 1.5) * query.swing_amount)", 0, 0]
 					},
 					"position": {
-						"vector": [0, "(math.cos((query.anim_time - 4) * 80) * 0.05) + ((math.sin(query.limb_swing * 600) * 1.5) * query.limb_swing_amount)", 0]
+						"vector": [0, "(math.cos((query.anim_time - 4) * 80) * 0.05) + ((math.sin(query.swing * 600) * 1.5) * query.swing_amount)", 0]
 					}
 				},
 				"headConstant": {
 					"rotation": {
-						"vector": ["(query.head_pitch * 0.8) + (math.cos(query.anim_time * 80) * 0.8) + ((math.sin((query.limb_swing - 2) * 600) * 2) * query.limb_swing_amount)", "query.head_yaw * 0.6", 0]
+						"vector": ["(query.head_pitch * 0.8) + (math.cos(query.anim_time * 80) * 0.8) + ((math.sin((query.swing - 2) * 600) * 2) * query.swing_amount)", "query.head_yaw * 0.6", 0]
 					},
 					"position": {
 						"vector": [0, 0, 0]
@@ -32,20 +32,89 @@
 				},
 				"legsConstant": {
 					"rotation": {
-						"vector": ["(math.cos(query.limb_swing * 600) * 25) * query.limb_swing_amount", 0, 0]
+						"vector": ["(math.cos(query.swing * 600) * 25) * query.swing_amount", 0, 0]
 					},
 					"position": {
-						"vector": [0, "math.clamp((math.cos((query.limb_swing - 5) * 600) * 2) * query.limb_swing_amount, 0, 5)", "(math.cos(query.limb_swing * 600) * 0.6) * query.limb_swing_amount"]
+						"vector": [0, "math.clamp((math.cos((query.swing - 5) * 600) * 2) * query.swing_amount, 0, 5)", "(math.cos(query.swing * 600) * 0.6) * query.swing_amount"]
 					}
 				},
 				"rightFootConstant": {
 					"rotation": {
-						"vector": ["(math.cos(query.limb_swing * 600) * 25) * -query.limb_swing_amount", 0, 0]
+						"vector": ["(math.cos(query.swing * 600) * 25) * -query.swing_amount", 0, 0]
 					}
 				},
 				"leftFootConstant": {
 					"rotation": {
-						"vector": ["(math.cos(query.limb_swing * 600) * 25) * -query.limb_swing_amount", 0, 0]
+						"vector": ["(math.cos(query.swing * 600) * 25) * -query.swing_amount", 0, 0]
+					}
+				}
+			}
+		},
+		"flyingConstant": {
+			"loop": true,
+			"bones": {
+				"bodyConstant": {
+					"rotation": {
+						"vector": ["math.lerp(-40, 0, query.swing_amount)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "math.lerp(math.sin(query.flap_angle * 20) * -0.7, 0, query.swing_amount)", 0]
+					}
+				},
+				"headConstant": {
+					"rotation": {
+						"vector": ["(query.head_pitch * 0.8) + math.lerp(40 - (math.sin(query.anim_time * 110) * -2), 0, query.swing_amount)", "query.head_yaw * 0.8", 0]
+					}
+				},
+				"wingsConstant": {
+					"rotation": {
+						"vector": ["-50 - (40 * query.swing_amount)", 0, 0]
+					},
+					"position": {
+						"vector": [0, 1, 1]
+					}
+				},
+				"rightWingConstant": {
+					"rotation": {
+						"vector": ["math.lerp(math.sin(query.flap_angle * 100) * -10, 0, query.swing_amount)", "-90 - math.lerp(math.cos(query.flap_angle * 100) * 70, 0, query.swing_amount)", "math.lerp(math.cos(query.flap_angle * 100) * -20, 0, query.swing_amount)"]
+					}
+				},
+				"leftWingConstant": {
+					"rotation": {
+						"vector": ["math.lerp(math.sin(query.flap_angle * 100) * -10, 0, query.swing_amount)", "90 - math.lerp(math.cos(query.flap_angle * 100) * -70, 0, query.swing_amount)", "math.lerp(math.cos(query.flap_angle * 100) * 20, 0, query.swing_amount)"]
+					}
+				},
+				"neckConstant": {
+					"rotation": {
+						"vector": ["math.lerp(math.sin(query.anim_time * 110) * -2, 0, query.swing_amount)", 0, 0]
+					}
+				},
+				"legsConstant": {
+					"rotation": {
+						"vector": ["math.lerp(0, 80, query.swing_amount) - math.lerp(math.sin(query.anim_time * 110) * -2, 0, query.swing_amount)", 0, 0]
+					},
+					"position": {
+						"vector": [0, "math.lerp(-1 + (math.lerp(math.sin(query.flap_angle * 20) * -0.7, 0, query.swing_amount)), 0, query.swing_amount)", "math.lerp(1.5, 1, query.swing_amount)"]
+					}
+				},
+				"rightFootConstant": {
+					"rotation": {
+						"vector": ["math.lerp(75, 55, query.swing_amount)", 0, 0]
+					}
+				},
+				"leftFootConstant": {
+					"rotation": {
+						"vector": ["math.lerp(75, 55, query.swing_amount)", 0, 0]
+					}
+				},
+				"neckMatcherConstant": {
+					"rotation": {
+						"vector": ["math.lerp(math.sin(query.anim_time * 110) * -2, 0, query.swing_amount)", 0, 0]
+					}
+				},
+				"coreConstant": {
+					"position": {
+						"vector": [0, "math.lerp(3, 0, query.swing_amount)", 0]
 					}
 				}
 			}

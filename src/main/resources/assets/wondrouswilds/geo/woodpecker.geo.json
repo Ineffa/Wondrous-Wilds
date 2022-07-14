@@ -12,7 +12,17 @@
 			},
 			"bones": [
 				{
+					"name": "coreConstant",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "coreOverlap",
+					"parent": "coreConstant",
+					"pivot": [0, 0, 0]
+				},
+				{
 					"name": "core",
+					"parent": "coreOverlap",
 					"pivot": [0, 0, 0]
 				},
 				{
@@ -28,14 +38,29 @@
 				{
 					"name": "body",
 					"parent": "bodyOverlap",
-					"pivot": [0, 2, 0],
+					"pivot": [0, 2, 0]
+				},
+				{
+					"name": "neckConstant",
+					"parent": "body",
+					"pivot": [0, 6, -4]
+				},
+				{
+					"name": "neckOverlap",
+					"parent": "neckConstant",
+					"pivot": [0, 6, -4]
+				},
+				{
+					"name": "neck",
+					"parent": "neckOverlap",
+					"pivot": [0, 6, -4],
 					"cubes": [
 						{"origin": [-2.5, 2, -4], "size": [5, 4, 8], "uv": [0, 0]}
 					]
 				},
 				{
 					"name": "headConstant",
-					"parent": "body",
+					"parent": "neck",
 					"pivot": [0, 5.5, -4]
 				},
 				{
@@ -107,33 +132,33 @@
 				},
 				{
 					"name": "wingsConstant",
-					"parent": "body",
-					"pivot": [0, 4, -2]
+					"parent": "neck",
+					"pivot": [0, 4, -4]
 				},
 				{
 					"name": "wingsOverlap",
 					"parent": "wingsConstant",
-					"pivot": [0, 4, -2]
+					"pivot": [0, 4, -4]
 				},
 				{
 					"name": "wings",
 					"parent": "wingsOverlap",
-					"pivot": [0, 4, -2]
+					"pivot": [0, 4, -4]
 				},
 				{
 					"name": "rightWingConstant",
 					"parent": "wings",
-					"pivot": [-2.5, 5.5, -3.5]
+					"pivot": [-2.5, 4, -4]
 				},
 				{
 					"name": "rightWingOverlap",
 					"parent": "rightWingConstant",
-					"pivot": [-2.5, 5.5, -3.5]
+					"pivot": [-2.5, 4, -4]
 				},
 				{
 					"name": "rightWing",
 					"parent": "rightWingOverlap",
-					"pivot": [-2.5, 5.5, -3.5],
+					"pivot": [-2.5, 4, -4],
 					"cubes": [
 						{"origin": [-2.5, 2, -4], "size": [0, 4, 12], "inflate": 0.001, "uv": [0, 0]}
 					]
@@ -141,24 +166,24 @@
 				{
 					"name": "leftWingConstant",
 					"parent": "wings",
-					"pivot": [2.5, 5.5, -3.5]
+					"pivot": [2.5, 4, -4]
 				},
 				{
 					"name": "leftWingOverlap",
 					"parent": "leftWingConstant",
-					"pivot": [2.5, 5.5, -3.5]
+					"pivot": [2.5, 4, -4]
 				},
 				{
 					"name": "leftWing",
 					"parent": "leftWingOverlap",
-					"pivot": [2.5, 5.5, -3.5],
+					"pivot": [2.5, 4, -4],
 					"cubes": [
 						{"origin": [2.5, 2, -4], "size": [0, 4, 12], "inflate": 0.001, "uv": [0, 0], "mirror": true}
 					]
 				},
 				{
 					"name": "tailConstant",
-					"parent": "body",
+					"parent": "neck",
 					"pivot": [0, 6, 4]
 				},
 				{
@@ -193,8 +218,23 @@
 					]
 				},
 				{
-					"name": "legsConstant",
+					"name": "neckMatcherConstant",
 					"parent": "core",
+					"pivot": [0, 6, -4]
+				},
+				{
+					"name": "neckMatcherOverlap",
+					"parent": "neckMatcherConstant",
+					"pivot": [0, 6, -4]
+				},
+				{
+					"name": "neckMatcher",
+					"parent": "neckMatcherOverlap",
+					"pivot": [0, 6, -4]
+				},
+				{
+					"name": "legsConstant",
+					"parent": "neckMatcher",
 					"pivot": [0, 2, 0]
 				},
 				{

@@ -34,6 +34,8 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
         MolangParser parser = GeckoLibCache.getInstance().parser;
 
         WoodpeckerEntity entity = (WoodpeckerEntity) animatable;
+        boolean flying = entity.isFlying();
+
         float delta = MinecraftClient.getInstance().getTickDelta();
 
         float headPitch = MathHelper.lerp(delta, entity.prevPitch, entity.getPitch());
@@ -41,13 +43,19 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
         float f1 = MathHelper.lerpAngleDegrees(delta, entity.prevHeadYaw, entity.getHeadYaw());
         float headYaw = f1 - f;
 
-        float limbSwing = entity.limbAngle - entity.limbDistance * (1.0F - delta);
-        float limbSwingAmount = MathHelper.lerp(delta, entity.lastLimbDistance, entity.limbDistance);
-
         parser.setValue("query.head_pitch", headPitch);
         parser.setValue("query.head_yaw", headYaw);
 
-        parser.setValue("query.limb_swing", limbSwing * (entity.isOnGround() ? 0.15D : 0.0D));
-        parser.setValue("query.limb_swing_amount", limbSwingAmount + (0.5F * MathHelper.clamp(limbSwingAmount * 10.0F, 0.0F, 1.0F)));
+        float swing = entity.limbAngle - entity.limbDistance * (1.0F - delta);
+        float swingAmount = MathHelper.lerp(delta, entity.lastLimbDistance, entity.limbDistance);
+        float extraSwing = 0.0F;
+        if (!flying) extraSwing = 0.5F * MathHelper.clamp(swingAmount * 10.0F, 0.0F, 1.0F);
+
+        parser.setValue("query.swing", swing * 0.15D);
+        parser.setValue("query.swing_amount", MathHelper.clamp(swingAmount + extraSwing, 0.0D, flying ? 1.0D : 1.25D));
+
+        float flapAngle = MathHelper.lerp(delta, entity.prevFlapAngle, entity.flapAngle);
+
+        parser.setValue("query.flap_angle", flapAngle);
     }
 }
