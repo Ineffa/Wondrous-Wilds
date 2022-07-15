@@ -249,8 +249,10 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     @Override
     public void registerControllers(AnimationData animationData) {
         AnimationController<WoodpeckerEntity> constantController = new AnimationController<>(this, "constantController", 2, this::constantAnimationPredicate);
+        AnimationController<WoodpeckerEntity> overlapController = new AnimationController<>(this, "overlapController", 2, this::overlapAnimationPredicate);
 
         animationData.addAnimationController(constantController);
+        animationData.addAnimationController(overlapController);
     }
 
     private <ENTITY extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<ENTITY> event) {
@@ -260,5 +262,13 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
         else if (this.isOnGround()) event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
 
         return PlayState.CONTINUE;
+    }
+
+    private <ENTITY extends IAnimatable> PlayState overlapAnimationPredicate(AnimationEvent<ENTITY> event) {
+        if (this.isFlying() && this.limbDistance >= 0.9F) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("flapOverlap"));
+            return PlayState.CONTINUE;
+        }
+        else return PlayState.STOP;
     }
 }

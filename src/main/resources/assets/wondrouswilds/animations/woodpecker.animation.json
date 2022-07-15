@@ -118,6 +118,69 @@
 					}
 				}
 			}
+		},
+		"flapOverlap": {
+			"loop": true,
+			"animation_length": 0.91667,
+			"bones": {
+				"bodyOverlap": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.3333": {
+							"vector": [0, -0.2, 0],
+							"easing": "easeInCubic"
+						},
+						"0.5": {
+							"vector": [0, 0.4, 0],
+							"easing": "easeInOutCubic"
+						},
+						"0.7083": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"rightWingOverlap": {
+					"rotation": {
+						"0.0833": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [0, -75, 0],
+							"easing": "easeInCubic"
+						},
+						"0.4583": {
+							"vector": [0, 85, 0],
+							"easing": "easeInOutCubic"
+						},
+						"0.7083": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"leftWingOverlap": {
+					"rotation": {
+						"0.0833": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [0, 75, 0],
+							"easing": "easeInCubic"
+						},
+						"0.4583": {
+							"vector": [0, -85, 0],
+							"easing": "easeInOutCubic"
+						},
+						"0.7083": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutSine"
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2
