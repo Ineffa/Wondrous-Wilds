@@ -177,6 +177,16 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     }
 
     @Override
+    public boolean damage(DamageSource source, float amount) {
+        if (super.damage(source, amount)) {
+            if (!this.isFlying()) this.setFlying(true);
+
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
     public void travel(Vec3d movementInput) {
         if (!this.isFlying()) {
             super.travel(movementInput);
