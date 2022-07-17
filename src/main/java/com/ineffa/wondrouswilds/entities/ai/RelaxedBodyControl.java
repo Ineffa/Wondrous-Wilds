@@ -1,5 +1,7 @@
 package com.ineffa.wondrouswilds.entities.ai;
 
+import com.ineffa.wondrouswilds.entities.FireflyEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.control.BodyControl;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.math.MathHelper;
@@ -40,7 +42,11 @@ public class RelaxedBodyControl extends BodyControl {
     }
 
     private boolean isIndependent() {
-        return !(this.entity.getFirstPassenger() instanceof MobEntity);
+        Entity firstPassenger = this.entity.getFirstPassenger();
+
+        if (firstPassenger instanceof FireflyEntity) return true;
+
+        return !(firstPassenger instanceof MobEntity);
     }
 
     private boolean isMoving() {
