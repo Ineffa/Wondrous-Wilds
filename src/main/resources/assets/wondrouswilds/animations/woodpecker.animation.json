@@ -119,11 +119,11 @@
 				}
 			}
 		},
-		"flapOverlap": {
+		"flap": {
 			"loop": true,
 			"animation_length": 0.91667,
 			"bones": {
-				"rightWingOverlap": {
+				"rightWing": {
 					"rotation": {
 						"0.0833": {
 							"vector": [0, 0, 0]
@@ -142,7 +142,7 @@
 						}
 					}
 				},
-				"leftWingOverlap": {
+				"leftWing": {
 					"rotation": {
 						"0.0833": {
 							"vector": [0, 0, 0]
@@ -161,7 +161,7 @@
 						}
 					}
 				},
-				"neckOverlap": {
+				"neck": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
@@ -180,7 +180,7 @@
 						}
 					}
 				},
-				"neckMatcherOverlap": {
+				"neckMatcher": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
