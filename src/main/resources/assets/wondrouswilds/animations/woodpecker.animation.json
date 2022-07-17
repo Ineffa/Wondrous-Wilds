@@ -14,7 +14,7 @@
 				},
 				"headConstant": {
 					"rotation": {
-						"vector": ["(query.head_pitch * 0.8) + (math.cos(query.anim_time * 80) * 0.8) + ((math.sin((query.swing - 2) * 600) * 2) * query.swing_amount)", "query.head_yaw * 0.6", 0]
+						"vector": ["query.head_pitch + (math.cos(query.anim_time * 80) * 0.8) + ((math.sin((query.swing - 2) * 600) * 2) * query.swing_amount)", "query.head_yaw", 0]
 					},
 					"position": {
 						"vector": [0, 0, 0]
@@ -63,7 +63,7 @@
 				},
 				"headConstant": {
 					"rotation": {
-						"vector": ["(query.head_pitch * 0.8) + math.lerp(40 - (math.sin(query.anim_time * 110) * -2), 0, query.swing_amount)", "query.head_yaw * 0.8", 0]
+						"vector": ["query.head_pitch + math.lerp(40 - (math.sin(query.anim_time * 110) * -2), 0, query.swing_amount)", "query.head_yaw", 0]
 					}
 				},
 				"wingsConstant": {
