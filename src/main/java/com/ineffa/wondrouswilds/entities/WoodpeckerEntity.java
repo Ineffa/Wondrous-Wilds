@@ -1,11 +1,13 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.entities.ai.RelaxedBodyControl;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderFlyingGoal;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderLandGoal;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.control.BodyControl;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
@@ -229,6 +231,11 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     @Override
     protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.95F;
+    }
+
+    @Override
+    protected BodyControl createBodyControl() {
+        return new RelaxedBodyControl(this);
     }
 
     @Override
