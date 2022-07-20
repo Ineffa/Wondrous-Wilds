@@ -66,7 +66,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder fancyBirchConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(10, 10, 0, 0, 3, 1, 1),
+                        new StraightBranchingTrunkPlacer(12, 8, 0, 0, 3, 1, 1),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -75,7 +75,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder fancyBirchWithBeesConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(10, 10, 0, 1, 3, 1, 1),
+                        new StraightBranchingTrunkPlacer(12, 8, 0, 1, 3, 1, 1),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.HANGING_BEE_NEST, Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -84,7 +84,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder tallFancyBirchConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(10, 16, 0, 0, 3, 1, 2),
+                        new StraightBranchingTrunkPlacer(12, 14, 0, 0, 3, 1, 2),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -93,7 +93,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder tallFancyBirchWithBeesConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(10, 16, 0, 1, 3, 1, 2),
+                        new StraightBranchingTrunkPlacer(12, 14, 0, 1, 3, 1, 2),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.HANGING_BEE_NEST, Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
