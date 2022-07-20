@@ -56,6 +56,7 @@ public class FancyBirchFoliagePlacer extends FoliagePlacer {
 
         int centralLayers = random.nextBetween(2, 4);
 
+        boolean finishedEdges = false;
         boolean shrinkCentralEdgeRadius = false;
         int nextCentralEdgeRadius = random.nextBoolean() ? 1 : 0;
 
@@ -64,7 +65,7 @@ public class FancyBirchFoliagePlacer extends FoliagePlacer {
 
             leaves.addAll(getCenteredCuboid(currentCenter, intermediate ? 1 : 2));
             if (intermediate) leaves.addAll(getEdges(currentCenter, 2, random.nextBoolean() ? 1 : 0));
-            else {
+            else if (!finishedEdges) {
                 boolean reachedMaxRadius = nextCentralEdgeRadius >= 2;
                 boolean reachedMinRadius = nextCentralEdgeRadius <= 0;
 
@@ -79,6 +80,8 @@ public class FancyBirchFoliagePlacer extends FoliagePlacer {
 
                 if (shrinkCentralEdgeRadius) nextCentralEdgeRadius -= reachedMaxRadius && random.nextBoolean() ? 2 : 1;
                 else nextCentralEdgeRadius += reachedMinRadius && random.nextBoolean() ? 2 : 1;
+
+                if (layerCount > 1 && reachedMinRadius) finishedEdges = true;
             }
 
             currentCenter.move(Direction.DOWN);
