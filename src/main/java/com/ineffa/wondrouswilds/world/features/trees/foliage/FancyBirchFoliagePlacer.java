@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TestableWorld;
@@ -14,11 +13,11 @@ import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.foliage.FoliagePlacer;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
-import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
+import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.*;
 
 public class FancyBirchFoliagePlacer extends FoliagePlacer {
 
@@ -36,67 +35,60 @@ public class FancyBirchFoliagePlacer extends FoliagePlacer {
     @Override
     protected void generate(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, TreeFeatureConfig config, int trunkHeight, TreeNode treeNode, int foliageHeight, int radius, int offset) {
         BlockPos origin = treeNode.getCenter();
+        BlockPos.Mutable currentCenter = origin.mutableCopy();
 
-        boolean isLarge = random.nextBoolean();
+        Set<BlockPos> leaves = new HashSet<>();
 
-        List<BlockPos> leaves = new ArrayList<>();
+        // Top layers
+        boolean tallTop = random.nextInt(3) != 0;
 
-        int upwardBound = 0;
-        int downwardBound = isLarge ? -7 : -5;
-        for (int y = upwardBound; y >= downwardBound; --y) {
-            boolean isTip = y == upwardBound || y == downwardBound;
-            if (isTip) {
-                if (y == upwardBound) leaves.add(origin);
-                for (Direction direction : HORIZONTAL_DIRECTIONS) leaves.add(origin.down(MathHelper.abs(y)).offset(direction));
-            }
+        BlockPos tipTop = tallTop ? origin.up() : origin;
+        leaves.add(tipTop); for (Direction direction : HORIZONTAL_DIRECTIONS) leaves.add(tipTop.offset(direction));
+
+        if (tallTop) {
+            leaves.addAll(getCenteredCuboid(origin, 1));
+
+            if (random.nextBoolean()) for (Direction direction : HORIZONTAL_DIRECTIONS) leaves.add(origin.offset(direction, 2));
+        }
+
+        // Intermediate & central layers
+        currentCenter.move(Direction.DOWN);
+
+        int centralLayers = random.nextBetween(2, 4);
+
+        boolean shrinkCentralEdgeRadius = false;
+        int nextCentralEdgeRadius = random.nextBoolean() ? 1 : 0;
+
+        for (int layerCount = -1; layerCount <= centralLayers; ++layerCount) {
+            boolean intermediate = layerCount == -1 || layerCount == centralLayers;
+
+            leaves.addAll(getCenteredCuboid(currentCenter, intermediate ? 1 : 2));
+            if (intermediate) leaves.addAll(getEdges(currentCenter, 2, random.nextBoolean() ? 1 : 0));
             else {
-                boolean isInMiddleRange = y <= upwardBound - 2 && y >= downwardBound + 2;
-                int increase = isInMiddleRange ? 1 : 0;
+                boolean reachedMaxRadius = nextCentralEdgeRadius >= 2;
+                boolean reachedMinRadius = nextCentralEdgeRadius <= 0;
 
-                for (int x = -1 - increase; x <= 1 + increase; ++x) {
-                    for (int z = -1 - increase; z <= 1 + increase; ++z) {
-                        if (x == origin.getX() && z == origin.getZ()) continue;
-                        leaves.add(origin.add(x, y, z));
-                    }
+                if (layerCount == 0 && random.nextBoolean()) {
+                    currentCenter.move(Direction.DOWN);
+                    continue;
                 }
 
-                for (Direction direction : HORIZONTAL_DIRECTIONS) {
-                    BlockPos offsetPos = origin.down(MathHelper.abs(y)).offset(direction, 2 + increase);
+                leaves.addAll(getEdges(currentCenter, 3, nextCentralEdgeRadius));
 
-                    leaves.add(offsetPos);
-                    if (y != upwardBound - 2 && !(isLarge && y == downwardBound + 2)) {
-                        int layersToAdd = y == downwardBound + 3 ? 2 : 1;
-                        for (int distance = 1; distance <= layersToAdd; ++distance) {
-                            leaves.add(offsetPos.offset(direction.rotateYClockwise(), distance));
-                            leaves.add(offsetPos.offset(direction.rotateYCounterclockwise(), distance));
-                        }
-                    }
-                }
+                if (!shrinkCentralEdgeRadius && reachedMaxRadius) shrinkCentralEdgeRadius = true;
+
+                if (shrinkCentralEdgeRadius) nextCentralEdgeRadius -= reachedMaxRadius && random.nextBoolean() ? 2 : 1;
+                else nextCentralEdgeRadius += reachedMinRadius && random.nextBoolean() ? 2 : 1;
             }
 
-            if (y < 0 && y > -5) {
-                int increase = y == -2 || y == -3 ? 1 : 0;
-                for (int x = -1 - increase; x <= 1 + increase; ++x) {
-                    for (int z = -1 - increase; z <= 1 + increase; ++z) {
-                        if (x == origin.getX() && z == origin.getZ()) continue;
-                        leaves.add(origin.add(x, y, z));
-                    }
-                }
-            }
+            currentCenter.move(Direction.DOWN);
         }
 
-        for (BlockPos pos : leaves) {
-            if (random.nextInt(40) == 0 && !isPosTouchingLog(world, pos, config, random)) continue;
-            FancyBirchFoliagePlacer.placeFoliageBlock(world, replacer, random, config, pos);
-        }
-    }
+        // Bottom layer
+        if (random.nextBoolean()) for (Direction direction : HORIZONTAL_DIRECTIONS) leaves.add(currentCenter.offset(direction));
 
-    private static boolean isPosTouchingLog(TestableWorld world, BlockPos pos, TreeFeatureConfig config, Random random) {
-        for (Direction direction : Direction.values()) {
-            BlockPos checkPos = pos.offset(direction);
-            if (world.testBlockState(checkPos, state -> state.getBlock() == config.trunkProvider.getBlockState(random, checkPos).getBlock())) return true;
-        }
-        return false;
+        // Final placement
+        for (BlockPos pos : leaves) FancyBirchFoliagePlacer.placeFoliageBlock(world, replacer, random, config, pos);
     }
 
     @Override
