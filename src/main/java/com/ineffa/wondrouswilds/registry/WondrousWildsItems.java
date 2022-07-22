@@ -32,6 +32,7 @@ public class WondrousWildsItems {
     public static final BlockItem HOLLOW_MANGROVE_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_MANGROVE_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_CRIMSON_STEM = new BlockItem(WondrousWildsBlocks.HOLLOW_CRIMSON_STEM, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_WARPED_STEM = new BlockItem(WondrousWildsBlocks.HOLLOW_WARPED_STEM, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem HOLLOW_DEAD_BIRCH_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_STRIPPED_OAK_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_OAK_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_STRIPPED_SPRUCE_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_SPRUCE_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_STRIPPED_BIRCH_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_BIRCH_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
@@ -65,6 +66,7 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_mangrove_log"), HOLLOW_MANGROVE_LOG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_crimson_stem"), HOLLOW_CRIMSON_STEM);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_warped_stem"), HOLLOW_WARPED_STEM);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_dead_birch_log"), HOLLOW_DEAD_BIRCH_LOG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_stripped_oak_log"), HOLLOW_STRIPPED_OAK_LOG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_stripped_spruce_log"), HOLLOW_STRIPPED_SPRUCE_LOG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_stripped_birch_log"), HOLLOW_STRIPPED_BIRCH_LOG);
