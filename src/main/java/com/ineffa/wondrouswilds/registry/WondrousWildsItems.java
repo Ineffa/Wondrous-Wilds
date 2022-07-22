@@ -21,6 +21,8 @@ public class WondrousWildsItems {
     public static final BlockItem SMALL_POLYPORE = new BlockItem(WondrousWildsBlocks.SMALL_POLYPORE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem BIG_POLYPORE = new BlockItem(WondrousWildsBlocks.BIG_POLYPORE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
+    public static final BlockItem DEAD_BIRCH_LOG = new BlockItem(WondrousWildsBlocks.DEAD_BIRCH_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+
     public static final BlockItem HOLLOW_OAK_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_OAK_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_SPRUCE_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_SPRUCE_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_BIRCH_LOG = new BlockItem(WondrousWildsBlocks.HOLLOW_BIRCH_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
@@ -51,6 +53,8 @@ public class WondrousWildsItems {
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "small_polypore"), SMALL_POLYPORE);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "big_polypore"), BIG_POLYPORE);
+
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "dead_birch_log"), DEAD_BIRCH_LOG);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_oak_log"), HOLLOW_OAK_LOG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_spruce_log"), HOLLOW_SPRUCE_LOG);

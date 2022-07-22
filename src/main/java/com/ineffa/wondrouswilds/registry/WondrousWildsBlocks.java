@@ -7,10 +7,7 @@ import com.ineffa.wondrouswilds.blocks.SmallPolyporeBlock;
 import com.ineffa.wondrouswilds.blocks.VioletBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
+import net.minecraft.block.*;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -28,6 +25,8 @@ public class WondrousWildsBlocks {
     public static final FlowerPotBlock POTTED_PINK_VIOLET = new FlowerPotBlock(PINK_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
     public static final FlowerPotBlock POTTED_RED_VIOLET = new FlowerPotBlock(RED_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
     public static final FlowerPotBlock POTTED_WHITE_VIOLET = new FlowerPotBlock(WHITE_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque());
+
+    public static final PillarBlock DEAD_BIRCH_LOG = new PillarBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG));
 
     public static final HollowLogBlock HOLLOW_OAK_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque());
     public static final HollowLogBlock HOLLOW_SPRUCE_LOG = new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.SPRUCE_LOG).nonOpaque());
@@ -60,6 +59,8 @@ public class WondrousWildsBlocks {
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_pink_violet"), POTTED_PINK_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_red_violet"), POTTED_RED_VIOLET);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "potted_white_violet"), POTTED_WHITE_VIOLET);
+
+        Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "dead_birch_log"), DEAD_BIRCH_LOG);
 
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "hollow_oak_log"), HOLLOW_OAK_LOG);
         Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, "hollow_spruce_log"), HOLLOW_SPRUCE_LOG);
