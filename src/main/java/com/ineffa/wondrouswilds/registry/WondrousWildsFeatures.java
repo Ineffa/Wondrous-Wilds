@@ -143,7 +143,7 @@ public class WondrousWildsFeatures {
     public static final RegistryEntry<PlacedFeature> RED_VIOLETS_PLACED = registerPlaced("red_violets", RED_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
     public static final RegistryEntry<PlacedFeature> WHITE_VIOLETS_PLACED = registerPlaced("white_violets", WHITE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
-    public static final RegistryEntry<PlacedFeature> GRASS_PATCH_BIRCH_FOREST_PLACED = registerPlaced("grass_patch_birch_forest", VegetationConfiguredFeatures.PATCH_GRASS, VegetationPlacedFeatures.modifiers(12));
+    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_GRASS_PATCH_PLACED = registerPlaced("birch_forest_grass_patch", VegetationConfiguredFeatures.PATCH_GRASS, VegetationPlacedFeatures.modifiers(10));
 
     public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_ROCK_PLACED = registerPlaced("birch_forest_rock", MiscConfiguredFeatures.FOREST_ROCK, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
