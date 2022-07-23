@@ -41,10 +41,11 @@ public class WondrousWilds implements ModInitializer {
 		WondrousWildsItems.initialize();
 
 		WondrousWildsFeatures.initialize();
-		this.upgradeBirchForests();
+
+		upgradeBirchForests();
 	}
 
-	private void upgradeBirchForests() {
+	private static void upgradeBirchForests() {
 		BiomeModification birchForestModifier = BiomeModifications.create(new Identifier(MOD_ID, "birch_forest_modifier"));
 
 		final Predicate<BiomeSelectionContext> BIRCH_FOREST = BiomeSelectors.includeByKey(BiomeKeys.BIRCH_FOREST);
@@ -65,7 +66,7 @@ public class WondrousWilds implements ModInitializer {
 
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, WondrousWildsFeatures.FALLEN_BIRCH_LOG_PLACED.getKey().orElseThrow());
 
-			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, VegetationPlacedFeatures.PATCH_TALL_GRASS.getKey().orElseThrow());
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, WondrousWildsFeatures.BIRCH_FOREST_TALL_GRASS_PATCH_PLACED.getKey().orElseThrow());
 
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, WondrousWildsFeatures.PURPLE_VIOLETS_PLACED.getKey().orElseThrow());
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, WondrousWildsFeatures.PINK_VIOLETS_PLACED.getKey().orElseThrow());
