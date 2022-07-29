@@ -200,6 +200,29 @@
 					}
 				}
 			}
+		},
+		"clingingConstant": {
+			"loop": true,
+			"bones": {
+				"coreConstant": {
+					"rotation": {
+						"vector": [-90, 0, 0]
+					}
+				},
+				"headConstant": {
+					"rotation": {
+						"vector": [65, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0.5, 0]
+					}
+				},
+				"wingsConstant": {
+					"rotation": {
+						"vector": [5, 0, 0]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

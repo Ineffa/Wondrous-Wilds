@@ -1,11 +1,13 @@
 package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.entities.ai.RelaxedBodyControl;
+import com.ineffa.wondrouswilds.entities.ai.WoodpeckerClingToBlockGoal;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderFlyingGoal;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderLandGoal;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.BodyControl;
 import net.minecraft.entity.ai.control.FlightMoveControl;
@@ -28,9 +30,12 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -43,10 +48,19 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
+
 public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimatable {
 
     private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> WANTS_TO_LAND = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
+
+    public static final String IS_FLYING_KEY = "IsFlying";
+    public static final String WANTS_TO_LAND_KEY = "WantsToLand";
+    public static final String CLING_POS_KEY = "ClingPos";
+
+    private Direction clingSide;
 
     @Environment(value = EnvType.CLIENT)
     public float flapSpeed;
@@ -88,22 +102,29 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
 
         this.dataTracker.startTracking(IS_FLYING, false);
         this.dataTracker.startTracking(WANTS_TO_LAND, false);
-    }
-
-    @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-
-        this.setFlying(nbt.getBoolean("IsFlying"));
-        this.setWantsToLand(nbt.getBoolean("WantsToLand"));
+        this.dataTracker.startTracking(CLING_POS, BlockPos.ORIGIN);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
 
-        nbt.putBoolean("IsFlying", this.isFlying());
-        nbt.putBoolean("WantsToLand", this.wantsToLand());
+        nbt.putBoolean(IS_FLYING_KEY, this.isFlying());
+        nbt.putBoolean(WANTS_TO_LAND_KEY, this.wantsToLand());
+        nbt.put(CLING_POS_KEY, NbtHelper.fromBlockPos(this.getClingPos()));
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+
+        boolean isFlying = nbt.getBoolean(IS_FLYING_KEY);
+        if (this.isFlying() != isFlying) this.setFlying(isFlying);
+
+        this.setWantsToLand(nbt.getBoolean(WANTS_TO_LAND_KEY));
+
+        BlockPos clingPos = NbtHelper.toBlockPos(nbt.getCompound(CLING_POS_KEY));
+        if (!this.isClinging() && !clingPos.equals(BlockPos.ORIGIN)) this.startClingingTo(clingPos);
     }
 
     public boolean isFlying() {
@@ -121,6 +142,7 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
             this.setNoGravity(false);
             this.setWantsToLand(false);
         }
+        else if (this.isClinging()) this.stopClinging();
 
         this.moveControl = flying ? this.airMoveControl : this.landMoveControl;
         this.navigation = flying ? this.airNavigation : this.landNavigation;
@@ -134,15 +156,64 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
         this.dataTracker.set(WANTS_TO_LAND, wantsToLand);
     }
 
+    public BlockPos getClingPos() {
+        return this.dataTracker.get(CLING_POS);
+    }
+
+    public void setClingPos(BlockPos pos) {
+        this.dataTracker.set(CLING_POS, pos);
+    }
+
+    public boolean isClinging() {
+        return this.dataTracker.get(CLING_POS) != BlockPos.ORIGIN;
+    }
+
+    public void startClingingTo(BlockPos clingPos) {
+        this.setClingPos(clingPos);
+
+        Direction clingSide = Direction.fromHorizontal(this.getRandom().nextInt(4));
+        double closestSideDistance = 100.0D;
+        for (Direction side : HORIZONTAL_DIRECTIONS) {
+            double distanceFromSide = this.getBlockPos().getSquaredDistance(clingPos.offset(side));
+            if (distanceFromSide < closestSideDistance) {
+                clingSide = side;
+                closestSideDistance = distanceFromSide;
+            }
+        }
+        this.clingSide = clingSide;
+
+        BlockPos pos = clingPos.offset(clingSide);
+        this.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+
+        this.setFlying(false);
+    }
+
+    public void stopClinging() {
+        this.setClingPos(BlockPos.ORIGIN);
+    }
+
+    public boolean hasValidClingPos() {
+        return this.canClingToPos(this.getClingPos());
+    }
+
+    public boolean canClingToPos(BlockPos pos) {
+        BlockState state = this.getWorld().getBlockState(pos);
+
+        if (!(state.getBlock() instanceof PillarBlock)) return false;
+
+        return state.isIn(BlockTags.OVERWORLD_NATURAL_LOGS) && state.get(PillarBlock.AXIS).isVertical();
+    }
+
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5));
-        this.goalSelector.add(2, new WoodpeckerWanderLandGoal(this, 1.0D));
-        this.goalSelector.add(2, new WoodpeckerWanderFlyingGoal(this));
-        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
-        this.goalSelector.add(3, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
-        this.goalSelector.add(4, new LookAroundGoal(this));
+        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5D));
+        this.goalSelector.add(2, new WoodpeckerClingToBlockGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(3, new WoodpeckerWanderLandGoal(this, 1.0D));
+        this.goalSelector.add(3, new WoodpeckerWanderFlyingGoal(this));
+        this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
+        this.goalSelector.add(4, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
+        this.goalSelector.add(5, new LookAroundGoal(this));
     }
 
     @Override
@@ -169,10 +240,20 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     public void tick() {
         super.tick();
 
-        if (this.world.isClient()) {
+        if (this.getWorld().isClient()) {
             this.flapSpeed = MathHelper.clamp(1.0F - (this.limbDistance * 0.5F), 0.0F, 1.0F);
             this.prevFlapAngle = this.flapAngle;
             this.flapAngle += this.flapSpeed;
+        }
+        else {
+            if (this.isClinging()) {
+                if (!this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) this.setFlying(true);
+                else {
+                    this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90);
+                    this.setHeadYaw(this.getYaw());
+                    this.setBodyYaw(this.getYaw());
+                }
+            }
         }
     }
 
@@ -210,7 +291,13 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
                 this.setVelocity(this.getVelocity().multiply(0.91f));
             }
         }
+
         this.updateLimbs(this, false);
+    }
+
+    @Override
+    public boolean canMoveVoluntarily() {
+        return super.canMoveVoluntarily() && !this.isClinging();
     }
 
     @Override
@@ -277,10 +364,11 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     }
 
     private <ENTITY extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<ENTITY> event) {
-        if (this.isFlying()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
-        }
+        if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
+
         else if (this.isOnGround()) event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
+
+        else if (this.isClinging()) event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
 
         return PlayState.CONTINUE;
     }

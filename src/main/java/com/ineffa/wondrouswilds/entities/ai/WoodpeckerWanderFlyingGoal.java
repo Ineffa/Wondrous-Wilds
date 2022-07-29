@@ -22,7 +22,7 @@ public class WoodpeckerWanderFlyingGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        if (!this.woodpecker.isFlying()) return false;
+        if (!this.woodpecker.isFlying() || this.woodpecker.isClinging()) return false;
 
         return this.woodpecker.getNavigation().isIdle() && this.woodpecker.getRandom().nextInt(10) == 0;
     }

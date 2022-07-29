@@ -15,7 +15,7 @@ public class WoodpeckerWanderLandGoal extends WanderAroundFarGoal {
 
     @Override
     public boolean canStart() {
-        if (this.woodpecker.isFlying()) return false;
+        if (this.woodpecker.isFlying() || this.woodpecker.isClinging()) return false;
 
         return super.canStart();
     }
