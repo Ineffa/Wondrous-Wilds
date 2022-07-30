@@ -38,7 +38,7 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
     public void stop() {
         super.stop();
 
-        this.woodpecker.startClingingTo(this.getTargetPos());
+        if (this.hasReached()) this.woodpecker.startClingingTo(this.getTargetPos());
     }
 
     @Override
