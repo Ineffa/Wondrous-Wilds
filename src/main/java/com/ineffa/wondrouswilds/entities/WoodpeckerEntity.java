@@ -366,9 +366,9 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     private <ENTITY extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<ENTITY> event) {
         if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
 
-        else if (this.isOnGround()) event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
-
         else if (this.isClinging()) event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
+
+        else if (this.isOnGround()) event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
 
         return PlayState.CONTINUE;
     }
