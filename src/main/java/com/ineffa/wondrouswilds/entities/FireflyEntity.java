@@ -80,6 +80,8 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         this.setPathfindingPenalty(PathNodeType.WATER_BORDER, 16.0f);
         this.setPathfindingPenalty(PathNodeType.COCOA, -1.0f);
         this.setPathfindingPenalty(PathNodeType.FENCE, -1.0f);
+
+        this.ignoreCameraFrustum = true;
     }
 
     public static boolean canFireflySpawn(EntityType<FireflyEntity> entityType, ServerWorldAccess world, SpawnReason spawnReason, BlockPos spawnAttemptPos, Random random) {
