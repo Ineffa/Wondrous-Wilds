@@ -87,6 +87,8 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
 
         this.airMoveControl = new FlightMoveControl(this, 20, true);
         this.landMoveControl = new MoveControl(this);
+
+        this.ignoreCameraFrustum = true;
     }
 
     public static DefaultAttributeContainer.Builder createWoodpeckerAttributes() {
