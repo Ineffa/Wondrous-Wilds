@@ -4,6 +4,7 @@ import com.ineffa.wondrouswilds.entities.ai.RelaxedBodyControl;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerClingToBlockGoal;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderFlyingGoal;
 import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderLandGoal;
+import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -56,6 +57,8 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     private static final TrackedData<Boolean> WANTS_TO_LAND = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 
+    private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
     public static final String IS_FLYING_KEY = "IsFlying";
     public static final String WANTS_TO_LAND_KEY = "WantsToLand";
     public static final String CLING_POS_KEY = "ClingPos";
@@ -105,6 +108,7 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
         this.dataTracker.startTracking(IS_FLYING, false);
         this.dataTracker.startTracking(WANTS_TO_LAND, false);
         this.dataTracker.startTracking(CLING_POS, BlockPos.ORIGIN);
+        this.dataTracker.startTracking(DRUMMING_TICKS, 0);
     }
 
     @Override
@@ -206,6 +210,22 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
         return state.isIn(BlockTags.OVERWORLD_NATURAL_LOGS) && state.get(PillarBlock.AXIS).isVertical();
     }
 
+    public int getDrummingTicks() {
+        return this.dataTracker.get(DRUMMING_TICKS);
+    }
+
+    public void setDrummingTicks(int ticks) {
+        this.dataTracker.set(DRUMMING_TICKS, ticks);
+    }
+
+    public boolean isDrumming() {
+        return this.getDrummingTicks() > 0;
+    }
+
+    public void startDrumming() {
+        this.setDrummingTicks(55);
+    }
+
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
@@ -248,8 +268,16 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
             this.flapAngle += this.flapSpeed;
         }
         else {
+            if (this.isDrumming()) {
+                if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.5F);
+
+                this.setDrummingTicks(this.getDrummingTicks() - 1);
+            }
+
             if (this.isClinging()) {
-                if (!this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) this.setFlying(true);
+                if (!this.isDrumming() && this.getRandom().nextInt(200) == 0) this.startDrumming();
+
+                if ((!this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) && !this.isDrumming()) this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90);
                     this.setHeadYaw(this.getYaw());
@@ -262,7 +290,7 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     @Override
     public boolean damage(DamageSource source, float amount) {
         if (super.damage(source, amount)) {
-            if (!this.isFlying()) this.setFlying(true);
+            if (!this.isFlying() && !this.isDrumming()) this.setFlying(true);
 
             return true;
         }
@@ -376,10 +404,17 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     }
 
     private <ENTITY extends IAnimatable> PlayState animationPredicate(AnimationEvent<ENTITY> event) {
+        if (this.isDrumming() && this.isClinging()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
+            return PlayState.CONTINUE;
+        }
+
         if (this.isFlying() && this.limbDistance >= 0.9F) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("flap"));
             return PlayState.CONTINUE;
         }
-        else return PlayState.STOP;
+
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
+        return PlayState.CONTINUE;
     }
 }

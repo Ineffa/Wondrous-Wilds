@@ -223,6 +223,109 @@
 					}
 				}
 			}
+		},
+		"drum": {
+			"animation_length": 2.75,
+			"bones": {
+				"head": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [27.5, 0, 0],
+							"easing": "easeOutBack"
+						},
+						"0.375": {
+							"vector": [27.5, 0, 0]
+						},
+						"0.5417": {
+							"vector": [25, 0, 0],
+							"easing": "easeInCubic"
+						},
+						"2.5": {
+							"vector": [25, 0, 0],
+							"easing": "easeInCubic"
+						},
+						"2.75": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					},
+					"position": {
+						"0.0417": {
+							"vector": [0, 0, 0]
+						},
+						"0.3333": {
+							"vector": [0, 0.5, 0.5],
+							"easing": "easeOutCubic"
+						},
+						"0.5": {
+							"vector": [0, 0.25, -0.25],
+							"easing": "easeInCubic"
+						},
+						"0.5417": {
+							"vector": [0, "0.25 + (math.sin(query.anim_time * 5000) * 0.4)", "-0.25 + (math.sin(query.anim_time * 5000) * 0.8)"]
+						},
+						"2.5": {
+							"vector": [0, "0.25 + (math.sin(query.anim_time * 5000) * 0.4)", "-0.25 + (math.sin(query.anim_time * 5000) * 0.8)"]
+						},
+						"2.75": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"body": {
+					"rotation": {
+						"0.0417": {
+							"vector": [0, 0, 0]
+						},
+						"0.3333": {
+							"vector": [-15, 0, 0],
+							"easing": "easeOutCubic"
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInCubic"
+						},
+						"2.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInCubic"
+						},
+						"2.75": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					},
+					"position": {
+						"0.0833": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [0, 0.75, 0],
+							"easing": "easeOutCubic"
+						},
+						"0.4583": {
+							"vector": [0, 0, 0],
+							"easing": "easeInCubic"
+						},
+						"0.6667": {
+							"vector": [0, "math.sin((query.anim_time - 1) * 4500) * -0.25", 0]
+						},
+						"2.5": {
+							"vector": [0, "math.sin((query.anim_time - 1) * 4500) * -0.25", 0]
+						},
+						"2.75": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		},
+		"empty": {
+			"loop": true
 		}
 	},
 	"geckolib_format_version": 2

@@ -1,9 +1,6 @@
 package com.ineffa.wondrouswilds;
 
-import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
-import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
-import com.ineffa.wondrouswilds.registry.WondrousWildsFeatures;
-import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
+import com.ineffa.wondrouswilds.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.*;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -35,6 +32,8 @@ public class WondrousWilds implements ModInitializer {
 
 		GeckoLibMod.DISABLE_IN_DEV = true;
 		GeckoLib.initialize();
+
+		WondrousWildsSounds.initialize();
 
 		WondrousWildsEntities.initialize();
 		WondrousWildsBlocks.initialize();
