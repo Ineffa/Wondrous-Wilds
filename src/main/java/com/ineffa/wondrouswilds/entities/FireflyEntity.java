@@ -7,13 +7,8 @@ import com.ineffa.wondrouswilds.entities.ai.FireflyWanderLandGoal;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.control.FlightMoveControl;
-import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.pathing.BirdNavigation;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -50,30 +45,12 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Objects;
 
-public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatable {
+public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnimatable {
 
-    private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(FireflyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> WANTS_TO_LAND = DataTracker.registerData(FireflyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> LAND_ON_ENTITY_COOLDOWN = DataTracker.registerData(FireflyEntity.class, TrackedDataHandlerRegistry.INTEGER);
-
-    private final FlightMoveControl airMoveControl;
-    private final MoveControl landMoveControl;
-
-    private final BirdNavigation airNavigation;
-    private final MobNavigation landNavigation;
 
     public FireflyEntity(EntityType<? extends FireflyEntity> entityType, World world) {
         super(entityType, world);
-
-        BirdNavigation birdNavigation = new BirdNavigation(this, world);
-        birdNavigation.setCanPathThroughDoors(false);
-        birdNavigation.setCanEnterOpenDoors(true);
-        birdNavigation.setCanSwim(false);
-        this.airNavigation = birdNavigation;
-        this.landNavigation = new MobNavigation(this, world);
-
-        this.airMoveControl = new FlightMoveControl(this, 20, true);
-        this.landMoveControl = new MoveControl(this);
 
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, -1.0f);
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0f);
@@ -123,8 +100,6 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     protected void initDataTracker() {
         super.initDataTracker();
 
-        this.dataTracker.startTracking(IS_FLYING, false);
-        this.dataTracker.startTracking(WANTS_TO_LAND, false);
         this.dataTracker.startTracking(LAND_ON_ENTITY_COOLDOWN, 0);
     }
 
@@ -132,8 +107,6 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
 
-        this.setFlying(nbt.getBoolean("IsFlying"));
-        this.setWantsToLand(nbt.getBoolean("WantsToLand"));
         this.setLandOnEntityCooldown(nbt.getInt("LandOnEntityCooldown"));
     }
 
@@ -141,25 +114,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
 
-        nbt.putBoolean("IsFlying", this.isFlying());
-        nbt.putBoolean("WantsToLand", this.wantsToLand());
         nbt.putInt("LandOnEntityCooldown", this.getLandOnEntityCooldown());
-    }
-
-    public boolean isFlying() {
-        return this.dataTracker.get(IS_FLYING);
-    }
-
-    public void setIsFlying(boolean isFlying) {
-        this.dataTracker.set(IS_FLYING, isFlying);
-    }
-
-    public boolean wantsToLand() {
-        return this.dataTracker.get(WANTS_TO_LAND);
-    }
-
-    public void setWantsToLand(boolean wantsToLand) {
-        this.dataTracker.set(WANTS_TO_LAND, wantsToLand);
     }
 
     public int getLandOnEntityCooldown() {
@@ -178,32 +133,6 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         this.goalSelector.add(3, new FireflyLandOnEntityGoal(this, LivingEntity.class));
         this.goalSelector.add(4, new FireflyWanderLandGoal(this, 1.0D));
         this.goalSelector.add(4, new FireflyWanderFlyingGoal(this));
-    }
-
-    @Override
-    protected EntityNavigation createNavigation(World world) {
-        if (this.isFlying()) {
-            BirdNavigation birdNavigation = new BirdNavigation(this, world);
-            birdNavigation.setCanPathThroughDoors(false);
-            birdNavigation.setCanEnterOpenDoors(true);
-            birdNavigation.setCanSwim(false);
-
-            return birdNavigation;
-        }
-
-        return new MobNavigation(this, world);
-    }
-
-    public void setFlying(boolean flying) {
-        this.setIsFlying(flying);
-
-        if (!flying) {
-            this.setNoGravity(false);
-            this.setWantsToLand(false);
-        }
-
-        this.moveControl = flying ? this.airMoveControl : this.landMoveControl;
-        this.navigation = flying ? this.airNavigation : this.landNavigation;
     }
 
     @Override
@@ -243,16 +172,6 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
     @Override
     public boolean canImmediatelyDespawn(double distanceSquared) {
         return true;
-    }
-
-    @Override
-    public boolean isInAir() {
-        return !this.onGround;
-    }
-
-    @Override
-    protected boolean hasWings() {
-        return this.isFlying();
     }
 
     public boolean canWander() {
@@ -366,7 +285,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         animationData.addAnimationController(antennaMolangController);
     }
 
-    private <ENTITY extends IAnimatable> PlayState molangAnimationPredicate(AnimationEvent<ENTITY> event) {
+    private <E extends IAnimatable> PlayState molangAnimationPredicate(AnimationEvent<E> event) {
         if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingMolang"));
 
         else event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedMolang"));
@@ -374,7 +293,7 @@ public class FireflyEntity extends AnimalEntity implements Flutterer, IAnimatabl
         return PlayState.CONTINUE;
     }
 
-    private <ENTITY extends IAnimatable> PlayState antennaMolangPredicate(AnimationEvent<ENTITY> event) {
+    private <E extends IAnimatable> PlayState antennaMolangPredicate(AnimationEvent<E> event) {
         event.getController().setAnimation(new AnimationBuilder().addAnimation("antennaeMolang"));
 
         return PlayState.CONTINUE;

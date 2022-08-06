@@ -48,11 +48,11 @@ public class FireflyWanderFlyingGoal extends Goal {
 
     @Nullable
     private Vec3d getRandomLocation() {
-        Vec3d vec3d = this.firefly.getRotationVec(0.0f);
-        Vec3d vec3d3 = AboveGroundTargeting.find(this.firefly, 8, 8, vec3d.x, vec3d.z, 1.5707964f, this.firefly.wantsToLand() ? 1 : 6, 1);
+        Vec3d vec3d = this.firefly.getRotationVec(0.0F);
+        Vec3d vec3d3 = AboveGroundTargeting.find(this.firefly, 8, 8, vec3d.x, vec3d.z, 1.5707964F, this.firefly.wantsToLand() ? 1 : 6, 1);
 
         if (vec3d3 != null) return vec3d3;
 
-        return NoPenaltySolidTargeting.find(this.firefly, 16, 8, -2, vec3d.x, vec3d.z, 1.5707963705062866);
+        return NoPenaltySolidTargeting.find(this.firefly, 16, 8, -2, vec3d.x, vec3d.z, 1.5707963705062866D);
     }
 }
