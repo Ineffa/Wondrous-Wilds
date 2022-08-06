@@ -1,31 +1,24 @@
 package com.ineffa.wondrouswilds.entities;
 
-import com.ineffa.wondrouswilds.entities.ai.RelaxedBodyControl;
-import com.ineffa.wondrouswilds.entities.ai.WoodpeckerClingToBlockGoal;
-import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderFlyingGoal;
-import com.ineffa.wondrouswilds.entities.ai.WoodpeckerWanderLandGoal;
+import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.control.BodyControl;
-import net.minecraft.entity.ai.control.FlightMoveControl;
-import net.minecraft.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.pathing.BirdNavigation;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.MobNavigation;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -35,10 +28,12 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -49,21 +44,33 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Predicate;
+
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
 
-public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimatable {
+public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements TreeHollowNester, Angerable, IAnimatable {
 
-    private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> WANTS_TO_LAND = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
-
-    private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
-
-    public static final String IS_FLYING_KEY = "IsFlying";
-    public static final String WANTS_TO_LAND_KEY = "WantsToLand";
     public static final String CLING_POS_KEY = "ClingPos";
+    public static final String NEST_POS_KEY = "NestPos";
+
+    private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> otherWoodpecker.isDrumming() || this.getAttacker() == otherWoodpecker;
+
+    private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> ANGER_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(10, 15);
+    @Nullable
+    private UUID angryAt;
 
     private Direction clingSide;
+
+    @Environment(value = EnvType.SERVER)
+    private int cannotEnterNestTicks;
+    @Nullable
+    @Environment(value = EnvType.SERVER)
+    private BlockPos nestPos;
 
     @Environment(value = EnvType.CLIENT)
     public float flapSpeed;
@@ -72,24 +79,8 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     @Environment(value = EnvType.CLIENT)
     public float flapAngle;
 
-    private final FlightMoveControl airMoveControl;
-    private final MoveControl landMoveControl;
-
-    private final BirdNavigation airNavigation;
-    private final MobNavigation landNavigation;
-
     public WoodpeckerEntity(EntityType<? extends WoodpeckerEntity> entityType, World world) {
         super(entityType, world);
-
-        BirdNavigation birdNavigation = new BirdNavigation(this, world);
-        birdNavigation.setCanPathThroughDoors(false);
-        birdNavigation.setCanEnterOpenDoors(true);
-        birdNavigation.setCanSwim(false);
-        this.airNavigation = birdNavigation;
-        this.landNavigation = new MobNavigation(this, world);
-
-        this.airMoveControl = new FlightMoveControl(this, 20, true);
-        this.landMoveControl = new MoveControl(this);
 
         this.ignoreCameraFrustum = true;
     }
@@ -97,6 +88,7 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     public static DefaultAttributeContainer.Builder createWoodpeckerAttributes() {
         return AnimalEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 8.0D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 0.5D)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.25D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
     }
@@ -105,61 +97,35 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     protected void initDataTracker() {
         super.initDataTracker();
 
-        this.dataTracker.startTracking(IS_FLYING, false);
-        this.dataTracker.startTracking(WANTS_TO_LAND, false);
         this.dataTracker.startTracking(CLING_POS, BlockPos.ORIGIN);
         this.dataTracker.startTracking(DRUMMING_TICKS, 0);
+        this.dataTracker.startTracking(ANGER_TICKS, 0);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
 
-        nbt.putBoolean(IS_FLYING_KEY, this.isFlying());
-        nbt.putBoolean(WANTS_TO_LAND_KEY, this.wantsToLand());
         nbt.put(CLING_POS_KEY, NbtHelper.fromBlockPos(this.getClingPos()));
+
+        if (this.hasNestPos()) nbt.put(NEST_POS_KEY, NbtHelper.fromBlockPos(Objects.requireNonNull(this.getNestPos())));
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
 
-        boolean isFlying = nbt.getBoolean(IS_FLYING_KEY);
-        if (this.isFlying() != isFlying) this.setFlying(isFlying);
-
-        this.setWantsToLand(nbt.getBoolean(WANTS_TO_LAND_KEY));
-
         BlockPos clingPos = NbtHelper.toBlockPos(nbt.getCompound(CLING_POS_KEY));
         if (!this.isClinging() && !clingPos.equals(BlockPos.ORIGIN)) this.startClingingTo(clingPos);
+
+        if (nbt.contains(NEST_POS_KEY)) this.setNestPos(NbtHelper.toBlockPos(nbt.getCompound(NEST_POS_KEY)));
     }
 
-    public boolean isFlying() {
-        return this.dataTracker.get(IS_FLYING);
-    }
-
-    public void setIsFlying(boolean isFlying) {
-        this.dataTracker.set(IS_FLYING, isFlying);
-    }
-
+    @Override
     public void setFlying(boolean flying) {
-        this.setIsFlying(flying);
+        super.setFlying(flying);
 
-        if (!flying) {
-            this.setNoGravity(false);
-            this.setWantsToLand(false);
-        }
-        else if (this.isClinging()) this.stopClinging();
-
-        this.moveControl = flying ? this.airMoveControl : this.landMoveControl;
-        this.navigation = flying ? this.airNavigation : this.landNavigation;
-    }
-
-    public boolean wantsToLand() {
-        return this.dataTracker.get(WANTS_TO_LAND);
-    }
-
-    public void setWantsToLand(boolean wantsToLand) {
-        this.dataTracker.set(WANTS_TO_LAND, wantsToLand);
+        if (flying && this.isClinging()) this.stopClinging();
     }
 
     public BlockPos getClingPos() {
@@ -227,29 +193,109 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     }
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5D));
-        this.goalSelector.add(2, new WoodpeckerClingToBlockGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(3, new WoodpeckerWanderLandGoal(this, 1.0D));
-        this.goalSelector.add(3, new WoodpeckerWanderFlyingGoal(this));
-        this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
-        this.goalSelector.add(4, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
-        this.goalSelector.add(5, new LookAroundGoal(this));
+    public int getNestCapacityWeight() {
+        return this.isBaby() ? 15 : 55;
+    }
+
+    @Nullable
+    @Override
+    public BlockPos getNestPos() {
+        return this.nestPos;
     }
 
     @Override
-    protected EntityNavigation createNavigation(World world) {
-        if (this.isFlying()) {
-            BirdNavigation birdNavigation = new BirdNavigation(this, world);
-            birdNavigation.setCanPathThroughDoors(false);
-            birdNavigation.setCanEnterOpenDoors(true);
-            birdNavigation.setCanSwim(false);
+    public void setNestPos(@Nullable BlockPos pos) {
+        this.nestPos = pos;
+    }
 
-            return birdNavigation;
-        }
+    @Override
+    public int getMinTicksInNest() {
+        return 200;
+    }
 
-        return new MobNavigation(this, world);
+    @Override
+    public int getMinTicksOutOfNest() {
+        return 400;
+    }
+
+    @Override
+    public int getCannotInhabitNestTicks() {
+        if (this.getWorld().isClient()) return 0;
+
+        return this.cannotEnterNestTicks;
+    }
+
+    @Override
+    public void setCannotInhabitNestTicks(int ticks) {
+        if (this.getWorld().isClient()) return;
+
+        this.cannotEnterNestTicks = ticks;
+    }
+
+    @Override
+    public boolean shouldReturnToNest() {
+        if (this.getCannotInhabitNestTicks() > 0 || !this.hasValidNestPos()) return false;
+
+        return this.getWorld().isNight() || this.getWorld().isRaining();
+    }
+
+    @Override
+    public boolean defendsNest() {
+        return true;
+    }
+
+    @Override
+    public int getWanderRadiusFromNest() {
+        return 64;
+    }
+
+    @Override
+    public int getAngerTime() {
+        return this.dataTracker.get(ANGER_TICKS);
+    }
+
+    @Override
+    public void setAngerTime(int ticks) {
+        this.dataTracker.set(ANGER_TICKS, ticks);
+    }
+
+    @Nullable
+    @Override
+    public UUID getAngryAt() {
+        return this.angryAt;
+    }
+
+    @Override
+    public void setAngryAt(@Nullable UUID angryAt) {
+        this.angryAt = angryAt;
+    }
+
+    @Override
+    public void chooseRandomAngerTime() {
+        this.setAngerTime(ANGER_TIME_RANGE.get(this.getRandom()));
+    }
+
+    public boolean canWander() {
+        return !this.isClinging() && !this.hasAttackTarget();
+    }
+
+    public boolean hasAttackTarget() {
+        return this.getTarget() != null;
+    }
+
+    @Override
+    protected void initGoals() {
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new FleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.5D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
+        this.goalSelector.add(2, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(3, new EscapeDangerGoal(this, 1.5D));
+        this.goalSelector.add(4, new FindOrReturnToTreeHollowGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(5, new WoodpeckerClingToBlockGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(6, new WoodpeckerWanderLandGoal(this, 1.0D));
+        this.goalSelector.add(6, new WoodpeckerWanderFlyingGoal(this));
+        this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
+        this.goalSelector.add(7, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
+        this.goalSelector.add(8, new LookAroundGoal(this));
     }
 
     @Nullable
@@ -277,13 +323,21 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
             if (this.isClinging()) {
                 if (!this.isDrumming() && this.getRandom().nextInt(200) == 0) this.startDrumming();
 
-                if ((!this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) && !this.isDrumming()) this.setFlying(true);
+                if ((this.shouldReturnToNest() || !this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) && !this.isDrumming()) this.setFlying(true);
                 else {
-                    this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90);
+                    this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
                     this.setHeadYaw(this.getYaw());
                     this.setBodyYaw(this.getYaw());
                 }
             }
+
+            if (this.getCannotInhabitNestTicks() > 0) this.setCannotInhabitNestTicks(this.getCannotInhabitNestTicks() - 1);
+
+            if (this.hasNestPos()) {
+                if (!this.hasValidNestPos()) this.clearNestPos();
+            }
+
+            this.tickAngerLogic((ServerWorld) this.getWorld(), false);
         }
     }
 
@@ -306,19 +360,19 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
 
         if (this.canMoveVoluntarily() || this.isLogicalSideForUpdatingMovement()) {
             if (this.isTouchingWater()) {
-                this.updateVelocity(0.02f, movementInput);
+                this.updateVelocity(0.02F, movementInput);
                 this.move(MovementType.SELF, this.getVelocity());
-                this.setVelocity(this.getVelocity().multiply(0.8f));
+                this.setVelocity(this.getVelocity().multiply(0.8D));
             }
             else if (this.isInLava()) {
-                this.updateVelocity(0.02f, movementInput);
+                this.updateVelocity(0.02F, movementInput);
                 this.move(MovementType.SELF, this.getVelocity());
-                this.setVelocity(this.getVelocity().multiply(0.5));
+                this.setVelocity(this.getVelocity().multiply(0.5D));
             }
             else {
                 this.updateVelocity(this.getMovementSpeed(), movementInput);
                 this.move(MovementType.SELF, this.getVelocity());
-                this.setVelocity(this.getVelocity().multiply(0.91f));
+                this.setVelocity(this.getVelocity().multiply(0.91D));
             }
         }
 
@@ -328,16 +382,6 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
     @Override
     public boolean canMoveVoluntarily() {
         return super.canMoveVoluntarily() && !this.isClinging();
-    }
-
-    @Override
-    public boolean isInAir() {
-        return !this.onGround;
-    }
-
-    @Override
-    protected boolean hasWings() {
-        return this.isFlying();
     }
 
     @Override
@@ -393,7 +437,7 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
         animationData.addAnimationController(animationController);
     }
 
-    private <ENTITY extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<ENTITY> event) {
+    private <E extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<E> event) {
         if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
 
         else if (this.isClinging()) event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
@@ -403,7 +447,7 @@ public class WoodpeckerEntity extends AnimalEntity implements Flutterer, IAnimat
         return PlayState.CONTINUE;
     }
 
-    private <ENTITY extends IAnimatable> PlayState animationPredicate(AnimationEvent<ENTITY> event) {
+    private <E extends IAnimatable> PlayState animationPredicate(AnimationEvent<E> event) {
         if (this.isDrumming() && this.isClinging()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
             return PlayState.CONTINUE;

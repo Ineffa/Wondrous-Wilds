@@ -9,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.Objects;
 
 public class WoodpeckerWanderFlyingGoal extends Goal {
 
@@ -22,7 +23,7 @@ public class WoodpeckerWanderFlyingGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        if (!this.woodpecker.isFlying() || this.woodpecker.isClinging()) return false;
+        if (!this.woodpecker.isFlying() || !this.woodpecker.canWander()) return false;
 
         return this.woodpecker.getNavigation().isIdle() && this.woodpecker.getRandom().nextInt(10) == 0;
     }
@@ -48,11 +49,13 @@ public class WoodpeckerWanderFlyingGoal extends Goal {
 
     @Nullable
     private Vec3d getRandomLocation() {
-        Vec3d vec3d = this.woodpecker.getRotationVec(0.0f);
-        Vec3d vec3d3 = AboveGroundTargeting.find(this.woodpecker, 8, 8, vec3d.x, vec3d.z, 1.5707964f, this.woodpecker.wantsToLand() ? 1 : 6, 1);
+        boolean moveTowardsNest = this.woodpecker.hasValidNestPos() && !Objects.requireNonNull(this.woodpecker.getNestPos()).isWithinDistance(this.woodpecker.getPos(), this.woodpecker.getWanderRadiusFromNest());
 
-        if (vec3d3 != null) return vec3d3;
+        Vec3d direction = moveTowardsNest ? Vec3d.ofCenter(this.woodpecker.getNestPos()).subtract(this.woodpecker.getPos()).normalize() : this.woodpecker.getRotationVec(0.0F);
 
-        return NoPenaltySolidTargeting.find(this.woodpecker, 16, 8, -2, vec3d.x, vec3d.z, 1.5707963705062866);
+        Vec3d groundLocation = AboveGroundTargeting.find(this.woodpecker, 16, 8, direction.x, direction.z, 1.5707964F, this.woodpecker.wantsToLand() ? 1 : 6, 1);
+        if (groundLocation != null) return groundLocation;
+
+        return NoPenaltySolidTargeting.find(this.woodpecker, 16, 8, -2, direction.x, direction.z, 1.5707963705062866D);
     }
 }

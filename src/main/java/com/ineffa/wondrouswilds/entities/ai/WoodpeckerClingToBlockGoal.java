@@ -19,7 +19,7 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        return this.mob.getRandom().nextInt(400) == 0 && this.woodpecker.isFlying() && !this.woodpecker.isClinging() && super.canStart();
+        return this.mob.getRandom().nextInt(400) == 0 && this.woodpecker.isFlying() && this.woodpecker.canWander() && !this.woodpecker.shouldFindNest() && super.canStart();
     }
 
     @Override

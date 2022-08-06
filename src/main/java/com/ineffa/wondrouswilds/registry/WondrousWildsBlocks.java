@@ -2,9 +2,13 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.blocks.*;
+import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -24,7 +28,6 @@ public class WondrousWildsBlocks {
     public static final Block POTTED_WHITE_VIOLET = registerBlock("potted_white_violet", new FlowerPotBlock(WHITE_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
 
     public static final Block DEAD_BIRCH_LOG = registerBlock("dead_birch_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG)));
-
 
     public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque()));
     public static final Block HOLLOW_SPRUCE_LOG = registerBlock("hollow_spruce_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.SPRUCE_LOG).nonOpaque()));
@@ -46,13 +49,24 @@ public class WondrousWildsBlocks {
     public static final Block HOLLOW_STRIPPED_CRIMSON_STEM = registerBlock("hollow_stripped_crimson_stem", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_CRIMSON_STEM).nonOpaque()));
     public static final Block HOLLOW_STRIPPED_WARPED_STEM = registerBlock("hollow_stripped_warped_stem", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_WARPED_STEM).nonOpaque()));
 
+    public static final Block BIRCH_TREE_HOLLOW = registerBlock("birch_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.PALE_YELLOW).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
 
+    public static final class BlockEntities {
+        public static final BlockEntityType<TreeHollowBlockEntity> TREE_HOLLOW = registerBlockEntity("tree_hollow", FabricBlockEntityTypeBuilder.create(TreeHollowBlockEntity::new, BIRCH_TREE_HOLLOW).build(null));
+
+        private static <BE extends BlockEntity> BlockEntityType<BE> registerBlockEntity(String name, BlockEntityType<BE> blockEntityType) {
+            return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(WondrousWilds.MOD_ID, name), blockEntityType);
+        }
+
+        public static void init() {}
+    }
 
     private static Block registerBlock(String name, Block block) {
         return Registry.register(Registry.BLOCK, new Identifier(WondrousWilds.MOD_ID, name), block);
     }
 
     public static void initialize() {
+        BlockEntities.init();
 
         StrippableBlockRegistry.register(DEAD_BIRCH_LOG, Blocks.STRIPPED_BIRCH_LOG);
 
