@@ -1,15 +1,25 @@
 package com.ineffa.wondrouswilds.util;
 
+import com.google.common.collect.ImmutableMap;
+import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
+import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class WondrousWildsUtils {
 
     public static final Direction[] HORIZONTAL_DIRECTIONS = Arrays.stream(Direction.values()).filter((direction) -> direction.getAxis().isHorizontal()).toArray(Direction[]::new);
+
+    public static final Map<Block, TreeHollowBlock> TREE_HOLLOW_MAP = new ImmutableMap.Builder<Block, TreeHollowBlock>()
+            .put(Blocks.BIRCH_LOG, WondrousWildsBlocks.BIRCH_TREE_HOLLOW)
+            .build();
 
     public static Set<BlockPos> getCenteredCuboid(BlockPos center, int horizontalRadius) {
         return getCenteredCuboid(center, horizontalRadius, 0);

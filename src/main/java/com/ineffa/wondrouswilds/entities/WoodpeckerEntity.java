@@ -1,9 +1,11 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.EntityDimensions;
@@ -35,6 +37,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -49,15 +52,20 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
+import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.TREE_HOLLOW_MAP;
 
 public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements TreeHollowNester, Angerable, IAnimatable {
 
     public static final String CLING_POS_KEY = "ClingPos";
     public static final String NEST_POS_KEY = "NestPos";
 
+    public static final int PECKS_NEEDED_FOR_NEST = 200;
+
     private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> otherWoodpecker.isDrumming() || this.getAttacker() == otherWoodpecker;
 
     private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    private static final TrackedData<Integer> PECK_CHAIN_LENGTH = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> PECK_CHAIN_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> ANGER_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(10, 15);
@@ -65,6 +73,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     private UUID angryAt;
 
     private Direction clingSide;
+
+    private int consecutivePecks;
 
     @Environment(value = EnvType.SERVER)
     private int cannotEnterNestTicks;
@@ -98,6 +108,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         super.initDataTracker();
 
         this.dataTracker.startTracking(CLING_POS, BlockPos.ORIGIN);
+        this.dataTracker.startTracking(PECK_CHAIN_LENGTH, 0);
+        this.dataTracker.startTracking(PECK_CHAIN_TICKS, 0);
         this.dataTracker.startTracking(DRUMMING_TICKS, 0);
         this.dataTracker.startTracking(ANGER_TICKS, 0);
     }
@@ -162,6 +174,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     public void stopClinging() {
         this.setClingPos(BlockPos.ORIGIN);
+
+        if (this.isPecking()) this.stopPecking(true);
+        else if (this.getConsecutivePecks() > 0) this.resetConsecutivePecks();
     }
 
     public boolean hasValidClingPos() {
@@ -174,6 +189,66 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         if (!(state.getBlock() instanceof PillarBlock)) return false;
 
         return state.isIn(BlockTags.OVERWORLD_NATURAL_LOGS) && state.get(PillarBlock.AXIS).isVertical();
+    }
+
+    public boolean canMakeNestInPos(BlockPos pos) {
+        if (!this.canClingToPos(pos)) return false;
+
+        Block block = this.getWorld().getBlockState(pos).getBlock();
+
+        return TREE_HOLLOW_MAP.containsKey(block);
+    }
+
+    public boolean isMakingNest() {
+        return this.isPecking() || this.getConsecutivePecks() > 0;
+    }
+
+    public boolean isPecking() {
+        return this.getCurrentPeckChainLength() > 0;
+    }
+
+    public int getCurrentPeckChainLength() {
+        return this.dataTracker.get(PECK_CHAIN_LENGTH);
+    }
+
+    public void setPeckChainLength(int length) {
+        this.dataTracker.set(PECK_CHAIN_LENGTH, length);
+    }
+
+    public int getPeckChainTicks() {
+        return this.dataTracker.get(PECK_CHAIN_TICKS);
+    }
+
+    public void setPeckChainTicks(int ticks) {
+        this.dataTracker.set(PECK_CHAIN_TICKS, ticks);
+    }
+
+    public int calculateTicksForPeckChain(int chainLength) {
+        return 10 + (10 * chainLength);
+    }
+
+    public void startPeckChain(int length) {
+        this.setPeckChainLength(length);
+        this.setPeckChainTicks(this.calculateTicksForPeckChain(length));
+    }
+
+    public void stopPecking(boolean resetConsecutive) {
+        this.setPeckChainLength(0);
+        this.setPeckChainTicks(0);
+
+        if (resetConsecutive) this.resetConsecutivePecks();
+    }
+
+    public int getConsecutivePecks() {
+        return this.consecutivePecks;
+    }
+
+    public void setConsecutivePecks(int pecks) {
+        this.consecutivePecks = pecks;
+    }
+
+    public void resetConsecutivePecks() {
+        this.setConsecutivePecks(0);
     }
 
     public int getDrummingTicks() {
@@ -321,9 +396,38 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
             }
 
             if (this.isClinging()) {
-                if (!this.isDrumming() && this.getRandom().nextInt(200) == 0) this.startDrumming();
+                if (this.isPecking()) {
+                    if (this.getPeckChainTicks() <= 0) this.stopPecking(false);
 
-                if ((this.shouldReturnToNest() || !this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) && !this.isDrumming()) this.setFlying(true);
+                    else {
+                        if (this.getPeckChainTicks() % 10 == 0 && this.getPeckChainTicks() != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength())) {
+                            this.setConsecutivePecks(this.getConsecutivePecks() + 1);
+
+                            if (this.getConsecutivePecks() >= PECKS_NEEDED_FOR_NEST) {
+                                this.stopPecking(true);
+
+                                if (this.canMakeNestInPos(this.getClingPos())) {
+                                    Block clingBlock = this.getWorld().getBlockState(this.getClingPos()).getBlock();
+                                    this.getWorld().setBlockState(this.getClingPos(), TREE_HOLLOW_MAP.get(clingBlock).getDefaultState().with(TreeHollowBlock.FACING, this.clingSide));
+                                }
+                            }
+
+                            this.getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, this.getClingPos(), Block.getRawIdFromState(this.getWorld().getBlockState(this.getClingPos())));
+                        }
+
+                        this.setPeckChainTicks(this.getPeckChainTicks() - 1);
+                    }
+                }
+                else {
+                    if (!this.isDrumming()) {
+                        if (this.shouldFindNest()) {
+                            if (this.getRandom().nextInt(20) == 0 && this.canMakeNestInPos(this.getClingPos())) this.startPeckChain(Math.min(1 + this.getRandom().nextInt(4), PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()));
+                        }
+                        else if (this.getRandom().nextInt(200) == 0) this.startDrumming();
+                    }
+                }
+
+                if ((this.shouldReturnToNest() || !this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) && !this.isMakingNest() && !this.isDrumming()) this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
                     this.setHeadYaw(this.getYaw());
@@ -430,10 +534,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     @Override
     public void registerControllers(AnimationData animationData) {
         AnimationController<WoodpeckerEntity> constantController = new AnimationController<>(this, "constantController", 2, this::constantAnimationPredicate);
-        //AnimationController<WoodpeckerEntity> overlapController = new AnimationController<>(this, "overlapController", 2, this::overlapAnimationPredicate);
+        AnimationController<WoodpeckerEntity> overlapController = new AnimationController<>(this, "overlapController", 0, this::overlapAnimationPredicate);
         AnimationController<WoodpeckerEntity> animationController = new AnimationController<>(this, "animationController", 2, this::animationPredicate);
 
         animationData.addAnimationController(constantController);
+        animationData.addAnimationController(overlapController);
         animationData.addAnimationController(animationController);
     }
 
@@ -448,6 +553,26 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
             event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
 
         return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> PlayState overlapAnimationPredicate(AnimationEvent<E> event) {
+        if (this.isPecking())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(this.getPeckAnimationToPlay()));
+
+        else
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
+
+        return PlayState.CONTINUE;
+    }
+
+    private String getPeckAnimationToPlay() {
+        return switch (this.getCurrentPeckChainLength()) {
+            case 1 -> "peck1Overlap";
+            case 2 -> "peck2Overlap";
+            case 3 -> "peck3Overlap";
+            case 4 -> "peck4Overlap";
+            default -> "empty";
+        };
     }
 
     private <E extends IAnimatable> PlayState animationPredicate(AnimationEvent<E> event) {
