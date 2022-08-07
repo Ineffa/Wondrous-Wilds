@@ -438,27 +438,28 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     private <E extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<E> event) {
-        if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
+        if (this.isFlying())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
 
-        else if (this.isClinging()) event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
+        else if (this.isClinging())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
 
-        else if (this.isOnGround()) event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
+        else if (this.isOnGround())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
 
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState animationPredicate(AnimationEvent<E> event) {
-        if (this.isDrumming() && this.isClinging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
-            return PlayState.CONTINUE;
-        }
-
-        if (this.isFlying() && this.limbDistance >= 0.9F) {
+        if (this.isFlying() && this.limbDistance >= 0.9F)
             event.getController().setAnimation(new AnimationBuilder().addAnimation("flap"));
-            return PlayState.CONTINUE;
-        }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
+        else if (this.isDrumming() && this.isClinging())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
+
+        else
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
+
         return PlayState.CONTINUE;
     }
 }
