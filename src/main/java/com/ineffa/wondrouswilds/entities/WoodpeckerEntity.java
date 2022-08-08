@@ -128,7 +128,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         super.readCustomDataFromNbt(nbt);
 
         BlockPos clingPos = NbtHelper.toBlockPos(nbt.getCompound(CLING_POS_KEY));
-        if (!this.isClinging() && !clingPos.equals(BlockPos.ORIGIN)) this.startClingingTo(clingPos);
+        if (!this.isClinging() && !clingPos.equals(BlockPos.ORIGIN)) this.tryClingingTo(clingPos);
 
         if (nbt.contains(NEST_POS_KEY)) this.setNestPos(NbtHelper.toBlockPos(nbt.getCompound(NEST_POS_KEY)));
     }
@@ -152,24 +152,30 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         return this.dataTracker.get(CLING_POS) != BlockPos.ORIGIN;
     }
 
-    public void startClingingTo(BlockPos clingPos) {
-        this.setClingPos(clingPos);
-
+    public boolean tryClingingTo(BlockPos clingPos) {
         Direction clingSide = Direction.fromHorizontal(this.getRandom().nextInt(4));
         double closestSideDistance = 100.0D;
         for (Direction side : HORIZONTAL_DIRECTIONS) {
-            double distanceFromSide = this.getBlockPos().getSquaredDistance(clingPos.offset(side));
+            BlockPos offsetPos = clingPos.offset(side);
+            if (!this.getWorld().isAir(offsetPos)) continue;
+
+            double distanceFromSide = this.getBlockPos().getSquaredDistance(offsetPos);
             if (distanceFromSide < closestSideDistance) {
                 clingSide = side;
                 closestSideDistance = distanceFromSide;
             }
         }
+        if (closestSideDistance == 100.0D) return false;
+
+        this.setClingPos(clingPos);
         this.clingSide = clingSide;
 
         BlockPos pos = clingPos.offset(clingSide);
         this.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 
         this.setFlying(false);
+
+        return true;
     }
 
     public void stopClinging() {
@@ -180,10 +186,22 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public boolean hasValidClingPos() {
-        return this.canClingToPos(this.getClingPos());
+        return this.canClingToPos(this.getClingPos(), false) && this.getWorld().isAir(this.getBlockPos());
     }
 
-    public boolean canClingToPos(BlockPos pos) {
+    public boolean canClingToPos(BlockPos pos, boolean checkForSpace) {
+        if (checkForSpace) {
+            boolean hasOpenSpace = false;
+            for (Direction direction : HORIZONTAL_DIRECTIONS) {
+                BlockPos offsetPos = pos.offset(direction);
+                if (this.getWorld().isAir(offsetPos)) {
+                    hasOpenSpace = true;
+                    break;
+                }
+            }
+            if (!hasOpenSpace) return false;
+        }
+
         BlockState state = this.getWorld().getBlockState(pos);
 
         if (!(state.getBlock() instanceof PillarBlock)) return false;
@@ -192,10 +210,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public boolean canMakeNestInPos(BlockPos pos) {
-        if (!this.canClingToPos(pos)) return false;
-
         Block block = this.getWorld().getBlockState(pos).getBlock();
-
         return TREE_HOLLOW_MAP.containsKey(block);
     }
 
@@ -406,7 +421,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                             if (this.getConsecutivePecks() >= PECKS_NEEDED_FOR_NEST) {
                                 this.stopPecking(true);
 
-                                if (this.canMakeNestInPos(this.getClingPos())) {
+                                if (this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                                     Block clingBlock = this.getWorld().getBlockState(this.getClingPos()).getBlock();
                                     this.getWorld().setBlockState(this.getClingPos(), TREE_HOLLOW_MAP.get(clingBlock).getDefaultState().with(TreeHollowBlock.FACING, this.clingSide));
                                 }
@@ -421,13 +436,15 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                 else {
                     if (!this.isDrumming()) {
                         if (this.shouldFindNest()) {
-                            if (this.getRandom().nextInt(20) == 0 && this.canMakeNestInPos(this.getClingPos())) this.startPeckChain(Math.min(1 + this.getRandom().nextInt(4), PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()));
+                            if (this.getRandom().nextInt(20) == 0 && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos())
+                                this.startPeckChain(Math.min(1 + this.getRandom().nextInt(4), PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()));
                         }
                         else if (this.getRandom().nextInt(200) == 0) this.startDrumming();
                     }
                 }
 
-                if (!this.hasValidClingPos() || ((this.shouldReturnToNest() || this.getRandom().nextInt(1200) == 0) && !this.isMakingNest() && !this.isDrumming())) this.setFlying(true);
+                if (!this.hasValidClingPos() || ((this.shouldReturnToNest() || this.getRandom().nextInt(1200) == 0) && !this.isMakingNest() && !this.isDrumming()))
+                    this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
                     this.setHeadYaw(this.getYaw());
