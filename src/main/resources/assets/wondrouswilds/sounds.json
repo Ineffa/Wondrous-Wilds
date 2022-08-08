@@ -13,6 +13,10 @@
       {
         "name": "wondrouswilds:entity/woodpecker/drum3",
         "attenuation_distance": 64
+      },
+      {
+        "name": "wondrouswilds:entity/woodpecker/drum4",
+        "attenuation_distance": 64
       }
     ]
   }

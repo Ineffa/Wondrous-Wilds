@@ -390,7 +390,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         }
         else {
             if (this.isDrumming()) {
-                if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.5F);
+                if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.0F);
 
                 this.setDrummingTicks(this.getDrummingTicks() - 1);
             }
