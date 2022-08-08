@@ -66,7 +66,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder fancyBirchConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(12, 8, 0, 0, 3, 1, 1),
+                        new StraightBranchingTrunkPlacer(10, 10, 0, 0, 3, 1, 1),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -75,7 +75,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder fancyBirchWithBeesConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(12, 8, 0, 1, 3, 1, 1),
+                        new StraightBranchingTrunkPlacer(10, 10, 0, 1, 3, 1, 1),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.HANGING_BEE_NEST, Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -84,7 +84,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder tallFancyBirchConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(12, 14, 0, 0, 3, 1, 2),
+                        new StraightBranchingTrunkPlacer(10, 16, 0, 0, 3, 1, 2),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -93,7 +93,7 @@ public class WondrousWildsFeatures {
             private static TreeFeatureConfig.Builder tallFancyBirchWithBeesConfig() {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG),
-                        new StraightBranchingTrunkPlacer(12, 14, 0, 1, 3, 1, 2),
+                        new StraightBranchingTrunkPlacer(10, 16, 0, 1, 3, 1, 2),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new FancyBirchFoliagePlacer(ConstantIntProvider.create(3), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 2)
                 ).decorators(ImmutableList.of(Decorators.HANGING_BEE_NEST, Decorators.POLYPORES, Decorators.COBWEBS)).ignoreVines();
@@ -131,20 +131,20 @@ public class WondrousWildsFeatures {
     public static final RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>> LILY_OF_THE_VALLEY_PATCH_CONFIGURED = ConfiguredFeatures.register("lily_of_the_valley_patch", Feature.FLOWER, new RandomPatchFeatureConfig(64, 6, 2, PlacedFeatures.createEntry(Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.LILY_OF_THE_VALLEY)))));
     public static final RegistryEntry<PlacedFeature> LILY_OF_THE_VALLEY_PATCH_PLACED = registerPlaced("lily_of_the_valley_patch", LILY_OF_THE_VALLEY_PATCH_CONFIGURED, RarityFilterPlacementModifier.of(10), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
-    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TALL_FLOWERS_PLACED = registerPlaced("birch_forest_tall_flowers", VegetationConfiguredFeatures.FOREST_FLOWERS, RarityFilterPlacementModifier.of(1), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, CountPlacementModifier.of(ClampedIntProvider.create(UniformIntProvider.create(-3, 1), 0, 1)), BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TALL_FLOWERS_PLACED = registerPlaced("birch_forest_tall_flowers", VegetationConfiguredFeatures.FOREST_FLOWERS, RarityFilterPlacementModifier.of(3), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, CountPlacementModifier.of(ClampedIntProvider.create(UniformIntProvider.create(-3, 1), 0, 1)), BiomePlacementModifier.of());
 
     public static final Feature<VioletPatchFeatureConfig> VIOLET_PATCH = new VioletPatchFeature();
     public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> PURPLE_VIOLETS_CONFIGURED = registerConfigured("purple_violets", VIOLET_PATCH, purpleVioletPatchConfig());
     public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> PINK_VIOLETS_CONFIGURED = registerConfigured("pink_violets", VIOLET_PATCH, pinkVioletPatchConfig());
     public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> RED_VIOLETS_CONFIGURED = registerConfigured("red_violets", VIOLET_PATCH, redVioletPatchConfig());
     public static final RegistryEntry<ConfiguredFeature<VioletPatchFeatureConfig, ?>> WHITE_VIOLETS_CONFIGURED = registerConfigured("white_violets", VIOLET_PATCH, whiteVioletPatchConfig());
-    public static final RegistryEntry<PlacedFeature> PURPLE_VIOLETS_PLACED = registerPlaced("purple_violets", PURPLE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
-    public static final RegistryEntry<PlacedFeature> PINK_VIOLETS_PLACED = registerPlaced("pink_violets", PINK_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
-    public static final RegistryEntry<PlacedFeature> RED_VIOLETS_PLACED = registerPlaced("red_violets", RED_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
-    public static final RegistryEntry<PlacedFeature> WHITE_VIOLETS_PLACED = registerPlaced("white_violets", WHITE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> PURPLE_VIOLETS_PLACED = registerPlaced("purple_violets", PURPLE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> PINK_VIOLETS_PLACED = registerPlaced("pink_violets", PINK_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> RED_VIOLETS_PLACED = registerPlaced("red_violets", RED_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> WHITE_VIOLETS_PLACED = registerPlaced("white_violets", WHITE_VIOLETS_CONFIGURED, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
-    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_GRASS_PATCH_PLACED = registerPlaced("birch_forest_grass_patch", VegetationConfiguredFeatures.PATCH_GRASS, VegetationPlacedFeatures.modifiers(10));
-    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TALL_GRASS_PATCH_PLACED = PlacedFeatures.register("birch_forest_tall_grass_patch", VegetationConfiguredFeatures.PATCH_TALL_GRASS, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_GRASS_PATCH_PLACED = registerPlaced("birch_forest_grass_patch", VegetationConfiguredFeatures.PATCH_GRASS, VegetationPlacedFeatures.modifiers(6));
+    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TALL_GRASS_PATCH_PLACED = PlacedFeatures.register("birch_forest_tall_grass_patch", VegetationConfiguredFeatures.PATCH_TALL_GRASS, RarityFilterPlacementModifier.of(20), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
     public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_ROCK_PLACED = registerPlaced("birch_forest_rock", MiscConfiguredFeatures.FOREST_ROCK, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
