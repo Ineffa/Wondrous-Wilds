@@ -427,7 +427,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                     }
                 }
 
-                if ((this.shouldReturnToNest() || !this.hasValidClingPos() || this.getRandom().nextInt(1200) == 0) && !this.isMakingNest() && !this.isDrumming()) this.setFlying(true);
+                if (!this.hasValidClingPos() || ((this.shouldReturnToNest() || this.getRandom().nextInt(1200) == 0) && !this.isMakingNest() && !this.isDrumming())) this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
                     this.setHeadYaw(this.getYaw());
