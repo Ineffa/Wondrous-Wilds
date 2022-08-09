@@ -51,6 +51,10 @@ public class WondrousWildsBlocks {
 
     public static final TreeHollowBlock BIRCH_TREE_HOLLOW = (TreeHollowBlock) registerBlock("birch_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.PALE_YELLOW).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
 
+    public static final Block YELLOW_BIRCH_LEAVES = registerBlock("yellow_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
+    public static final Block ORANGE_BIRCH_LEAVES = registerBlock("orange_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
+    public static final Block RED_BIRCH_LEAVES = registerBlock("red_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
+
     public static final class BlockEntities {
         public static final BlockEntityType<TreeHollowBlockEntity> TREE_HOLLOW = registerBlockEntity("tree_hollow", FabricBlockEntityTypeBuilder.create(TreeHollowBlockEntity::new, BIRCH_TREE_HOLLOW).build(null));
 

@@ -45,6 +45,10 @@ public class WondrousWildsItems {
 
     public static final BlockItem BIRCH_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.BIRCH_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
+    public static final BlockItem YELLOW_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.YELLOW_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem ORANGE_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.ORANGE_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem RED_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.RED_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+
     public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
@@ -80,5 +84,9 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_stripped_warped_stem"), HOLLOW_STRIPPED_WARPED_STEM);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_tree_hollow"), BIRCH_TREE_HOLLOW);
+
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "yellow_birch_leaves"), YELLOW_BIRCH_LEAVES);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "orange_birch_leaves"), ORANGE_BIRCH_LEAVES);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "red_birch_leaves"), RED_BIRCH_LEAVES);
     }
 }
