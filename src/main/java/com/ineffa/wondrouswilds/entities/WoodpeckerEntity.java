@@ -300,7 +300,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     @Override
     public int getNestCapacityWeight() {
-        return this.isBaby() ? 15 : 55;
+        return this.isBaby() ? 15 : TreeHollowNester.super.getNestCapacityWeight();
     }
 
     @Nullable

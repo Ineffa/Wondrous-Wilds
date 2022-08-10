@@ -1,5 +1,6 @@
 package com.ineffa.wondrouswilds.registry;
 
+import com.google.common.collect.ImmutableMap;
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.entities.FireflyEntity;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
@@ -14,6 +15,8 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
+
+import java.util.Map;
 
 public class WondrousWildsEntities {
 
@@ -38,4 +41,8 @@ public class WondrousWildsEntities {
     public static void initialize() {
         BiomeModifications.addSpawn(context -> context.hasTag(ConventionalBiomeTags.IN_OVERWORLD), SpawnGroup.WATER_AMBIENT, FIREFLY, 100, 3, 6);
     }
+
+    public static final Map<EntityType<?>, Integer> DEFAULT_NESTER_CAPACITY_WEIGHTS = new ImmutableMap.Builder<EntityType<?>, Integer>()
+            .put(WOODPECKER, 55)
+            .build();
 }

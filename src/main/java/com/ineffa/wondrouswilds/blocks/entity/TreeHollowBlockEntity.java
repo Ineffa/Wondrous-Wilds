@@ -3,6 +3,7 @@ package com.ineffa.wondrouswilds.blocks.entity;
 import com.google.common.collect.Lists;
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.entities.TreeHollowNester;
+import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,11 +21,14 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static com.ineffa.wondrouswilds.registry.WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS;
 
 public class TreeHollowBlockEntity extends BlockEntity {
 
@@ -165,6 +169,17 @@ public class TreeHollowBlockEntity extends BlockEntity {
         entity.saveNbt(entityData);
 
         this.inhabitants.add(new Inhabitant(entityData, inhabitant.getNestCapacityWeight(), 0, inhabitant.getMinTicksInNest()));
+    }
+
+    public void addFreshInhabitant(EntityType<?> entityType) {
+        if (!DEFAULT_NESTER_CAPACITY_WEIGHTS.containsKey(entityType)) return;
+
+        NbtCompound entityData = new NbtCompound();
+        entityData.putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
+        entityData.put(WoodpeckerEntity.NEST_POS_KEY, NbtHelper.fromBlockPos(this.getPos()));
+        entityData.putBoolean(WoodpeckerEntity.IS_FLYING_KEY, true);
+
+        this.inhabitants.add(new Inhabitant(entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 0, 600));
     }
 
     public static void serverTick(World world, BlockPos pos, BlockState state, TreeHollowBlockEntity treeHollow) {

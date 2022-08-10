@@ -1,12 +1,16 @@
 package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
+import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface TreeHollowNester {
 
-    int getNestCapacityWeight();
+    default int getNestCapacityWeight() {
+        return WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS.get(this.getType());
+    }
 
     int getMinTicksInNest();
 
@@ -43,4 +47,6 @@ public interface TreeHollowNester {
     int getWanderRadiusFromNest();
 
     World getWorld();
+
+    EntityType<?> getType();
 }
