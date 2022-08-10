@@ -37,7 +37,12 @@ public class TreeHollowTreeDecorator extends TreeDecorator {
         Random random = generator.getRandom();
 
         List<BlockPos> suitableLogs = generator.getLogPositions().stream().filter(pos -> world.testBlockState(pos, state -> TREE_HOLLOW_MAP.containsKey(state.getBlock()) && state.contains(PillarBlock.AXIS) && state.get(PillarBlock.AXIS).isVertical()) && hasSpaceAround(generator, pos)).toList();
+
+        if (suitableLogs.isEmpty()) return;
+
         BlockPos chosenLog = suitableLogs.get(random.nextInt(suitableLogs.size()));
+
+        if (chosenLog == null) return;
 
         Set<Direction> suitableFacingDirections = new HashSet<>();
         for (Direction direction : HORIZONTAL_DIRECTIONS) if (generator.isAir(chosenLog.offset(direction))) suitableFacingDirections.add(direction);
