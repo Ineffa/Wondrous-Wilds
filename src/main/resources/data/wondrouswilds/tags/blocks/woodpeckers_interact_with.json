@@ -1,0 +1,23 @@
+{
+  "values": [
+    "minecraft:bell",
+    "#minecraft:buttons",
+    "minecraft:cake",
+    "#minecraft:candle_cakes",
+    "#minecraft:candles",
+    "minecraft:comparator",
+    "minecraft:composter",
+    "minecraft:daylight_detector",
+    "minecraft:dragon_egg",
+    "#minecraft:fence_gates",
+    "minecraft:jukebox",
+    "minecraft:lever",
+    "minecraft:note_block",
+    "#minecraft:redstone_ores",
+    "minecraft:redstone_wire",
+    "minecraft:repeater",
+    "minecraft:sweet_berry_bush",
+    "#minecraft:wooden_doors",
+    "#minecraft:wooden_trapdoors"
+  ]
+}

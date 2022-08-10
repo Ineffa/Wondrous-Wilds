@@ -3,6 +3,8 @@ package com.ineffa.wondrouswilds.entities;
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
+import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
+import com.ineffa.wondrouswilds.util.WoodpeckerFakePlayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -30,7 +32,9 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.BlockTags;
+import net.minecraft.util.Hand;
 import net.minecraft.util.TimeHelper;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -157,7 +161,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         double closestSideDistance = 100.0D;
         for (Direction side : HORIZONTAL_DIRECTIONS) {
             BlockPos offsetPos = clingPos.offset(side);
-            if (!this.getWorld().isAir(offsetPos)) continue;
+            if (!this.getWorld().isAir(offsetPos) || !this.getWorld().getBlockState(clingPos).isSideSolidFullSquare(this.getWorld(), clingPos, side)) continue;
 
             double distanceFromSide = this.getBlockPos().getSquaredDistance(offsetPos);
             if (distanceFromSide < closestSideDistance) {
@@ -186,15 +190,16 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public boolean hasValidClingPos() {
-        return this.canClingToPos(this.getClingPos(), false) && this.getWorld().isAir(this.getBlockPos());
+        return this.canClingToPos(this.getClingPos(), false, this.clingSide) && this.getWorld().isAir(this.getBlockPos());
     }
 
-    public boolean canClingToPos(BlockPos pos, boolean checkForSpace) {
+    public boolean canClingToPos(BlockPos pos, boolean checkForSpace, @Nullable Direction... sidesToCheck) {
+        Direction[] directionsToCheck = sidesToCheck != null ? sidesToCheck : HORIZONTAL_DIRECTIONS;
+
         if (checkForSpace) {
             boolean hasOpenSpace = false;
-            for (Direction direction : HORIZONTAL_DIRECTIONS) {
-                BlockPos offsetPos = pos.offset(direction);
-                if (this.getWorld().isAir(offsetPos)) {
+            for (Direction direction : directionsToCheck) {
+                if (this.getWorld().isAir(pos.offset(direction))) {
                     hasOpenSpace = true;
                     break;
                 }
@@ -204,14 +209,25 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
         BlockState state = this.getWorld().getBlockState(pos);
 
-        if (!(state.getBlock() instanceof PillarBlock)) return false;
+        boolean hasSolidSide = false;
+        for (Direction direction : directionsToCheck) {
+            if (state.isSideSolidFullSquare(this.getWorld(), pos, direction)) {
+                hasSolidSide = true;
+                break;
+            }
+        }
+        if (!hasSolidSide) return false;
 
-        return state.isIn(BlockTags.OVERWORLD_NATURAL_LOGS) && state.get(PillarBlock.AXIS).isVertical();
+        return (state.getBlock() instanceof PillarBlock && state.isIn(BlockTags.OVERWORLD_NATURAL_LOGS) && state.get(PillarBlock.AXIS).isVertical()) || state.isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH);
     }
 
     public boolean canMakeNestInPos(BlockPos pos) {
         Block block = this.getWorld().getBlockState(pos).getBlock();
         return TREE_HOLLOW_MAP.containsKey(block);
+    }
+
+    public boolean canInteractWithPos(BlockPos pos) {
+        return this.getWorld().getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH);
     }
 
     public boolean isMakingNest() {
@@ -381,6 +397,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.goalSelector.add(3, new EscapeDangerGoal(this, 1.5D));
         this.goalSelector.add(4, new FindOrReturnToTreeHollowGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(5, new WoodpeckerClingToBlockGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(5, new WoodpeckerPeckBlockGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(6, new WoodpeckerWanderLandGoal(this, 1.0D));
         this.goalSelector.add(6, new WoodpeckerWanderFlyingGoal(this));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
@@ -410,40 +427,53 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                 this.setDrummingTicks(this.getDrummingTicks() - 1);
             }
 
-            if (this.isClinging()) {
-                if (this.isPecking()) {
-                    if (this.getPeckChainTicks() <= 0) this.stopPecking(false);
+            if (this.isPecking()) {
+                if (this.getPeckChainTicks() <= 0) this.stopPecking(false);
 
-                    else {
-                        if (this.getPeckChainTicks() % 10 == 0 && this.getPeckChainTicks() != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength())) {
+                else {
+                    if (this.getPeckChainTicks() % 10 == 0 && this.getPeckChainTicks() != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength())) {
+                        if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                             this.setConsecutivePecks(this.getConsecutivePecks() + 1);
 
                             if (this.getConsecutivePecks() >= PECKS_NEEDED_FOR_NEST) {
                                 this.stopPecking(true);
 
-                                if (this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
-                                    Block clingBlock = this.getWorld().getBlockState(this.getClingPos()).getBlock();
-                                    this.getWorld().setBlockState(this.getClingPos(), TREE_HOLLOW_MAP.get(clingBlock).getDefaultState().with(TreeHollowBlock.FACING, this.clingSide));
-                                }
+                                Block clingBlock = this.getWorld().getBlockState(this.getClingPos()).getBlock();
+                                this.getWorld().setBlockState(this.getClingPos(), TREE_HOLLOW_MAP.get(clingBlock).getDefaultState().with(TreeHollowBlock.FACING, this.clingSide));
                             }
 
                             this.getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, this.getClingPos(), Block.getRawIdFromState(this.getWorld().getBlockState(this.getClingPos())));
                         }
+                        else {
+                            BlockHitResult hitResult = (BlockHitResult) this.raycast(1.0D, 0.0F, false);
+                            BlockState peckState = this.getWorld().getBlockState(hitResult.getBlockPos());
 
-                        this.setPeckChainTicks(this.getPeckChainTicks() - 1);
+                            if (peckState.isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) {
+                                WoodpeckerFakePlayer fakePlayer = new WoodpeckerFakePlayer(this);
+                                peckState.onUse(this.getWorld(), fakePlayer, Hand.MAIN_HAND, hitResult);
+                            }
+                        }
                     }
+
+                    this.setPeckChainTicks(this.getPeckChainTicks() - 1);
                 }
-                else {
+            }
+
+            if (this.isClinging()) {
+                if (!this.isPecking()) {
                     if (!this.isDrumming()) {
-                        if (this.shouldFindNest()) {
-                            if (this.getRandom().nextInt(20) == 0 && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos())
-                                this.startPeckChain(Math.min(1 + this.getRandom().nextInt(4), PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()));
+                        boolean shouldInteract = this.canInteractWithPos(this.getClingPos());
+                        if (shouldInteract || this.shouldFindNest()) {
+                            if (this.getRandom().nextInt(shouldInteract ? 60 : 20) == 0 && this.hasValidClingPos()) {
+                                int randomLength = 1 + this.getRandom().nextInt(4);
+                                this.startPeckChain(this.canMakeNestInPos(this.getClingPos()) ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength);
+                            }
                         }
                         else if (this.getRandom().nextInt(200) == 0) this.startDrumming();
                     }
                 }
 
-                if (!this.hasValidClingPos() || ((this.shouldReturnToNest() || this.getRandom().nextInt(1200) == 0) && !this.isMakingNest() && !this.isDrumming()))
+                if (((this.shouldReturnToNest() || this.getRandom().nextInt(800) == 0) && !this.isMakingNest() && !this.isDrumming()) || !this.hasValidClingPos())
                     this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);

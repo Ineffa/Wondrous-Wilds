@@ -11,10 +11,11 @@ import net.minecraft.world.biome.Biome;
 public class WondrousWildsTags {
 
     public static class BlockTags {
+        public static final TagKey<Block> VIOLETS = createBlockTag("violets");
+        public static final TagKey<Block> WOODPECKERS_INTERACT_WITH = createBlockTag("woodpeckers_interact_with");
+
         public static final TagKey<Block> FIREFLIES_SPAWNABLE_ON = createBlockTag("fireflies_spawnable_on");
         public static final TagKey<Block> FIREFLIES_HIDE_IN = createBlockTag("fireflies_hide_in");
-
-        public static final TagKey<Block> VIOLETS = createBlockTag("violets");
     }
 
     public static class ItemTags {

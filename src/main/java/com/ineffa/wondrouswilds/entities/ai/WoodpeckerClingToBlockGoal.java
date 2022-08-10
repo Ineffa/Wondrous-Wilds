@@ -19,7 +19,7 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        return this.mob.getRandom().nextInt(400) == 0 && this.woodpecker.isFlying() && this.woodpecker.canWander() && super.canStart();
+        return this.woodpecker.getRandom().nextInt(80) == 0 && this.woodpecker.isFlying() && this.woodpecker.canWander() && super.canStart();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     protected boolean isTargetPos(WorldView world, BlockPos pos) {
-        return this.woodpecker.canClingToPos(pos, true);
+        return this.woodpecker.canClingToPos(pos, true, null);
     }
 
     @Override
