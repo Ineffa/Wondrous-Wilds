@@ -548,6 +548,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     @Override
+    public int getDespawnCounter() {
+        return 0;
+    }
+
+    @Override
     protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.95F;
     }
