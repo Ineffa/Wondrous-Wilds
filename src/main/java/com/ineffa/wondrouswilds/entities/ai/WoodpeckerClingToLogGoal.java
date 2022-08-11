@@ -1,17 +1,18 @@
 package com.ineffa.wondrouswilds.entities.ai;
 
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
+import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldView;
 
-public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
+public class WoodpeckerClingToLogGoal extends MoveToTargetPosGoal {
 
     private final WoodpeckerEntity woodpecker;
 
     private boolean shouldStop = false;
 
-    public WoodpeckerClingToBlockGoal(WoodpeckerEntity woodpecker, double speed, int range, int maxYDifference) {
+    public WoodpeckerClingToLogGoal(WoodpeckerEntity woodpecker, double speed, int range, int maxYDifference) {
         super(woodpecker, speed, range, maxYDifference);
 
         this.woodpecker = woodpecker;
@@ -19,7 +20,7 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        return this.woodpecker.getRandom().nextInt(80) == 0 && this.woodpecker.isFlying() && this.woodpecker.canWander() && super.canStart();
+        return this.woodpecker.getRandom().nextInt(200) == 0 && this.woodpecker.canWander() && super.canStart();
     }
 
     @Override
@@ -27,6 +28,8 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
         super.start();
 
         this.shouldStop = false;
+
+        if (!this.woodpecker.isFlying()) this.woodpecker.setFlying(true);
     }
 
     @Override
@@ -50,7 +53,7 @@ public class WoodpeckerClingToBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     protected boolean isTargetPos(WorldView world, BlockPos pos) {
-        return this.woodpecker.canClingToPos(pos, true, null);
+        return !world.getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH) && this.woodpecker.canClingToPos(pos, true, null);
     }
 
     @Override

@@ -13,13 +13,17 @@ import net.minecraft.world.WorldView;
 
 import java.util.EnumSet;
 
-public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
+public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
     private final WoodpeckerEntity woodpecker;
 
+    private boolean canClingToTarget = false;
+
     private boolean shouldStop = false;
 
-    public WoodpeckerPeckBlockGoal(WoodpeckerEntity woodpecker, double speed, int range, int maxYDifference) {
+    private int ticksOutOfGroundReach = 0;
+
+    public WoodpeckerPlayWithBlockGoal(WoodpeckerEntity woodpecker, double speed, int range, int maxYDifference) {
         super(woodpecker, speed, range, maxYDifference);
         this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.JUMP, Control.LOOK));
 
@@ -28,7 +32,7 @@ public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        return this.woodpecker.getRandom().nextInt(80) == 0 && this.woodpecker.canWander() && super.canStart();
+        return this.woodpecker.getRandom().nextInt(100) == 0 && this.woodpecker.canWander() && super.canStart();
     }
 
     @Override
@@ -36,6 +40,10 @@ public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
         super.start();
 
         this.shouldStop = false;
+
+        this.ticksOutOfGroundReach = 0;
+
+        if (this.canClingToTarget && !this.woodpecker.isFlying()) this.woodpecker.setFlying(true);
     }
 
     @Override
@@ -46,6 +54,8 @@ public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
     @Override
     public void stop() {
         super.stop();
+
+        if (this.canClingToTarget && this.hasReached()) this.woodpecker.tryClingingTo(this.getTargetPos());
 
         if (this.woodpecker.isPecking()) this.woodpecker.stopPecking(false);
     }
@@ -68,6 +78,11 @@ public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
         }
 
         if (this.hasReached()) {
+            if (this.canClingToTarget) {
+                this.shouldStop = true;
+                return;
+            }
+
             if (!this.woodpecker.isPecking()) {
                 if (this.woodpecker.getRandom().nextInt(400) == 0) {
                     this.shouldStop = true;
@@ -76,16 +91,32 @@ public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
 
                 if (this.woodpecker.getRandom().nextInt(60) == 0) this.woodpecker.startPeckChain(1 + this.woodpecker.getRandom().nextInt(4));
             }
+
+            this.ticksOutOfGroundReach = 0;
+        }
+        else if (!this.woodpecker.isFlying()) {
+            if (this.ticksOutOfGroundReach >= 200) this.woodpecker.setFlying(true);
+
+            else ++this.ticksOutOfGroundReach;
         }
     }
 
     @Override
     protected boolean isTargetPos(WorldView world, BlockPos pos) {
-        return !this.woodpecker.canClingToPos(pos, false, null) && world.getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH);
+        if (!world.getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) return false;
+
+        this.canClingToTarget = this.woodpecker.canClingToPos(pos, true, null);
+
+        return true;
     }
 
     @Override
     protected BlockPos getTargetPos() {
         return this.targetPos;
+    }
+
+    @Override
+    public double getDesiredDistanceToTarget() {
+        return this.canClingToTarget ? 1.5D : 1.0D;
     }
 }

@@ -398,13 +398,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.goalSelector.add(2, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.add(3, new EscapeDangerGoal(this, 1.5D));
         this.goalSelector.add(4, new FindOrReturnToTreeHollowGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(5, new WoodpeckerClingToBlockGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(5, new WoodpeckerPeckBlockGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(6, new WoodpeckerWanderLandGoal(this, 1.0D));
-        this.goalSelector.add(6, new WoodpeckerWanderFlyingGoal(this));
-        this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
-        this.goalSelector.add(7, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
-        this.goalSelector.add(8, new LookAroundGoal(this));
+        this.goalSelector.add(5, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(6, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(7, new WoodpeckerWanderLandGoal(this, 1.0D));
+        this.goalSelector.add(7, new WoodpeckerWanderFlyingGoal(this));
+        this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
+        this.goalSelector.add(8, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
+        this.goalSelector.add(9, new LookAroundGoal(this));
     }
 
     @Nullable
@@ -423,6 +423,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
             this.flapAngle += this.flapSpeed;
         }
         else {
+            if (this.hasNestPos()) {
+                if (!this.hasValidNestPos()) this.clearNestPos();
+            }
+
             if (this.isDrumming()) {
                 if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.0F);
 
@@ -462,13 +466,16 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                     }
 
                     this.setPeckChainTicks(this.getPeckChainTicks() - 1);
+
+                    if (this.getCannotInhabitNestTicks() > 0) this.setCannotInhabitNestTicks(this.getCannotInhabitNestTicks() - 1);
                 }
             }
 
             if (this.isClinging()) {
+                boolean shouldInteract = this.canInteractWithPos(this.getClingPos());
+
                 if (!this.isPecking()) {
                     if (!this.isDrumming()) {
-                        boolean shouldInteract = this.canInteractWithPos(this.getClingPos());
                         if (shouldInteract || this.shouldFindNest()) {
                             if (this.getRandom().nextInt(shouldInteract ? 60 : 20) == 0 && this.hasValidClingPos()) {
                                 int randomLength = 1 + this.getRandom().nextInt(4);
@@ -479,19 +486,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                     }
                 }
 
-                if (((this.shouldReturnToNest() || this.getRandom().nextInt(800) == 0) && !this.isMakingNest() && !this.isDrumming()) || !this.hasValidClingPos())
+                if (((this.getRandom().nextInt(shouldInteract ? 400 : 800) == 0 || this.shouldReturnToNest()) && !this.isMakingNest() && !this.isDrumming()) || !this.hasValidClingPos())
                     this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
                     this.setHeadYaw(this.getYaw());
                     this.setBodyYaw(this.getYaw());
                 }
-            }
-
-            if (this.getCannotInhabitNestTicks() > 0) this.setCannotInhabitNestTicks(this.getCannotInhabitNestTicks() - 1);
-
-            if (this.hasNestPos()) {
-                if (!this.hasValidNestPos()) this.clearNestPos();
             }
 
             this.tickAngerLogic((ServerWorld) this.getWorld(), false);
