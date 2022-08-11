@@ -27,6 +27,8 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.server.world.ServerWorld;
@@ -450,7 +452,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
                             if (peckState.isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) {
                                 WoodpeckerFakePlayer fakePlayer = new WoodpeckerFakePlayer(this);
-                                peckState.onUse(this.getWorld(), fakePlayer, Hand.MAIN_HAND, hitResult);
+                                Hand hand = Hand.MAIN_HAND;
+                                if (!(peckState.onUse(this.getWorld(), fakePlayer, hand, hitResult)).isAccepted()) {
+                                    ItemStack heldItem = fakePlayer.getMainHandStack();
+                                    if (!heldItem.isEmpty()) heldItem.useOnBlock(new ItemUsageContext(fakePlayer, hand, hitResult));
+                                }
                             }
                         }
                     }

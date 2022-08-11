@@ -38,7 +38,7 @@ public class TreeHollowBlockEntity extends BlockEntity {
     public static final String TICKS_IN_NEST_KEY = "TicksInNest";
     public static final String MIN_OCCUPATION_TICKS_KEY = "MinOccupationTicks";
 
-    private static final List<String> IRRELEVANT_INHABITANT_NBT_KEYS = Arrays.asList("CannotEnterNestTicks", "Air", "ArmorDropChances", "ArmorItems", "Brain", "CanPickUpLoot", "DeathTime", "FallDistance", "FallFlying", "Fire", "HandDropChances", "HandItems", "HurtByTimestamp", "HurtTime", "LeftHanded", "Motion", "NoGravity", "OnGround", "PortalCooldown", "Pos", "Rotation", "Passengers", "Leash", "UUID");
+    private static final List<String> IRRELEVANT_INHABITANT_NBT_KEYS = Arrays.asList("CannotEnterNestTicks", "Air", "DeathTime", "FallDistance", "FallFlying", "Fire", "HurtByTimestamp", "HurtTime", "Motion", "OnGround", "PortalCooldown", "Pos", "Rotation", "Passengers", "Leash", "UUID");
 
     private final List<Inhabitant> inhabitants = Lists.newArrayList();
 
