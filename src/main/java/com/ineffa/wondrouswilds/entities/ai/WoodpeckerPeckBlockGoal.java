@@ -60,8 +60,10 @@ public class WoodpeckerPeckBlockGoal extends MoveToTargetPosGoal {
             BlockState lookState = world.getBlockState(lookPos);
             if (lookState != null) {
                 VoxelShape shape = lookState.getOutlineShape(world, lookPos);
-                Box box = shape.getBoundingBox();
-                if (box != null) this.woodpecker.getLookControl().lookAt(box.getCenter().add(lookPos.getX(), lookPos.getY(), lookPos.getZ()));
+                if (shape != null && !shape.isEmpty()) {
+                    Box box = shape.getBoundingBox();
+                    if (box != null) this.woodpecker.getLookControl().lookAt(box.getCenter().add(lookPos.getX(), lookPos.getY(), lookPos.getZ()));
+                }
             }
         }
 
