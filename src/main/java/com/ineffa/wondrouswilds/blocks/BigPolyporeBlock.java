@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.blocks;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -24,5 +25,11 @@ public class BigPolyporeBlock extends LadderBlock {
             case EAST -> EAST_SHAPE;
             case WEST -> WEST_SHAPE;
         };
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
+        return false;
     }
 }
