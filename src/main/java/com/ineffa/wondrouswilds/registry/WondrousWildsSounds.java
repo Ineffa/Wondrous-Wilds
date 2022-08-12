@@ -7,7 +7,8 @@ import net.minecraft.util.registry.Registry;
 
 public class WondrousWildsSounds {
 
-    public static SoundEvent WOODPECKER_DRUM = createSoundEvent("entity.woodpecker.drum");
+    public static final SoundEvent WOODPECKER_CHIRP = createSoundEvent("entity.woodpecker.chirp");
+    public static final SoundEvent WOODPECKER_DRUM = createSoundEvent("entity.woodpecker.drum");
 
     private static SoundEvent createSoundEvent(String name) {
         Identifier id = new Identifier(WondrousWilds.MOD_ID, name);

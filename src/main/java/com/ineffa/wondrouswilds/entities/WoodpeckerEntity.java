@@ -88,6 +88,19 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     @Environment(value = EnvType.SERVER)
     private BlockPos nestPos;
 
+    @Environment(value = EnvType.SERVER)
+    private boolean isChirping;
+    @Environment(value = EnvType.SERVER)
+    private int chirpCount;
+    @Environment(value = EnvType.SERVER)
+    private int nextChirpCount;
+    @Environment(value = EnvType.SERVER)
+    private int nextChirpSpeed;
+    @Environment(value = EnvType.SERVER)
+    private int nextChirpDelay;
+    @Environment(value = EnvType.SERVER)
+    private float nextChirpPitch;
+
     @Environment(value = EnvType.CLIENT)
     public float flapSpeed;
     @Environment(value = EnvType.CLIENT)
@@ -492,6 +505,32 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
                     this.setHeadYaw(this.getYaw());
                     this.setBodyYaw(this.getYaw());
+                }
+            }
+
+            if (!this.isPecking() && !this.isDrumming()) {
+                if (!this.isChirping) {
+                    if (this.getRandom().nextInt(80) == 0) {
+                        this.chirpCount = 0;
+                        this.nextChirpCount = 1 + this.getRandom().nextInt(12);
+                        this.nextChirpDelay = 0;
+                        this.nextChirpSpeed = 2 + this.getRandom().nextInt(3);
+                        this.nextChirpPitch = this.getSoundPitch();
+                        this.isChirping = true;
+                    }
+                }
+                else chirp: {
+                    if (this.chirpCount >= this.nextChirpCount) {
+                        this.isChirping = false;
+                        break chirp;
+                    }
+
+                    if (this.nextChirpDelay > 0) --this.nextChirpDelay;
+                    else {
+                        ++this.chirpCount;
+                        this.nextChirpDelay = this.nextChirpSpeed;
+                        this.playSound(WondrousWildsSounds.WOODPECKER_CHIRP, this.getSoundVolume(), this.nextChirpPitch);
+                    }
                 }
             }
 

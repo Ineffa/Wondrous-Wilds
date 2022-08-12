@@ -1,4 +1,10 @@
 {
+  "entity.woodpecker.chirp": {
+    "subtitle": "subtitles.wondrouswilds.entity.woodpecker.chirp",
+    "sounds": [
+      "wondrouswilds:entity/woodpecker/chirp"
+    ]
+  },
   "entity.woodpecker.drum": {
     "subtitle": "subtitles.wondrouswilds.entity.woodpecker.drum",
     "sounds": [
