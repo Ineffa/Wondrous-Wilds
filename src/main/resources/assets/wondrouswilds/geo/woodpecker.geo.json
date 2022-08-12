@@ -95,6 +95,11 @@
 					]
 				},
 				{
+					"name": "heldItem",
+					"parent": "beak",
+					"pivot": [0, 6.5, -9]
+				},
+				{
 					"name": "crestConstant",
 					"parent": "head",
 					"pivot": [0, 8, -4.5]
