@@ -490,7 +490,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                 if (!this.isPecking()) {
                     if (!this.isDrumming()) {
                         if (shouldInteract || this.shouldFindNest()) {
-                            if (this.getRandom().nextInt(shouldInteract ? 60 : 20) == 0 && this.hasValidClingPos()) {
+                            if (this.getRandom().nextInt(shouldInteract ? 40 : 20) == 0 && this.hasValidClingPos()) {
                                 int randomLength = 1 + this.getRandom().nextInt(4);
                                 this.startPeckChain(this.canMakeNestInPos(this.getClingPos()) ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength);
                             }
@@ -499,7 +499,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                     }
                 }
 
-                if (((this.getRandom().nextInt(shouldInteract ? 400 : 800) == 0 || this.shouldReturnToNest()) && !this.isMakingNest() && !this.isDrumming()) || !this.hasValidClingPos())
+                if (((this.getRandom().nextInt(shouldInteract ? 200 : 800) == 0 || this.shouldReturnToNest()) && !this.isMakingNest() && !this.isDrumming()) || !this.hasValidClingPos())
                     this.setFlying(true);
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);

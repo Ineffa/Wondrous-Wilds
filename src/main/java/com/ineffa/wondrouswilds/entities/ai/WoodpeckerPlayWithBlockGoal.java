@@ -84,12 +84,12 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
             }
 
             if (!this.woodpecker.isPecking()) {
-                if (this.woodpecker.getRandom().nextInt(400) == 0) {
+                if (this.woodpecker.getRandom().nextInt(200) == 0) {
                     this.shouldStop = true;
                     return;
                 }
 
-                if (this.woodpecker.getRandom().nextInt(60) == 0) this.woodpecker.startPeckChain(1 + this.woodpecker.getRandom().nextInt(4));
+                if (this.woodpecker.getRandom().nextInt(40) == 0) this.woodpecker.startPeckChain(1 + this.woodpecker.getRandom().nextInt(4));
             }
 
             this.ticksOutOfGroundReach = 0;
