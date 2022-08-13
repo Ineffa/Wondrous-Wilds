@@ -27,11 +27,11 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        if (!(this.nester.shouldReturnToNest() || this.nester.shouldFindNest())) return false;
+        if (!(this.nester.shouldReturnToNest() || (this.nester.shouldFindNest() && this.nester.getCannotInhabitNestTicks() <= 0))) return false;
 
         this.lookingForNest = this.nester.shouldFindNest();
 
-        return super.canStart();
+        return this.findTargetPos();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean shouldContinue() {
-        return !this.shouldStop && super.shouldContinue();
+        return !this.shouldStop && this.isTargetPos(this.nester.getWorld(), this.targetPos);
     }
 
     @Override

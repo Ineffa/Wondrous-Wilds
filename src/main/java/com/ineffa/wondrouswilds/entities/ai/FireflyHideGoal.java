@@ -18,14 +18,19 @@ public class FireflyHideGoal extends MoveToTargetPosGoal {
     public boolean canStart() {
         if (!((FireflyEntity) this.mob).shouldHide()) return false;
 
-        return super.canStart();
+        return this.findTargetPos();
+    }
+
+    @Override
+    public boolean shouldContinue() {
+        return this.isTargetPos(this.mob.getWorld(), this.targetPos);
     }
 
     @Override
     public void tick() {
         if (this.hasReached()) {
             BlockPos pos = this.getTargetPos();
-            this.mob.world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(this.mob.world.getBlockState(pos)));
+            this.mob.getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(this.mob.getWorld().getBlockState(pos)));
 
             this.mob.discard();
         }

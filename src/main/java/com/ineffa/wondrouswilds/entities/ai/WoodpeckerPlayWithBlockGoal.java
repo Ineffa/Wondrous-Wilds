@@ -32,7 +32,7 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        return this.woodpecker.getRandom().nextInt(100) == 0 && this.woodpecker.canWander() && super.canStart();
+        return this.woodpecker.getRandom().nextInt(100) == 0 && this.woodpecker.canWander() && this.findTargetPos();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean shouldContinue() {
-        return !this.shouldStop && super.shouldContinue();
+        return !this.shouldStop && this.isTargetPos(this.woodpecker.getWorld(), this.targetPos);
     }
 
     @Override
