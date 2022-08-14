@@ -3,6 +3,7 @@ package com.ineffa.wondrouswilds.entities;
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
+import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
@@ -365,7 +366,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     @Override
     public int getNestCapacityWeight() {
-        return this.isBaby() ? 15 : TreeHollowNester.super.getNestCapacityWeight();
+        return this.isBaby() ? 15 : WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS.get(this.getType());
     }
 
     @Nullable
