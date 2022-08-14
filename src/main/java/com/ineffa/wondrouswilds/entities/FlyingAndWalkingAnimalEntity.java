@@ -1,10 +1,10 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.entities.ai.BetterFlyNavigation;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.data.DataTracker;
@@ -25,17 +25,17 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
     private final FlightMoveControl airMoveControl;
     private final MoveControl landMoveControl;
 
-    private final BirdNavigation airNavigation;
+    private final BetterFlyNavigation flyNavigation;
     private final MobNavigation landNavigation;
 
     public FlyingAndWalkingAnimalEntity(EntityType<? extends FlyingAndWalkingAnimalEntity> entityType, World world) {
         super(entityType, world);
 
-        BirdNavigation birdNavigation = new BirdNavigation(this, world);
-        birdNavigation.setCanPathThroughDoors(false);
-        birdNavigation.setCanEnterOpenDoors(true);
-        birdNavigation.setCanSwim(false);
-        this.airNavigation = birdNavigation;
+        BetterFlyNavigation flyNavigation = new BetterFlyNavigation(this, world);
+        flyNavigation.setCanPathThroughDoors(false);
+        flyNavigation.setCanEnterOpenDoors(true);
+        flyNavigation.setCanSwim(false);
+        this.flyNavigation = flyNavigation;
         this.landNavigation = new MobNavigation(this, world);
 
         this.airMoveControl = new FlightMoveControl(this, 20, true);
@@ -45,12 +45,12 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
     @Override
     protected EntityNavigation createNavigation(World world) {
         if (this.isFlying()) {
-            BirdNavigation birdNavigation = new BirdNavigation(this, world);
-            birdNavigation.setCanPathThroughDoors(false);
-            birdNavigation.setCanEnterOpenDoors(true);
-            birdNavigation.setCanSwim(false);
+            BetterFlyNavigation flyNavigation = new BetterFlyNavigation(this, world);
+            flyNavigation.setCanPathThroughDoors(false);
+            flyNavigation.setCanEnterOpenDoors(true);
+            flyNavigation.setCanSwim(false);
 
-            return birdNavigation;
+            return flyNavigation;
         }
 
         return new MobNavigation(this, world);
@@ -99,7 +99,7 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
         }
 
         this.moveControl = flying ? this.airMoveControl : this.landMoveControl;
-        this.navigation = flying ? this.airNavigation : this.landNavigation;
+        this.navigation = flying ? this.flyNavigation : this.landNavigation;
     }
 
     public boolean wantsToLand() {
