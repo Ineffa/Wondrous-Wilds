@@ -37,7 +37,7 @@ public interface TreeHollowNester {
     }
 
     default boolean shouldFindNest() {
-        return !this.hasValidNestPos();
+        return !this.hasNestPos();
     }
 
     boolean shouldReturnToNest();

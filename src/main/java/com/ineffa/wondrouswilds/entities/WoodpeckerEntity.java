@@ -404,7 +404,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     @Override
     public boolean shouldReturnToNest() {
-        if (this.getCannotInhabitNestTicks() > 0 || !this.hasValidNestPos()) return false;
+        if (this.getCannotInhabitNestTicks() > 0 || !this.hasNestPos()) return false;
 
         return this.getWorld().isNight() || this.getWorld().isRaining();
     }
@@ -488,9 +488,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         else {
             if (this.getPlaySessionsBeforeTame() == 0 && !this.isTame()) this.setPlaySessionsBeforeTame(this.getRandom().nextBetween(5, 15));
 
-            if (this.hasNestPos()) {
-                if (!this.hasValidNestPos()) this.clearNestPos();
-            }
+            if (this.hasNestPos() && !this.hasValidNestPos()) this.clearNestPos();
 
             if (this.isDrumming()) {
                 if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.0F);

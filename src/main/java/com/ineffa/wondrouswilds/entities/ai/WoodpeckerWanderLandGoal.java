@@ -40,7 +40,7 @@ public class WoodpeckerWanderLandGoal extends WanderAroundFarGoal {
     @Nullable
     @Override
     protected Vec3d getWanderTarget() {
-        boolean moveTowardsNest = this.woodpecker.hasValidNestPos() && !Objects.requireNonNull(this.woodpecker.getNestPos()).isWithinDistance(this.woodpecker.getPos(), this.woodpecker.getWanderRadiusFromNest());
+        boolean moveTowardsNest = this.woodpecker.hasNestPos() && !Objects.requireNonNull(this.woodpecker.getNestPos()).isWithinDistance(this.woodpecker.getPos(), this.woodpecker.getWanderRadiusFromNest());
 
         if (moveTowardsNest) {
             Vec3d direction = Vec3d.ofCenter(this.woodpecker.getNestPos()).subtract(this.woodpecker.getPos()).normalize();

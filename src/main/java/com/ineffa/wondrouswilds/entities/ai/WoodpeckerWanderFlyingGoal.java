@@ -49,7 +49,7 @@ public class WoodpeckerWanderFlyingGoal extends Goal {
 
     @Nullable
     private Vec3d getRandomLocation() {
-        boolean moveTowardsNest = this.woodpecker.hasValidNestPos() && !Objects.requireNonNull(this.woodpecker.getNestPos()).isWithinDistance(this.woodpecker.getPos(), this.woodpecker.getWanderRadiusFromNest());
+        boolean moveTowardsNest = this.woodpecker.hasNestPos() && !Objects.requireNonNull(this.woodpecker.getNestPos()).isWithinDistance(this.woodpecker.getPos(), this.woodpecker.getWanderRadiusFromNest());
 
         Vec3d direction = moveTowardsNest ? Vec3d.ofCenter(this.woodpecker.getNestPos()).subtract(this.woodpecker.getPos()).normalize() : this.woodpecker.getRotationVec(0.0F);
 
