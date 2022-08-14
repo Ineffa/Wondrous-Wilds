@@ -45,6 +45,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import org.jetbrains.annotations.Nullable;
@@ -167,6 +170,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.setTame(nbt.getBoolean(TAME_KEY));
 
         this.setPlaySessionsBeforeTame(nbt.getInt(PLAY_SESSIONS_BEFORE_TAME_KEY));
+    }
+
+    @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        if (this.getPlaySessionsBeforeTame() <= 0 && !this.isTame()) this.setPlaySessionsBeforeTame(this.getRandom().nextBetween(5, 15));
+
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
     @Override
@@ -488,8 +498,6 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
             this.flapAngle += this.flapSpeed;
         }
         else {
-            if (this.getPlaySessionsBeforeTame() == 0 && !this.isTame()) this.setPlaySessionsBeforeTame(this.getRandom().nextBetween(5, 15));
-
             if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof TreeHollowBlockEntity)) this.clearNestPos();
 
             if (this.isDrumming()) {
