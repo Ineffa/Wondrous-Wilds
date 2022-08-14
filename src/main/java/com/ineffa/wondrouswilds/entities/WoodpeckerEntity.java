@@ -555,7 +555,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                                 this.startPeckChain(canMakeNest ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength);
                             }
                         }
-                        else if (this.getRandom().nextInt(200) == 0) this.startDrumming();
+                        else if (this.hasNestPos() && this.getRandom().nextInt(200) == 0) this.startDrumming();
                     }
                 }
 
