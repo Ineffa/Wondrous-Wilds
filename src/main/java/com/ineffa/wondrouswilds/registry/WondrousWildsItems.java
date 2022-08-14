@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
+import com.ineffa.wondrouswilds.items.LovifierItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -9,9 +10,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class WondrousWildsItems {
-
-    public static final Item FIREFLY_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
-    public static final Item WOODPECKER_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
     public static final BlockItem PURPLE_VIOLET = new BlockItem(WondrousWildsBlocks.PURPLE_VIOLET, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem PINK_VIOLET = new BlockItem(WondrousWildsBlocks.PINK_VIOLET, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
@@ -49,10 +47,12 @@ public class WondrousWildsItems {
     public static final BlockItem ORANGE_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.ORANGE_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem RED_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.RED_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
-    public static void initialize() {
-        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
-        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
+    public static final Item FIREFLY_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final Item WOODPECKER_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
+    public static final Item LOVIFIER = new LovifierItem(new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP).maxCount(1));
+
+    public static void initialize() {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "purple_violet"), PURPLE_VIOLET);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "pink_violet"), PINK_VIOLET);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "red_violet"), RED_VIOLET);
@@ -88,5 +88,10 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "yellow_birch_leaves"), YELLOW_BIRCH_LEAVES);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "orange_birch_leaves"), ORANGE_BIRCH_LEAVES);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "red_birch_leaves"), RED_BIRCH_LEAVES);
+
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
+
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "lovifier"), LOVIFIER);
     }
 }
