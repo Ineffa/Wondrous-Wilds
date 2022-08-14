@@ -511,16 +511,22 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
                 else {
                     if (this.getPeckChainTicks() % 10 == 0 && this.getPeckChainTicks() != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength())) {
+                        SoundEvent peckSound;
+
                         if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
+                            BlockState peckState = this.getWorld().getBlockState(this.getClingPos());
+
                             if (this.getConsecutivePecks() >= PECKS_NEEDED_FOR_NEST) {
                                 this.stopPecking(true);
 
-                                Block clingBlock = this.getWorld().getBlockState(this.getClingPos()).getBlock();
+                                Block clingBlock = peckState.getBlock();
                                 this.getWorld().setBlockState(this.getClingPos(), TREE_HOLLOW_MAP.get(clingBlock).getDefaultState().with(TreeHollowBlock.FACING, this.clingSide));
                             }
                             else this.setConsecutivePecks(this.getConsecutivePecks() + 1);
 
                             this.getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, this.getClingPos(), Block.getRawIdFromState(this.getWorld().getBlockState(this.getClingPos())));
+
+                            peckSound = peckState.getSoundGroup().getHitSound();
                         }
                         else {
                             BlockHitResult hitResult = (BlockHitResult) this.raycast(1.0D, 0.0F, false);
@@ -541,7 +547,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
                                 if (successfulInteraction) this.setConsecutivePecks(this.getConsecutivePecks() + 1);
                             }
+
+                            peckSound = peckState.getSoundGroup().getHitSound();
                         }
+
+                        if (peckSound != null) this.playSound(peckSound, 0.75F, 1.5F);
                     }
 
                     this.setPeckChainTicks(this.getPeckChainTicks() - 1);
