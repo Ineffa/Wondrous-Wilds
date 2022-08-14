@@ -1,10 +1,8 @@
 package com.ineffa.wondrouswilds.entities;
 
-import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public interface TreeHollowNester {
 
@@ -32,10 +30,6 @@ public interface TreeHollowNester {
         return !(this.getNestPos() == null || this.getNestPos() == BlockPos.ORIGIN);
     }
 
-    default boolean hasValidNestPos() {
-        return this.hasNestPos() && this.getWorld().getBlockEntity(this.getNestPos()) instanceof TreeHollowBlockEntity;
-    }
-
     default boolean shouldFindNest() {
         return !this.hasNestPos();
     }
@@ -45,8 +39,6 @@ public interface TreeHollowNester {
     boolean defendsNest();
 
     int getWanderRadiusFromNest();
-
-    World getWorld();
 
     EntityType<?> getType();
 }

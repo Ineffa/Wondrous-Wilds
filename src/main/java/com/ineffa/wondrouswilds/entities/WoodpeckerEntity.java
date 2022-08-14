@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
+import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
@@ -488,7 +489,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         else {
             if (this.getPlaySessionsBeforeTame() == 0 && !this.isTame()) this.setPlaySessionsBeforeTame(this.getRandom().nextBetween(5, 15));
 
-            if (this.hasNestPos() && !this.hasValidNestPos()) this.clearNestPos();
+            if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof TreeHollowBlockEntity)) this.clearNestPos();
 
             if (this.isDrumming()) {
                 if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.0F);

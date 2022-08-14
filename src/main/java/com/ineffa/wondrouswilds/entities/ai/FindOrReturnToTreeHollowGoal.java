@@ -45,7 +45,7 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean shouldContinue() {
-        return !this.shouldStop && this.isTargetPos(this.nester.getWorld(), this.targetPos);
+        return !this.shouldStop && this.isTargetPos(this.nesterEntity.getWorld(), this.targetPos);
     }
 
     @Override
