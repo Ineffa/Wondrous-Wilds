@@ -78,6 +78,8 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
         }
 
         if (this.hasReached()) {
+            if (this.woodpecker.isFlying()) this.woodpecker.setVelocity(this.woodpecker.getVelocity().multiply(0.5D));
+
             if (this.canClingToTarget) {
                 this.shouldStop = true;
                 return;
