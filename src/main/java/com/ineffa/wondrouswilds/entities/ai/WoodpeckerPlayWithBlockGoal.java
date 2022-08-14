@@ -57,7 +57,7 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
         if (this.canClingToTarget && this.hasReached()) this.woodpecker.tryClingingTo(this.getTargetPos());
 
-        if (this.woodpecker.isPecking()) this.woodpecker.stopPecking(false);
+        if (this.woodpecker.isPecking()) this.woodpecker.stopPecking(true);
     }
 
     @Override
@@ -86,6 +86,9 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
             if (!this.woodpecker.isPecking()) {
                 if (this.woodpecker.getRandom().nextInt(200) == 0) {
                     this.shouldStop = true;
+
+                    if (!this.woodpecker.isTame() && this.woodpecker.getConsecutivePecks() > 0) this.woodpecker.progressTame();
+
                     return;
                 }
 
