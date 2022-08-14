@@ -573,7 +573,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
             if (!this.isPecking() && !this.isDrumming()) {
                 if (!this.isChirping) {
-                    if (this.getRandom().nextInt(80) == 0) {
+                    if (this.getRandom().nextInt(120) == 0) {
                         this.chirpCount = 0;
                         this.nextChirpCount = 1 + this.getRandom().nextInt(12);
                         this.nextChirpDelay = 0;
