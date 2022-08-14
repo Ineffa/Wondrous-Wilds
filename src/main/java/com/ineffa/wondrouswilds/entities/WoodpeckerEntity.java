@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.entities.ai.*;
+import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
 import com.ineffa.wondrouswilds.util.WoodpeckerFakePlayer;
@@ -323,16 +324,18 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public void progressTame() {
-        if (this.getPlaySessionsBeforeTame() <= 1) {
-            this.setTame(true);
-            this.showTameParticles(true);
-        }
+        if (this.getPlaySessionsBeforeTame() <= 1) this.finishTame();
         else {
             this.setPlaySessionsBeforeTame(this.getPlaySessionsBeforeTame() - 1);
             this.showTameParticles(false);
         }
 
         this.resetConsecutivePecks();
+    }
+
+    public void finishTame() {
+        this.setTame(true);
+        this.showTameParticles(true);
     }
 
     public boolean isTame() {
@@ -621,6 +624,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
                 return ActionResult.SUCCESS;
             }
+        }
+
+        else if (playerHeldStack.getItem() == WondrousWildsItems.LOVIFIER) {
+            if (!this.getWorld().isClient()) this.finishTame();
+            return ActionResult.SUCCESS;
         }
 
         return super.interactMob(player, hand);
