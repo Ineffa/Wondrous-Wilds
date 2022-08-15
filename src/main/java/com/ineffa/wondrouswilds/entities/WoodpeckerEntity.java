@@ -669,7 +669,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
             }
         }
 
-        else if (playerHeldStack.getItem() == WondrousWildsItems.LOVIFIER) {
+        else if (playerHeldStack.getItem() == WondrousWildsItems.LOVIFIER && !this.isTame()) {
             if (!this.getWorld().isClient()) this.finishTame();
             return ActionResult.SUCCESS;
         }
