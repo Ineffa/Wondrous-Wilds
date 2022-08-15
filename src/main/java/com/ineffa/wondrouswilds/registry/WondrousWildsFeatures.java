@@ -184,14 +184,14 @@ public class WondrousWildsFeatures {
                 new RandomFeatureEntry(YELLOW_FANCY_BIRCH_PLACED, 0.5F),
                 new RandomFeatureEntry(ORANGE_FANCY_BIRCH_PLACED, 0.5F),
                 new RandomFeatureEntry(RED_FANCY_BIRCH_PLACED, 0.5F),
+                new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.03F),
                 new RandomFeatureEntry(YELLOW_FANCY_BIRCH_WITH_BEES_PLACED, 0.03F),
                 new RandomFeatureEntry(ORANGE_FANCY_BIRCH_WITH_BEES_PLACED, 0.03F),
                 new RandomFeatureEntry(RED_FANCY_BIRCH_WITH_BEES_PLACED, 0.03F),
-                new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.03F),
-                new RandomFeatureEntry(YELLOW_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.01F),
-                new RandomFeatureEntry(ORANGE_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.01F),
-                new RandomFeatureEntry(RED_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.01F),
-                new RandomFeatureEntry(FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.01F)
+                new RandomFeatureEntry(FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.02F),
+                new RandomFeatureEntry(YELLOW_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.02F),
+                new RandomFeatureEntry(ORANGE_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.02F),
+                new RandomFeatureEntry(RED_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.02F)
         ), TALL_BIRCH_PLACED));
         public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(10, 0.1F, 1), Blocks.BIRCH_SAPLING));
 
