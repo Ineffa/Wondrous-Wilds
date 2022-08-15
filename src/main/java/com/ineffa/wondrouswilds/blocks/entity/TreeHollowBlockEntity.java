@@ -2,14 +2,12 @@ package com.ineffa.wondrouswilds.blocks.entity;
 
 import com.google.common.collect.Lists;
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
+import com.ineffa.wondrouswilds.entities.FlyingAndWalkingAnimalEntity;
 import com.ineffa.wondrouswilds.entities.TreeHollowNester;
-import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -22,6 +20,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +62,7 @@ public class TreeHollowBlockEntity extends BlockEntity {
         for (int i = 0; i < nbtList.size(); ++i) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
 
-            Inhabitant inhabitant = new Inhabitant(nbtCompound.getCompound(ENTITY_DATA_KEY), nbtCompound.getInt(CAPACITY_WEIGHT_KEY), nbtCompound.getInt(MIN_OCCUPATION_TICKS_KEY), nbtCompound.getInt(TICKS_IN_NEST_KEY));
+            Inhabitant inhabitant = new Inhabitant(false, nbtCompound.getCompound(ENTITY_DATA_KEY), nbtCompound.getInt(CAPACITY_WEIGHT_KEY), nbtCompound.getInt(MIN_OCCUPATION_TICKS_KEY), nbtCompound.getInt(TICKS_IN_NEST_KEY));
             this.inhabitants.add(inhabitant);
         }
     }
@@ -168,7 +167,7 @@ public class TreeHollowBlockEntity extends BlockEntity {
         NbtCompound entityData = new NbtCompound();
         entity.saveNbt(entityData);
 
-        this.inhabitants.add(new Inhabitant(entityData, inhabitant.getNestCapacityWeight(), 0, inhabitant.getMinTicksInNest()));
+        this.inhabitants.add(new Inhabitant(false, entityData, inhabitant.getNestCapacityWeight(), 0, inhabitant.getMinTicksInNest()));
     }
 
     public void addFreshInhabitant(EntityType<?> entityType) {
@@ -176,10 +175,9 @@ public class TreeHollowBlockEntity extends BlockEntity {
 
         NbtCompound entityData = new NbtCompound();
         entityData.putString("id", Registry.ENTITY_TYPE.getId(entityType).toString());
-        entityData.put(WoodpeckerEntity.NEST_POS_KEY, NbtHelper.fromBlockPos(this.getPos()));
-        entityData.putBoolean(WoodpeckerEntity.IS_FLYING_KEY, true);
+        entityData.put("NestPos", NbtHelper.fromBlockPos(this.getPos()));
 
-        this.inhabitants.add(new Inhabitant(entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 0, 600));
+        this.inhabitants.add(new Inhabitant(true, entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 0, 600));
     }
 
     public static void serverTick(World world, BlockPos pos, BlockState state, TreeHollowBlockEntity treeHollow) {
@@ -247,7 +245,6 @@ public class TreeHollowBlockEntity extends BlockEntity {
 
         NbtCompound nbtCompound = inhabitant.entityData.copy();
         removeIrrelevantNbt(nbtCompound);
-        nbtCompound.put("NestPos", NbtHelper.fromBlockPos(treeHollowPos));
 
         Direction frontDirection = state.get(TreeHollowBlock.FACING);
         BlockPos frontPos = treeHollowPos.offset(frontDirection);
@@ -258,15 +255,22 @@ public class TreeHollowBlockEntity extends BlockEntity {
 
         MobEntity inhabitantEntity = (MobEntity) EntityType.loadEntityWithPassengers(nbtCompound, world, e -> e);
         if (inhabitantEntity != null) {
-            if (inhabitantEntity instanceof AnimalEntity) ageInhabitant(inhabitant.ticksInNest, (AnimalEntity) inhabitantEntity);
-
-            if (inhabitantGetter != null) inhabitantGetter.add((TreeHollowNester) inhabitantEntity);
-
             double d0 = !hasSpaceToRelease ? 0.0D : 0.55D + (double) (inhabitantEntity.getWidth() / 2.0F);
             double d1 = (double) treeHollowPos.getX() + 0.5D + d0 * (double) frontDirection.getOffsetX();
             double d2 = (double) treeHollowPos.getY() + 0.5D - (double) (inhabitantEntity.getHeight() / 2.0F);
             double d3 = (double) treeHollowPos.getZ() + 0.5D + d0 * (double) frontDirection.getOffsetZ();
             inhabitantEntity.refreshPositionAndAngles(d1, d2, d3, inhabitantEntity.getYaw(), inhabitantEntity.getPitch());
+
+            if (inhabitantEntity instanceof AnimalEntity) ageInhabitant(inhabitant.ticksInNest, (AnimalEntity) inhabitantEntity);
+
+            if (inhabitant.isFresh) {
+                if (world instanceof ServerWorldAccess serverWorldAccess) {
+                    inhabitantEntity.initialize(serverWorldAccess, serverWorldAccess.getLocalDifficulty(inhabitantEntity.getBlockPos()), SpawnReason.CHUNK_GENERATION, null, nbtCompound);
+                }
+                if (inhabitantEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity) flyingEntity.setFlying(true);
+            }
+
+            if (inhabitantGetter != null) inhabitantGetter.add((TreeHollowNester) inhabitantEntity);
 
             world.playSound(null, treeHollowPos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.emitGameEvent(GameEvent.BLOCK_CHANGE, treeHollowPos, GameEvent.Emitter.of(inhabitantEntity, world.getBlockState(treeHollowPos)));
@@ -285,15 +289,17 @@ public class TreeHollowBlockEntity extends BlockEntity {
     }
 
     private static class Inhabitant {
+        final boolean isFresh;
         final NbtCompound entityData;
         final int capacityWeight;
         final int minOccupationTicks;
         int ticksInNest;
 
-        private Inhabitant(NbtCompound entityData, int capacityWeight, int ticksInNest, int minOccupationTicks) {
+        private Inhabitant(boolean isFresh, NbtCompound entityData, int capacityWeight, int ticksInNest, int minOccupationTicks) {
 
             removeIrrelevantNbt(entityData);
 
+            this.isFresh = isFresh;
             this.entityData = entityData;
             this.capacityWeight = capacityWeight;
             this.ticksInNest = ticksInNest;
