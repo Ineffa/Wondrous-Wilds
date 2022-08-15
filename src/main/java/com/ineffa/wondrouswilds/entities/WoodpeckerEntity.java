@@ -27,8 +27,10 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.particle.DefaultParticleType;
@@ -176,7 +178,30 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
         if (this.getPlaySessionsBeforeTame() <= 0 && !this.isTame()) this.setPlaySessionsBeforeTame(this.getRandom().nextBetween(5, 15));
 
+        this.initEquipment(world.getRandom(), difficulty);
+
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    }
+
+    @Override
+    protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
+        if (random.nextInt(4) != 0) return;
+
+        Item itemToHold;
+        int i = 1 + random.nextInt(100);
+        if (i <= 1) itemToHold = Items.WOODEN_AXE;
+        else if (i <= 5) itemToHold = Items.MUSIC_DISC_OTHERSIDE;
+        else if (i <= 20) itemToHold = Items.HONEYCOMB;
+        else if (i <= 50) itemToHold = Items.BONE_MEAL;
+        else itemToHold = switch (random.nextInt(5)) {
+                default -> Items.LILY_OF_THE_VALLEY;
+                case 1 -> WondrousWildsItems.PURPLE_VIOLET;
+                case 2 -> WondrousWildsItems.PINK_VIOLET;
+                case 3 -> WondrousWildsItems.RED_VIOLET;
+                case 4 -> WondrousWildsItems.WHITE_VIOLET;
+        };
+
+        this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(itemToHold));
     }
 
     @Override
