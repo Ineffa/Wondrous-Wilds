@@ -710,6 +710,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     @Override
+    public void equipStack(EquipmentSlot slot, ItemStack stack) {
+        super.equipStack(slot, stack);
+
+        this.updateDropChances(slot);
+    }
+
+    @Override
     public boolean damage(DamageSource source, float amount) {
         if (super.damage(source, amount)) {
             this.resetConsecutivePecks();
