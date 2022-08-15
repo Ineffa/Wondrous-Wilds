@@ -245,6 +245,7 @@ public class TreeHollowBlockEntity extends BlockEntity {
 
         NbtCompound nbtCompound = inhabitant.entityData.copy();
         removeIrrelevantNbt(nbtCompound);
+        nbtCompound.put("NestPos", NbtHelper.fromBlockPos(treeHollowPos));
 
         Direction frontDirection = state.get(TreeHollowBlock.FACING);
         BlockPos frontPos = treeHollowPos.offset(frontDirection);
