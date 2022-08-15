@@ -651,25 +651,57 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
         if (this.isTame()) {
             if (hand == Hand.MAIN_HAND && playerHeldStack.isEmpty() && !woodpeckerHeldStack.isEmpty()) {
-                this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                ItemStack stackToTransfer = woodpeckerHeldStack;
 
-                player.giveItemStack(woodpeckerHeldStack);
+                if (player.isSneaking()) {
+                    stackToTransfer = woodpeckerHeldStack.copy();
+                    stackToTransfer.setCount(1);
+
+                    woodpeckerHeldStack.decrement(1);
+                }
+
+                if (!player.giveItemStack(stackToTransfer)) this.dropStack(stackToTransfer);
 
                 return ActionResult.SUCCESS;
             }
 
-            if (!playerHeldStack.isEmpty() && woodpeckerHeldStack.isEmpty()) {
+            transferToWoodpecker: if (!playerHeldStack.isEmpty()) {
+                int woodpeckerSpaceRemaining = woodpeckerHeldStack.getMaxCount() - woodpeckerHeldStack.getCount();
+                if (woodpeckerSpaceRemaining <= 0) break transferToWoodpecker;
+
+                boolean isNewItemType = playerHeldStack.getItem() != woodpeckerHeldStack.getItem();
+                if (isNewItemType && !woodpeckerHeldStack.isEmpty()) break transferToWoodpecker;
+
+                if (!player.isSneaking()) {
+                    if (!isNewItemType) {
+                        int amountToTransfer = Math.min(playerHeldStack.getCount(), woodpeckerSpaceRemaining);
+
+                        if (!player.getAbilities().creativeMode) playerHeldStack.decrement(amountToTransfer);
+                        woodpeckerHeldStack.increment(amountToTransfer);
+
+                    }
+                    else {
+                        player.setStackInHand(hand, ItemStack.EMPTY);
+                        this.setStackInHand(Hand.MAIN_HAND, playerHeldStack);
+                    }
+                    return ActionResult.SUCCESS;
+                }
+
                 ItemStack playerHeldStackCopy = playerHeldStack.copy();
-                playerHeldStackCopy.setCount(1);
 
                 if (!player.getAbilities().creativeMode) playerHeldStack.decrement(1);
-                this.setStackInHand(Hand.MAIN_HAND, playerHeldStackCopy);
+
+                if (isNewItemType) {
+                    playerHeldStackCopy.setCount(1);
+                    this.setStackInHand(Hand.MAIN_HAND, playerHeldStackCopy);
+                }
+                else woodpeckerHeldStack.increment(1);
 
                 return ActionResult.SUCCESS;
             }
         }
 
-        else if (playerHeldStack.getItem() == WondrousWildsItems.LOVIFIER && !this.isTame()) {
+        else if (playerHeldStack.getItem() == WondrousWildsItems.LOVIFIER) {
             if (!this.getWorld().isClient()) this.finishTame();
             return ActionResult.SUCCESS;
         }
