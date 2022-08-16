@@ -14,6 +14,7 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
     private final TreeHollowNester nester;
     private final MobEntity nesterEntity;
 
+    private int nextCheckDelay = 40;
     private boolean shouldStop = false;
 
     private boolean lookingForNest = false;
@@ -27,6 +28,12 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
+        if (this.nextCheckDelay > 0) {
+            --this.nextCheckDelay;
+            return false;
+        }
+        else this.nextCheckDelay = 40;
+
         if (!(this.nester.shouldReturnToNest() || (this.nester.shouldFindNest() && this.nester.getCannotInhabitNestTicks() <= 0))) return false;
 
         this.lookingForNest = this.nester.shouldFindNest();
@@ -51,6 +58,8 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
     @Override
     public void stop() {
         super.stop();
+
+        this.nextCheckDelay = 40;
 
         if (!(this.nesterEntity.getWorld().getBlockEntity(this.getTargetPos()) instanceof TreeHollowBlockEntity treeHollow)) return;
 
