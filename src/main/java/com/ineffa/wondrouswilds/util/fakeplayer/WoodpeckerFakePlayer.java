@@ -1,4 +1,4 @@
-package com.ineffa.wondrouswilds.util;
+package com.ineffa.wondrouswilds.util.fakeplayer;
 
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.mojang.authlib.GameProfile;

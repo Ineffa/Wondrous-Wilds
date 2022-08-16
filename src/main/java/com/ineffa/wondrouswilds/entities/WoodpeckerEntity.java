@@ -7,7 +7,7 @@ import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
-import com.ineffa.wondrouswilds.util.WoodpeckerFakePlayer;
+import com.ineffa.wondrouswilds.util.fakeplayer.WoodpeckerFakePlayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
