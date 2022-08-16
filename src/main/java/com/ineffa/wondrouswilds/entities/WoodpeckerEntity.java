@@ -526,12 +526,6 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         else {
             if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof TreeHollowBlockEntity)) this.clearNestPos();
 
-            if (this.isDrumming()) {
-                if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.0F);
-
-                this.setDrummingTicks(this.getDrummingTicks() - 1);
-            }
-
             if (this.isPecking()) {
                 if (this.getPeckChainTicks() <= 0) this.stopPecking(false);
 
@@ -599,7 +593,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                                 this.startPeckChain(canMakeNest ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength);
                             }
                         }
-                        else if (this.hasNestPos() && this.getRandom().nextInt(200) == 0) this.startDrumming();
+                        else if (this.hasNestPos() && this.getRandom().nextInt(400) == 0) this.startDrumming();
                     }
                 }
 
@@ -615,30 +609,37 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                 }
             }
 
-            if (!this.isPecking() && !this.isDrumming()) {
-                if (!this.isChirping) {
-                    if (this.getRandom().nextInt(120) == 0) {
-                        this.chirpCount = 0;
-                        this.nextChirpCount = 1 + this.getRandom().nextInt(12);
-                        this.nextChirpDelay = 0;
-                        this.nextChirpSpeed = 2 + this.getRandom().nextInt(3);
-                        this.nextChirpPitch = this.getSoundPitch();
-                        this.isChirping = true;
+            if (!this.isDrumming()) {
+                if (!this.isPecking()) {
+                    if (!this.isChirping) {
+                        if (this.getRandom().nextInt(120) == 0) {
+                            this.chirpCount = 0;
+                            this.nextChirpCount = 1 + this.getRandom().nextInt(12);
+                            this.nextChirpDelay = 0;
+                            this.nextChirpSpeed = 2 + this.getRandom().nextInt(3);
+                            this.nextChirpPitch = this.getSoundPitch();
+                            this.isChirping = true;
+                        }
                     }
-                }
-                else chirp: {
-                    if (this.chirpCount >= this.nextChirpCount) {
-                        this.isChirping = false;
-                        break chirp;
-                    }
+                    else chirp: {
+                        if (this.chirpCount >= this.nextChirpCount) {
+                            this.isChirping = false;
+                            break chirp;
+                        }
 
-                    if (this.nextChirpDelay > 0) --this.nextChirpDelay;
-                    else {
-                        ++this.chirpCount;
-                        this.nextChirpDelay = this.nextChirpSpeed;
-                        this.playSound(WondrousWildsSounds.WOODPECKER_CHIRP, this.getSoundVolume(), this.nextChirpPitch);
+                        if (this.nextChirpDelay > 0) --this.nextChirpDelay;
+                        else {
+                            ++this.chirpCount;
+                            this.nextChirpDelay = this.nextChirpSpeed;
+                            this.playSound(WondrousWildsSounds.WOODPECKER_CHIRP, this.getSoundVolume(), this.nextChirpPitch);
+                        }
                     }
                 }
+            }
+            else {
+                if (this.getDrummingTicks() == 45) this.playSound(WondrousWildsSounds.WOODPECKER_DRUM, 4.0F, 1.0F);
+
+                this.setDrummingTicks(this.getDrummingTicks() - 1);
             }
 
             this.tickAngerLogic((ServerWorld) this.getWorld(), false);
