@@ -683,8 +683,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
                     }
                     else {
-                        player.setStackInHand(hand, ItemStack.EMPTY);
-                        this.setStackInHand(Hand.MAIN_HAND, playerHeldStack);
+                        if (!player.getAbilities().creativeMode) player.setStackInHand(hand, ItemStack.EMPTY);
+                        this.setStackInHand(Hand.MAIN_HAND, playerHeldStack.copy());
                     }
                     return ActionResult.SUCCESS;
                 }
