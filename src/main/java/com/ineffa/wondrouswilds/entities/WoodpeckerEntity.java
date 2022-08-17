@@ -355,6 +355,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.setConsecutivePecks(0);
     }
 
+    public double getPeckReach() {
+        return 1.0D;
+    }
+
     public int getPlaySessionsBeforeTame() {
         return this.playSessionsBeforeTame;
     }
@@ -499,7 +503,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5D));
         this.goalSelector.add(2, new FleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.5D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
         this.goalSelector.add(3, new FleeEntityGoal<>(this, PlayerEntity.class, 16.0F, 1.0D, 1.5D, entity -> !this.isTame()));
-        this.goalSelector.add(4, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(4, new WoodpeckerAttackGoal(this, 1.0D, true));
         this.goalSelector.add(5, new FindOrReturnToTreeHollowGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(7, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
@@ -533,9 +537,15 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
                 else {
                     if (this.getPeckChainTicks() % 10 == 0 && this.getPeckChainTicks() != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength())) {
-                        SoundEvent peckSound;
+                        SoundEvent peckSound = null;
 
-                        if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
+                        if (this.isAttacking() && this.hasAttackTarget()) {
+                            LivingEntity attackTarget = this.getTarget();
+                            double distanceFromTarget = this.squaredDistanceTo(attackTarget.getX(), attackTarget.getY(), attackTarget.getZ());
+
+                            if (distanceFromTarget <= this.getPeckReach()) this.tryAttack(attackTarget);
+                        }
+                        else if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                             BlockState peckState = this.getWorld().getBlockState(this.getClingPos());
 
                             this.setConsecutivePecks(this.getConsecutivePecks() + 1);
@@ -554,7 +564,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                             peckSound = peckState.getSoundGroup().getHitSound();
                         }
                         else {
-                            BlockHitResult hitResult = (BlockHitResult) this.raycast(1.0D, 0.0F, false);
+                            BlockHitResult hitResult = (BlockHitResult) this.raycast(this.getPeckReach(), 0.0F, false);
                             BlockState peckState = this.getWorld().getBlockState(hitResult.getBlockPos());
 
                             if (peckState.isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) {
