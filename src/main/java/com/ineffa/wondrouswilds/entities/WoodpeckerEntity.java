@@ -725,6 +725,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     @Override
     public boolean damage(DamageSource source, float amount) {
+        if (source.getAttacker() instanceof WoodpeckerEntity) amount = 0.0F;
+
         if (super.damage(source, amount)) {
             this.resetConsecutivePecks();
 
