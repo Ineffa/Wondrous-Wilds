@@ -256,13 +256,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public void stopClinging() {
-        BlockPos priorClingPos = this.getClingPos();
         this.setClingPos(BlockPos.ORIGIN);
 
-        if (this.isPecking()) {
-            this.stopPecking(!this.canInteractWithPos(priorClingPos));
-        }
-        else if (this.getConsecutivePecks() > 0) this.resetConsecutivePecks();
+        if (this.isPecking()) this.stopPecking(true);
+        else this.resetConsecutivePecks();
     }
 
     public boolean hasValidClingPos() {
