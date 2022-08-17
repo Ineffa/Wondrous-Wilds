@@ -135,7 +135,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     public static DefaultAttributeContainer.Builder createWoodpeckerAttributes() {
         return AnimalEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 8.0D)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 0.5D)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 3.0D)
                 .add(EntityAttributes.GENERIC_FLYING_SPEED, 0.25D)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
     }
