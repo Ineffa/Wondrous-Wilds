@@ -489,7 +489,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public boolean canWander() {
-        return !this.isClinging() && !this.hasAttackTarget();
+        return !this.isClinging() && !this.hasAttackTarget() && this.getAttacker() == null;
     }
 
     public boolean hasAttackTarget() {
