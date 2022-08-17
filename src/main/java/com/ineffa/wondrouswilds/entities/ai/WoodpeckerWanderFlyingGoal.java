@@ -30,7 +30,7 @@ public class WoodpeckerWanderFlyingGoal extends Goal {
 
     @Override
     public boolean shouldContinue() {
-        return this.woodpecker.isFlying() && this.woodpecker.getNavigation().isFollowingPath();
+        return this.woodpecker.isFlying() && this.woodpecker.canWander() && this.woodpecker.getNavigation().isFollowingPath();
     }
 
     @Override

@@ -38,7 +38,7 @@ public class WoodpeckerClingToLogGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean shouldContinue() {
-        return !this.shouldStop && this.isTargetPos(this.woodpecker.getWorld(), this.targetPos);
+        return !this.shouldStop && this.woodpecker.canWander() && this.isTargetPos(this.woodpecker.getWorld(), this.targetPos);
     }
 
     @Override
