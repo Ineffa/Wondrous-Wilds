@@ -20,8 +20,8 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
     private boolean canClingToTarget = false;
 
     private boolean shouldStop = false;
-
-    private int ticksOutOfGroundReach = 0;
+    private int ticksUnableToReach;
+    private int ticksTryingToReach;
 
     public WoodpeckerPlayWithBlockGoal(WoodpeckerEntity woodpecker, double speed, int range, int maxYDifference) {
         super(woodpecker, speed, range, maxYDifference);
@@ -40,8 +40,8 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
         super.start();
 
         this.shouldStop = false;
-
-        this.ticksOutOfGroundReach = 0;
+        this.ticksUnableToReach = 0;
+        this.ticksTryingToReach = 0;
 
         if (this.canClingToTarget && !this.woodpecker.isFlying()) this.woodpecker.setFlying(true);
     }
@@ -97,12 +97,29 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
                 if (this.woodpecker.getRandom().nextInt(40) == 0) this.woodpecker.startPeckChain(1 + this.woodpecker.getRandom().nextInt(4));
             }
 
-            this.ticksOutOfGroundReach = 0;
+            this.ticksUnableToReach = 0;
+            this.ticksTryingToReach = 0;
         }
-        else if (!this.woodpecker.isFlying()) {
-            if (this.ticksOutOfGroundReach >= 200) this.woodpecker.setFlying(true);
+        else {
+            if (this.woodpecker.getNavigation().isIdle()) {
+                if (this.ticksUnableToReach >= 100) {
+                    if (!this.woodpecker.isFlying()) {
+                        this.woodpecker.setFlying(true);
+                        this.ticksUnableToReach = 0;
+                    }
+                    else this.shouldStop = true;
 
-            else ++this.ticksOutOfGroundReach;
+                    return;
+                }
+                ++this.ticksUnableToReach;
+            }
+            else this.ticksUnableToReach = 0;
+
+            if (this.ticksTryingToReach >= 400) {
+                this.shouldStop = true;
+                return;
+            }
+            ++this.ticksTryingToReach;
         }
     }
 
