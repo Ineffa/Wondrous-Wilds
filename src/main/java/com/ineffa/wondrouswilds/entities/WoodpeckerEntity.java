@@ -536,13 +536,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                         if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                             BlockState peckState = this.getWorld().getBlockState(this.getClingPos());
 
+                            this.setConsecutivePecks(this.getConsecutivePecks() + 1);
                             if (this.getConsecutivePecks() >= PECKS_NEEDED_FOR_NEST) {
                                 this.stopPecking(true);
 
                                 Block clingBlock = peckState.getBlock();
                                 this.getWorld().setBlockState(this.getClingPos(), TREE_HOLLOW_MAP.get(clingBlock).getDefaultState().with(TreeHollowBlock.FACING, this.clingSide));
                             }
-                            else this.setConsecutivePecks(this.getConsecutivePecks() + 1);
 
                             this.getWorld().syncWorldEvent(WorldEvents.BLOCK_BROKEN, this.getClingPos(), Block.getRawIdFromState(this.getWorld().getBlockState(this.getClingPos())));
 
