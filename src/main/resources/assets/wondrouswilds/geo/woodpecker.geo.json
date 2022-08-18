@@ -238,8 +238,23 @@
 					"pivot": [0, 6, -4]
 				},
 				{
-					"name": "legsConstant",
+					"name": "legsBottomConstant",
 					"parent": "neckMatcher",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "legsBottomOverlap",
+					"parent": "legsBottomConstant",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "legsBottom",
+					"parent": "legsBottomOverlap",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "legsConstant",
+					"parent": "legsBottom",
 					"pivot": [0, 2, 0]
 				},
 				{

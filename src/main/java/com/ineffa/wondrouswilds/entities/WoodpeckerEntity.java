@@ -622,8 +622,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
                 }
                 else {
                     this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
-                    this.setHeadYaw(this.getYaw());
                     this.setBodyYaw(this.getYaw());
+
+                    if (this.isPecking() || this.isDrumming()) this.setHeadYaw(this.getYaw());
                 }
             }
 
