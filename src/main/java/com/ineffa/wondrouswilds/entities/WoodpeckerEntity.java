@@ -226,7 +226,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     }
 
     public boolean isClinging() {
-        return this.dataTracker.get(CLING_POS) != BlockPos.ORIGIN;
+        BlockPos clingPos = this.dataTracker.get(CLING_POS);
+        BlockPos origin = BlockPos.ORIGIN;
+
+        return clingPos.getX() != origin.getX() && clingPos.getY() != origin.getY() && clingPos.getZ() != origin.getZ();
     }
 
     public boolean tryClingingTo(BlockPos clingPos) {
@@ -850,6 +853,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
         else if (this.isOnGround())
             event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
+
+        else
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
 
         return PlayState.CONTINUE;
     }
