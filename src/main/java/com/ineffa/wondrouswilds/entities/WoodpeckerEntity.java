@@ -671,14 +671,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
         if (this.isTame()) {
             if (hand == Hand.MAIN_HAND && playerHeldStack.isEmpty() && !woodpeckerHeldStack.isEmpty()) {
-                ItemStack stackToTransfer = woodpeckerHeldStack;
+                ItemStack stackToTransfer = woodpeckerHeldStack.copy();
 
                 if (player.isSneaking()) {
-                    stackToTransfer = woodpeckerHeldStack.copy();
                     stackToTransfer.setCount(1);
-
                     woodpeckerHeldStack.decrement(1);
                 }
+                else this.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
 
                 if (!player.giveItemStack(stackToTransfer)) this.dropStack(stackToTransfer);
 
