@@ -91,6 +91,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     private static final TrackedData<Integer> PECK_CHAIN_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> ANGER_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Byte> CHIRP_DELAY = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Boolean> TAME = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(10, 15);
     @Nullable
@@ -107,15 +108,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     private BlockPos nestPos;
 
     @Environment(value = EnvType.SERVER)
-    private boolean isChirping;
+    private byte chirpCount;
     @Environment(value = EnvType.SERVER)
-    private int chirpCount;
+    private byte nextChirpCount;
     @Environment(value = EnvType.SERVER)
-    private int nextChirpCount;
-    @Environment(value = EnvType.SERVER)
-    private int nextChirpSpeed;
-    @Environment(value = EnvType.SERVER)
-    private int nextChirpDelay;
+    private byte nextChirpSpeed;
     @Environment(value = EnvType.SERVER)
     private float nextChirpPitch;
 
@@ -149,6 +146,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.dataTracker.startTracking(PECK_CHAIN_TICKS, 0);
         this.dataTracker.startTracking(DRUMMING_TICKS, 0);
         this.dataTracker.startTracking(ANGER_TICKS, 0);
+        this.dataTracker.startTracking(CHIRP_DELAY, (byte) 0);
         this.dataTracker.startTracking(TAME, false);
     }
 
@@ -360,6 +358,32 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     public double getPeckReach() {
         return 1.0D;
+    }
+
+    public byte getChirpDelay() {
+        return this.dataTracker.get(CHIRP_DELAY);
+    }
+
+    public void setChirpDelay(byte speed) {
+        this.dataTracker.set(CHIRP_DELAY, speed);
+    }
+
+    public void startChirping(byte count, byte speed) {
+        this.chirpCount = (byte) 0;
+        this.nextChirpCount = count;
+
+        this.nextChirpSpeed = speed;
+        this.setChirpDelay(speed);
+
+        this.nextChirpPitch = this.getSoundPitch();
+    }
+
+    public void stopChirping() {
+        this.chirpCount = (byte) 0;
+        this.nextChirpCount = (byte) 0;
+
+        this.nextChirpSpeed = (byte) 0;
+        this.setChirpDelay((byte) 0);
     }
 
     public int getPlaySessionsBeforeTame() {
@@ -630,27 +654,22 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
             if (!this.isDrumming()) {
                 if (!this.isPecking()) {
-                    if (!this.isChirping) {
-                        if (this.getRandom().nextInt(120) == 0) {
-                            this.chirpCount = 0;
-                            this.nextChirpCount = 1 + this.getRandom().nextInt(12);
-                            this.nextChirpDelay = 0;
-                            this.nextChirpSpeed = 2 + this.getRandom().nextInt(3);
-                            this.nextChirpPitch = this.getSoundPitch();
-                            this.isChirping = true;
-                        }
+                    if (this.nextChirpSpeed == (byte) 0) {
+                        if (this.getRandom().nextInt(120) == 0) this.startChirping((byte) (1 + this.getRandom().nextInt(12)), (byte) (2 + this.getRandom().nextInt(3)));
                     }
-                    else chirp: {
-                        if (this.chirpCount >= this.nextChirpCount) {
-                            this.isChirping = false;
-                            break chirp;
-                        }
+                    else {
+                        if (this.getChirpDelay() > 0) {
+                            if (this.getChirpDelay() == 2) {
+                                ++this.chirpCount;
+                                this.playSound(WondrousWildsSounds.WOODPECKER_CHIRP, this.getSoundVolume(), this.nextChirpPitch);
+                            }
 
-                        if (this.nextChirpDelay > 0) --this.nextChirpDelay;
+                            this.setChirpDelay((byte) (this.getChirpDelay() - 1));
+                        }
                         else {
-                            ++this.chirpCount;
-                            this.nextChirpDelay = this.nextChirpSpeed;
-                            this.playSound(WondrousWildsSounds.WOODPECKER_CHIRP, this.getSoundVolume(), this.nextChirpPitch);
+                            this.setChirpDelay(this.nextChirpSpeed);
+
+                            if (this.chirpCount >= this.nextChirpCount) this.stopChirping();
                         }
                     }
                 }
@@ -863,6 +882,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
     private <E extends IAnimatable> PlayState overlapAnimationPredicate(AnimationEvent<E> event) {
         if (this.isPecking())
             event.getController().setAnimation(new AnimationBuilder().addAnimation(this.getPeckAnimationToPlay()));
+
+        else if (this.getChirpDelay() > 0 && this.getChirpDelay() <= 2)
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("chirpOverlap"));
 
         else
             event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));

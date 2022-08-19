@@ -53,7 +53,12 @@
 				{
 					"name": "neck",
 					"parent": "neckOverlap",
-					"pivot": [0, 6, -4],
+					"pivot": [0, 6, -4]
+				},
+				{
+					"name": "breathController",
+					"parent": "neck",
+					"pivot": [0, 4, 0],
 					"cubes": [
 						{"origin": [-2.5, 2, -4], "size": [5, 4, 8], "uv": [0, 0]}
 					]

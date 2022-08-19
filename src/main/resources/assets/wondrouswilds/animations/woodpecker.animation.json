@@ -1006,6 +1006,55 @@
 				}
 			}
 		},
+		"chirpOverlap": {
+			"loop": true,
+			"animation_length": 0.2,
+			"bones": {
+				"breathController": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.1": {
+							"vector": [1, 0.9, 1],
+							"easing": "easeOutSine"
+						},
+						"0.2": {
+							"vector": [1, 1, 1],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"headOverlap": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.15": {
+							"vector": [-1, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.2": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.1": {
+							"vector": [0, -0.05, 0.1],
+							"easing": "easeOutCubic"
+						},
+						"0.2": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		},
 		"empty": {
 			"loop": true
 		}
