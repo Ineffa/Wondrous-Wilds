@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public class BirdhouseBlock extends InhabitableNestBlock {
+public abstract class BirdhouseBlock extends InhabitableNestBlock {
 
     public BirdhouseBlock(Settings settings) {
         super(settings);
