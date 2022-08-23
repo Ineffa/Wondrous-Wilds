@@ -1,8 +1,9 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
 import net.minecraft.util.math.BlockPos;
 
-public interface TreeHollowNester {
+public interface BlockNester {
 
     int getNestCapacityWeight();
 
@@ -23,7 +24,8 @@ public interface TreeHollowNester {
     }
 
     default boolean hasNestPos() {
-        return !(this.getNestPos() == null || this.getNestPos() == BlockPos.ORIGIN);
+        BlockPos nestPos = this.getNestPos();
+        return nestPos != null && !WondrousWildsUtils.isPosAtWorldOrigin(nestPos);
     }
 
     default boolean shouldFindNest() {

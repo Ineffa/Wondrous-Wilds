@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.blocks.*;
+import com.ineffa.wondrouswilds.blocks.entity.BirdhouseBlockEntity;
 import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -50,6 +51,7 @@ public class WondrousWildsBlocks {
     public static final Block HOLLOW_STRIPPED_WARPED_STEM = registerBlock("hollow_stripped_warped_stem", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_WARPED_STEM).nonOpaque()));
 
     public static final TreeHollowBlock BIRCH_TREE_HOLLOW = (TreeHollowBlock) registerBlock("birch_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.PALE_YELLOW).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
+    public static final BirdhouseBlock BIRCH_BIRDHOUSE = (BirdhouseBlock) registerBlock("birch_birdhouse", new BirdhouseBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_PLANKS).nonOpaque()));
 
     public static final Block YELLOW_BIRCH_LEAVES = registerBlock("yellow_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
     public static final Block ORANGE_BIRCH_LEAVES = registerBlock("orange_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
@@ -57,8 +59,9 @@ public class WondrousWildsBlocks {
 
     public static final class BlockEntities {
         public static final BlockEntityType<TreeHollowBlockEntity> TREE_HOLLOW = registerBlockEntity("tree_hollow", FabricBlockEntityTypeBuilder.create(TreeHollowBlockEntity::new, BIRCH_TREE_HOLLOW).build(null));
+        public static final BlockEntityType<BirdhouseBlockEntity> BIRDHOUSE = registerBlockEntity("birdhouse", FabricBlockEntityTypeBuilder.create(BirdhouseBlockEntity::new, BIRCH_BIRDHOUSE).build(null));
 
-        private static <BE extends BlockEntity> BlockEntityType<BE> registerBlockEntity(String name, BlockEntityType<BE> blockEntityType) {
+        private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(String name, BlockEntityType<T> blockEntityType) {
             return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(WondrousWilds.MOD_ID, name), blockEntityType);
         }
 

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wondrouswilds:block/birch_birdhouse"
+    },
+    "facing=south": {
+      "model": "wondrouswilds:block/birch_birdhouse",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "wondrouswilds:block/birch_birdhouse",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "wondrouswilds:block/birch_birdhouse",
+      "y": 270
+    }
+  }
+}

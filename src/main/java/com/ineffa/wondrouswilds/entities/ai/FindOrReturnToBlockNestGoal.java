@@ -1,17 +1,17 @@
 package com.ineffa.wondrouswilds.entities.ai;
 
-import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
+import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.entities.FlyingAndWalkingAnimalEntity;
-import com.ineffa.wondrouswilds.entities.TreeHollowNester;
+import com.ineffa.wondrouswilds.entities.BlockNester;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldView;
 
-public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
+public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
 
-    private final TreeHollowNester nester;
+    private final BlockNester nester;
     private final MobEntity nesterEntity;
 
     private int nextCheckDelay = 40;
@@ -19,7 +19,7 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
 
     private boolean lookingForNest = false;
 
-    public FindOrReturnToTreeHollowGoal(TreeHollowNester nester, double speed, int range, int maxYDifference) {
+    public FindOrReturnToBlockNestGoal(BlockNester nester, double speed, int range, int maxYDifference) {
         super((PathAwareEntity) nester, speed, range, maxYDifference);
 
         this.nester = nester;
@@ -61,10 +61,10 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
 
         this.nextCheckDelay = 40;
 
-        if (!(this.nesterEntity.getWorld().getBlockEntity(this.getTargetPos()) instanceof TreeHollowBlockEntity treeHollow)) return;
+        if (!(this.nesterEntity.getWorld().getBlockEntity(this.getTargetPos()) instanceof InhabitableNestBlockEntity nestBlock)) return;
 
         if (this.hasReached()) {
-            if (!treeHollow.tryAddingInhabitant(this.nester)) {
+            if (!nestBlock.tryAddingInhabitant(this.nester)) {
                 this.nester.setCannotInhabitNestTicks(this.nester.getMinTicksOutOfNest());
                 this.nester.clearNestPos();
             }
@@ -82,7 +82,7 @@ public class FindOrReturnToTreeHollowGoal extends MoveToTargetPosGoal {
     protected boolean isTargetPos(WorldView world, BlockPos pos) {
         if (!this.lookingForNest) return true;
 
-        return world.getBlockEntity(pos) instanceof TreeHollowBlockEntity;
+        return world.getBlockEntity(pos) instanceof InhabitableNestBlockEntity;
     }
 
     @Override

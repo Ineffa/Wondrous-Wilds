@@ -1,7 +1,7 @@
 package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
-import com.ineffa.wondrouswilds.blocks.entity.TreeHollowBlockEntity;
+import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
@@ -74,7 +74,7 @@ import java.util.function.Predicate;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.TREE_HOLLOW_MAP;
 
-public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements TreeHollowNester, Angerable, IAnimatable {
+public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements BlockNester, Angerable, IAnimatable {
 
     public static final String CLING_POS_KEY = "ClingPos";
     public static final String NEST_POS_KEY = "NestPos";
@@ -528,9 +528,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5D));
         this.goalSelector.add(2, new FleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.5D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
-        this.goalSelector.add(5, new FindOrReturnToTreeHollowGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(3, new WoodpeckerAttackGoal(this, 1.0D, true));
         this.goalSelector.add(4, new FleeEntityGoal<>(this, PlayerEntity.class, 16.0F, 1.0D, 1.5D, entity -> !this.isTame()));
+        this.goalSelector.add(5, new FindOrReturnToBlockNestGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(7, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(8, new WoodpeckerWanderLandGoal(this, 1.0D));
@@ -556,7 +556,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
             this.flapAngle += this.flapSpeed;
         }
         else {
-            if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof TreeHollowBlockEntity)) this.clearNestPos();
+            if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof InhabitableNestBlockEntity)) this.clearNestPos();
 
             if (this.isPecking()) {
                 if (this.getPeckChainTicks() <= 0) this.stopPecking(false);

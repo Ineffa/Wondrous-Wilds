@@ -41,6 +41,8 @@ public class WondrousWilds implements ModInitializer {
 
 		WondrousWildsFeatures.initialize();
 
+		WondrousWildsScreenHandlers.initialize();
+
 		upgradeBirchForests();
 	}
 

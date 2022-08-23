@@ -1,28 +1,38 @@
 package com.ineffa.wondrouswilds.blocks.entity;
 
 import com.google.common.collect.Lists;
+import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
+import com.ineffa.wondrouswilds.screen.BirdhouseScreenHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class TreeHollowBlockEntity extends BlockEntity implements InhabitableNestBlockEntity {
+public class BirdhouseBlockEntity extends LootableContainerBlockEntity implements InhabitableNestBlockEntity {
 
     private final List<Inhabitant> inhabitants = Lists.newArrayList();
 
-    public TreeHollowBlockEntity(BlockPos pos, BlockState state) {
-        super(WondrousWildsBlocks.BlockEntities.TREE_HOLLOW, pos, state);
+    private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+
+    public BirdhouseBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(WondrousWildsBlocks.BlockEntities.BIRDHOUSE, blockPos, blockState);
     }
 
-    public static void serverTick(World world, BlockPos pos, BlockState state, TreeHollowBlockEntity treeHollow) {
-        tickInhabitants(world, pos, state, treeHollow.getInhabitants());
+    public static void serverTick(World world, BlockPos pos, BlockState state, BirdhouseBlockEntity birdhouse) {
+        tickInhabitants(world, pos, state, birdhouse.getInhabitants());
     }
 
     private static void tickInhabitants(World world, BlockPos pos, BlockState state, List<Inhabitant> inhabitants) {
@@ -48,6 +58,8 @@ public class TreeHollowBlockEntity extends BlockEntity implements InhabitableNes
         super.writeNbt(nbt);
 
         nbt.put(INHABITANTS_KEY, this.getInhabitantsNbt());
+
+        if (!this.serializeLootTable(nbt)) Inventories.writeNbt(nbt, this.inventory);
     }
 
     @Override
@@ -63,6 +75,33 @@ public class TreeHollowBlockEntity extends BlockEntity implements InhabitableNes
             Inhabitant inhabitant = new Inhabitant(false, nbtCompound.getCompound(ENTITY_DATA_KEY), nbtCompound.getInt(CAPACITY_WEIGHT_KEY), nbtCompound.getInt(MIN_OCCUPATION_TICKS_KEY), nbtCompound.getInt(TICKS_IN_NEST_KEY));
             this.getInhabitants().add(inhabitant);
         }
+
+        if (!this.deserializeLootTable(nbt)) Inventories.readNbt(nbt, this.inventory);
+    }
+
+    @Override
+    protected DefaultedList<ItemStack> getInvStackList() {
+        return this.inventory;
+    }
+
+    @Override
+    protected void setInvStackList(DefaultedList<ItemStack> list) {
+        this.inventory = list;
+    }
+
+    @Override
+    protected Text getContainerName() {
+        return Text.translatable("container." + WondrousWilds.MOD_ID + ".birdhouse");
+    }
+
+    @Override
+    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
+        return new BirdhouseScreenHandler(syncId, playerInventory, this);
+    }
+
+    @Override
+    public int size() {
+        return 1;
     }
 
     @Override

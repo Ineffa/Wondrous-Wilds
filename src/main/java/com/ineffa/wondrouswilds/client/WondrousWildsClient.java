@@ -3,6 +3,7 @@ package com.ineffa.wondrouswilds.client;
 import com.ineffa.wondrouswilds.client.rendering.WondrousWildsColorProviders;
 import com.ineffa.wondrouswilds.client.rendering.entity.FireflyRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.WoodpeckerRenderer;
+import com.ineffa.wondrouswilds.client.screen.WondrousWildsScreens;
 import com.ineffa.wondrouswilds.networking.WondrousWildsNetwork;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
@@ -38,6 +39,8 @@ public class WondrousWildsClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.RED_BIRCH_LEAVES, RenderLayer.getCutoutMipped());
 
         WondrousWildsColorProviders.register();
+
+        WondrousWildsScreens.register();
 
         WondrousWildsNetwork.registerS2CPackets();
     }
