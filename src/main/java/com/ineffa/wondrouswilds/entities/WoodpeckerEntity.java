@@ -8,6 +8,7 @@ import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
+import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
 import com.ineffa.wondrouswilds.util.fakeplayer.WoodpeckerFakePlayer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -168,7 +169,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         super.readCustomDataFromNbt(nbt);
 
         BlockPos clingPos = NbtHelper.toBlockPos(nbt.getCompound(CLING_POS_KEY));
-        if (!this.isClinging() && !clingPos.equals(BlockPos.ORIGIN)) this.tryClingingTo(clingPos);
+        if (!this.isClinging() && !WondrousWildsUtils.isPosAtWorldOrigin(clingPos)) this.tryClingingTo(clingPos);
 
         if (nbt.contains(NEST_POS_KEY)) this.setNestPos(NbtHelper.toBlockPos(nbt.getCompound(NEST_POS_KEY)));
 
@@ -225,9 +226,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
 
     public boolean isClinging() {
         BlockPos clingPos = this.dataTracker.get(CLING_POS);
-        BlockPos origin = BlockPos.ORIGIN;
-
-        return clingPos.getX() != origin.getX() && clingPos.getY() != origin.getY() && clingPos.getZ() != origin.getZ();
+        return clingPos != null && !WondrousWildsUtils.isPosAtWorldOrigin(clingPos);
     }
 
     public boolean tryClingingTo(BlockPos clingPos) {

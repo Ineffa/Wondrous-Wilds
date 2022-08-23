@@ -58,4 +58,9 @@ public class WondrousWildsUtils {
 
         return positions;
     }
+
+    public static boolean isPosAtWorldOrigin(BlockPos pos) {
+        BlockPos origin = BlockPos.ORIGIN;
+        return pos.getX() == origin.getX() && pos.getY() == origin.getY() && pos.getZ() == origin.getZ();
+    }
 }
