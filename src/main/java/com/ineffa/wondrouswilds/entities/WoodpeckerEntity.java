@@ -191,19 +191,33 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
         if (random.nextInt(4) != 0) return;
 
+        // ITEM CHANCES:
+        // 1% Wooden Axe
+        // 4% Music Disc
+        // 8% Glass Bottle
+        // 12% Honeycomb
+        // 18% Bone Meal
+        // 24% Flower
+        // 33% Seeds
         Item itemToHold;
         int i = 1 + random.nextInt(100);
         if (i <= 1) itemToHold = Items.WOODEN_AXE;
         else if (i <= 5) itemToHold = Items.MUSIC_DISC_OTHERSIDE;
         else if (i <= 13) itemToHold = Items.GLASS_BOTTLE;
         else if (i <= 25) itemToHold = Items.HONEYCOMB;
-        else if (i <= 50) itemToHold = Items.BONE_MEAL;
-        else itemToHold = switch (random.nextInt(5)) {
+        else if (i <= 43) itemToHold = Items.BONE_MEAL;
+        else if (i <= 67) itemToHold = switch (random.nextInt(5)) {
                 default -> Items.LILY_OF_THE_VALLEY;
                 case 1 -> WondrousWildsItems.PURPLE_VIOLET;
                 case 2 -> WondrousWildsItems.PINK_VIOLET;
                 case 3 -> WondrousWildsItems.RED_VIOLET;
                 case 4 -> WondrousWildsItems.WHITE_VIOLET;
+        };
+        else itemToHold = switch (random.nextInt(4)) {
+            default -> Items.WHEAT_SEEDS;
+            case 1 -> Items.BEETROOT_SEEDS;
+            case 2 -> Items.PUMPKIN_SEEDS;
+            case 3 -> Items.MELON_SEEDS;
         };
 
         this.equipStack(EquipmentSlot.MAINHAND, new ItemStack(itemToHold));
