@@ -29,10 +29,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.LightType;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -115,6 +112,13 @@ public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnim
         super.writeCustomDataToNbt(nbt);
 
         nbt.putInt("LandOnEntityCooldown", this.getLandOnEntityCooldown());
+    }
+
+    @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        if (this.getRandom().nextBoolean() && !this.isFlying()) this.setFlying(true);
+
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
     public int getLandOnEntityCooldown() {
