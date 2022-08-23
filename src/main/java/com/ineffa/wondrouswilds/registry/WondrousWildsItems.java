@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.items.LovifierItem;
+import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -95,5 +96,14 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "lovifier"), LOVIFIER);
+
+        ComposterBlockInvoker.addCompostableItem(0.65F, PURPLE_VIOLET);
+        ComposterBlockInvoker.addCompostableItem(0.65F, PINK_VIOLET);
+        ComposterBlockInvoker.addCompostableItem(0.65F, RED_VIOLET);
+        ComposterBlockInvoker.addCompostableItem(0.65F, WHITE_VIOLET);
+
+        ComposterBlockInvoker.addCompostableItem(0.3F, YELLOW_BIRCH_LEAVES);
+        ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
+        ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
     }
 }

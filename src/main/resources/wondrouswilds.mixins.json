@@ -7,6 +7,7 @@
     "BirchSaplingGeneratorMixin",
     "BlocksMixin",
     "BodyControlMixin",
+    "ComposterBlockInvoker",
     "FoliagePlacerTypeInvoker",
     "MobEntityMixin",
     "TreeConfiguredFeaturesInvoker",
