@@ -529,9 +529,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Tr
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5D));
         this.goalSelector.add(2, new FleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.5D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
-        this.goalSelector.add(3, new FleeEntityGoal<>(this, PlayerEntity.class, 16.0F, 1.0D, 1.5D, entity -> !this.isTame()));
-        this.goalSelector.add(4, new WoodpeckerAttackGoal(this, 1.0D, true));
         this.goalSelector.add(5, new FindOrReturnToTreeHollowGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(3, new WoodpeckerAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(4, new FleeEntityGoal<>(this, PlayerEntity.class, 16.0F, 1.0D, 1.5D, entity -> !this.isTame()));
         this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(7, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(8, new WoodpeckerWanderLandGoal(this, 1.0D));

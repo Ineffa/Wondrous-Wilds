@@ -15,6 +15,13 @@ public class WoodpeckerAttackGoal extends MeleeAttackGoal {
     }
 
     @Override
+    public void start() {
+        super.start();
+
+        if (!this.woodpecker.isFlying()) this.woodpecker.setFlying(true);
+    }
+
+    @Override
     public void stop() {
         super.stop();
 
@@ -23,13 +30,16 @@ public class WoodpeckerAttackGoal extends MeleeAttackGoal {
 
     @Override
     protected void attack(LivingEntity target, double squaredDistance) {
-        if (this.woodpecker.isPecking()) return;
-
         double maxDistance = this.getSquaredMaxAttackDistance(target);
-        if (squaredDistance <= maxDistance && this.isCooledDown()) {
-            this.resetCooldown();
+        if (squaredDistance <= maxDistance) {
+            if (this.woodpecker.isPecking())
+                this.woodpecker.setVelocity(this.woodpecker.getVelocity().multiply(0.9D));
 
-            this.woodpecker.startPeckChain(1);
+            else if (this.isCooledDown()) {
+                this.resetCooldown();
+
+                this.woodpecker.startPeckChain(1);
+            }
         }
     }
 }
