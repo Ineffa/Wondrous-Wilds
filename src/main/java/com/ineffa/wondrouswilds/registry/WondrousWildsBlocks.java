@@ -75,8 +75,6 @@ public class WondrousWildsBlocks {
     public static void initialize() {
         BlockEntities.init();
 
-        StrippableBlockRegistry.register(DEAD_BIRCH_LOG, Blocks.STRIPPED_BIRCH_LOG);
-
         StrippableBlockRegistry.register(HOLLOW_OAK_LOG, HOLLOW_STRIPPED_OAK_LOG);
         StrippableBlockRegistry.register(HOLLOW_SPRUCE_LOG, HOLLOW_STRIPPED_SPRUCE_LOG);
         StrippableBlockRegistry.register(HOLLOW_BIRCH_LOG, HOLLOW_STRIPPED_BIRCH_LOG);
