@@ -207,11 +207,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         else if (i <= 25) itemToHold = Items.HONEYCOMB;
         else if (i <= 43) itemToHold = Items.BONE_MEAL;
         else if (i <= 67) itemToHold = switch (random.nextInt(5)) {
-                default -> Items.LILY_OF_THE_VALLEY;
-                case 1 -> WondrousWildsItems.PURPLE_VIOLET;
-                case 2 -> WondrousWildsItems.PINK_VIOLET;
-                case 3 -> WondrousWildsItems.RED_VIOLET;
-                case 4 -> WondrousWildsItems.WHITE_VIOLET;
+            default -> Items.LILY_OF_THE_VALLEY;
+            case 1 -> WondrousWildsItems.PURPLE_VIOLET;
+            case 2 -> WondrousWildsItems.PINK_VIOLET;
+            case 3 -> WondrousWildsItems.RED_VIOLET;
+            case 4 -> WondrousWildsItems.WHITE_VIOLET;
         };
         else itemToHold = switch (random.nextInt(4)) {
             default -> Items.WHEAT_SEEDS;
