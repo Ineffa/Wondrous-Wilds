@@ -4,11 +4,15 @@ import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.items.LovifierItem;
 import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
+import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.village.TradeOffer;
+import net.minecraft.village.TradeOffers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WondrousWildsItems {
 
@@ -105,5 +109,29 @@ public class WondrousWildsItems {
         ComposterBlockInvoker.addCompostableItem(0.3F, YELLOW_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
+
+        Trades.addWandererTrade(true, BIRCH_BIRDHOUSE, 1, 6, 4);
+
+        Trades.initialize();
+    }
+
+    public static final class Trades {
+        public static final List<TradeOffers.Factory> COMMON_WANDERER_TRADES = new ArrayList<>();
+        public static final List<TradeOffers.Factory> RARE_WANDERER_TRADES = new ArrayList<>();
+
+        public static void addWandererTrade(boolean rare, ItemConvertible itemToSell, int amountToSell, int price, int maxUses) {
+            List<TradeOffers.Factory> listToAddTo = rare ? RARE_WANDERER_TRADES : COMMON_WANDERER_TRADES;
+
+            listToAddTo.add((entity, random) -> new TradeOffer(new ItemStack(Items.EMERALD, price), new ItemStack(itemToSell, amountToSell), maxUses, 1, 1.0F));
+        }
+
+        public static void initialize() {
+            if (!COMMON_WANDERER_TRADES.isEmpty()) registerWandererTrades(false, COMMON_WANDERER_TRADES);
+            if (!RARE_WANDERER_TRADES.isEmpty()) registerWandererTrades(true, RARE_WANDERER_TRADES);
+        }
+
+        private static void registerWandererTrades(boolean rare, List<TradeOffers.Factory> tradesToRegister) {
+            TradeOfferHelper.registerWanderingTraderOffers(rare ? 2 : 1, factories -> factories.addAll(tradesToRegister));
+        }
     }
 }
