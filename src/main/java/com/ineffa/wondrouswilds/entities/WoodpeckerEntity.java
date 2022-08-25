@@ -88,6 +88,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> otherWoodpecker.getTarget() == this;
 
     private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    private static final TrackedData<Integer> CLING_ANGLE = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> PECK_CHAIN_LENGTH = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> PECK_CHAIN_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -143,6 +144,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         super.initDataTracker();
 
         this.dataTracker.startTracking(CLING_POS, BlockPos.ORIGIN);
+        this.dataTracker.startTracking(CLING_ANGLE, 0);
         this.dataTracker.startTracking(PECK_CHAIN_LENGTH, 0);
         this.dataTracker.startTracking(PECK_CHAIN_TICKS, 0);
         this.dataTracker.startTracking(DRUMMING_TICKS, 0);
@@ -319,6 +321,14 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     public boolean isMakingNest() {
         return this.canMakeNestInPos(this.getClingPos()) && (this.getConsecutivePecks() > 0 || this.isPecking());
+    }
+
+    public int getClingAngle() {
+        return this.dataTracker.get(CLING_ANGLE);
+    }
+
+    public void setClingAngle(int angle) {
+        this.dataTracker.set(CLING_ANGLE, angle);
     }
 
     public boolean isPecking() {
@@ -657,12 +667,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                     if (shouldInteract && naturallyUncling && !this.isTame() && this.getConsecutivePecks() > 0) this.progressTame();
                     this.setFlying(true);
                 }
-                else {
-                    this.setYaw(this.clingSide.getOpposite().getHorizontal() * 90.0F);
-                    this.setBodyYaw(this.getYaw());
-
-                    if (this.isPecking() || this.isDrumming()) this.setHeadYaw(this.getYaw());
-                }
+                else this.setClingAngle(this.clingSide.getOpposite().getHorizontal() * 90);
             }
 
             if (!this.isDrumming()) {
@@ -694,6 +699,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             }
 
             this.tickAngerLogic((ServerWorld) this.getWorld(), false);
+        }
+
+        if (this.isClinging()) {
+            this.setYaw(this.getClingAngle());
+            this.setBodyYaw(this.getYaw());
+
+            this.setHeadYaw(this.isPecking() || this.isDrumming() ? this.getYaw() : MathHelper.clampAngle(this.getHeadYaw(), this.getYaw(), this.getMaxHeadRotation()));
         }
     }
 
@@ -786,6 +798,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public void travel(Vec3d movementInput) {
+        if (this.isClinging()) return;
+
         if (!this.isFlying()) {
             super.travel(movementInput);
             return;
@@ -813,8 +827,18 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
-    public boolean canMoveVoluntarily() {
-        return super.canMoveVoluntarily() && !this.isClinging();
+    public Vec3d getVelocity() {
+        return this.isClinging() ? Vec3d.ZERO : super.getVelocity();
+    }
+
+    @Override
+    public void setVelocity(Vec3d velocity) {
+        if (!this.isClinging()) super.setVelocity(velocity);
+    }
+
+    @Override
+    public void pushAwayFrom(Entity entity) {
+        if (!this.isClinging()) super.pushAwayFrom(entity);
     }
 
     @Override
