@@ -85,7 +85,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     private int playSessionsBeforeTame;
 
-    private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> this.getAttacker() == otherWoodpecker;
+    private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> otherWoodpecker.getTarget() == this;
 
     private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Integer> PECK_CHAIN_LENGTH = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -540,10 +540,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.5D));
-        this.goalSelector.add(2, new FleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.5D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
-        this.goalSelector.add(3, new WoodpeckerAttackGoal(this, 1.0D, true));
-        this.goalSelector.add(4, new FleeEntityGoal<>(this, PlayerEntity.class, 16.0F, 1.0D, 1.5D, entity -> !this.isTame()));
+        this.goalSelector.add(1, new WoodpeckerEscapeDangerGoal(this, 1.25D, 16, 8));
+        this.goalSelector.add(2, new WoodpeckerAttackGoal(this, 1.0D, true));
+        this.goalSelector.add(3, new WoodpeckerFleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.0D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
+        this.goalSelector.add(4, new WoodpeckerFleeEntityGoal<>(this, PlayerEntity.class, 12.0F, 1.0D, 1.25D, entity -> !this.isTame()));
         this.goalSelector.add(5, new FindOrReturnToBlockNestGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(7, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
