@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.unknown",
-				"texture_width": 34,
-				"texture_height": 26,
+				"texture_width": 41,
+				"texture_height": 24,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 2.5,
 				"visible_bounds_offset": [0, 0.75, 0]
@@ -78,7 +78,7 @@
 					"parent": "headOverlap",
 					"pivot": [0, 5.5, -4],
 					"cubes": [
-						{"origin": [-1.5, 5, -7], "size": [3, 3, 5], "uv": [0, 16]}
+						{"origin": [-1.5, 5, -7], "size": [3, 3, 5], "uv": [9, 12]}
 					]
 				},
 				{
@@ -119,7 +119,7 @@
 					"parent": "crestOverlap",
 					"pivot": [0, 8, -4.5],
 					"cubes": [
-						{"origin": [-0.5, 7, -7.5], "size": [1, 2, 6], "uv": [16, 16]}
+						{"origin": [-0.5, 7, -7.5], "size": [1, 2, 6], "uv": [1, 14]}
 					]
 				},
 				{
@@ -137,58 +137,58 @@
 					"parent": "crestTipOverlap",
 					"pivot": [0, 9, -4.5],
 					"cubes": [
-						{"origin": [0, 9, -7.5], "size": [0, 2, 6], "uv": [0, 18]}
+						{"origin": [0, 9, -7.5], "size": [0, 2, 6], "uv": [0, 6]}
 					]
 				},
 				{
 					"name": "wingsConstant",
 					"parent": "neck",
-					"pivot": [0, 4, -4]
+					"pivot": [0, 4, -3.5]
 				},
 				{
 					"name": "wingsOverlap",
 					"parent": "wingsConstant",
-					"pivot": [0, 4, -4]
+					"pivot": [0, 4, -3.5]
 				},
 				{
 					"name": "wings",
 					"parent": "wingsOverlap",
-					"pivot": [0, 4, -4]
+					"pivot": [0, 4, -3.5]
 				},
 				{
 					"name": "rightWingConstant",
 					"parent": "wings",
-					"pivot": [-2.5, 4, -4]
+					"pivot": [-2.5, 4, -3.5]
 				},
 				{
 					"name": "rightWingOverlap",
 					"parent": "rightWingConstant",
-					"pivot": [-2.5, 4, -4]
+					"pivot": [-2.5, 4, -3.5]
 				},
 				{
 					"name": "rightWing",
 					"parent": "rightWingOverlap",
-					"pivot": [-2.5, 4, -4],
+					"pivot": [-2.5, 4, -3.5],
 					"cubes": [
-						{"origin": [-2.5, 2, -4], "size": [0, 4, 12], "inflate": 0.001, "uv": [0, 0]}
+						{"origin": [-3.5, 2, -3.5], "size": [1, 4, 12], "inflate": 0.001, "uv": [15, 8]}
 					]
 				},
 				{
 					"name": "leftWingConstant",
 					"parent": "wings",
-					"pivot": [2.5, 4, -4]
+					"pivot": [2.5, 4, -3.5]
 				},
 				{
 					"name": "leftWingOverlap",
 					"parent": "leftWingConstant",
-					"pivot": [2.5, 4, -4]
+					"pivot": [2.5, 4, -3.5]
 				},
 				{
 					"name": "leftWing",
 					"parent": "leftWingOverlap",
-					"pivot": [2.5, 4, -4],
+					"pivot": [2.5, 4, -3.5],
 					"cubes": [
-						{"origin": [2.5, 2, -4], "size": [0, 4, 12], "inflate": 0.001, "uv": [0, 0], "mirror": true}
+						{"origin": [2.5, 2, -3.5], "size": [1, 4, 12], "inflate": 0.001, "uv": [15, 8], "mirror": true}
 					]
 				},
 				{
