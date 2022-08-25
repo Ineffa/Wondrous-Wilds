@@ -20,7 +20,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.BodyControl;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -787,9 +789,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         if (super.damage(source, amount)) {
             this.resetConsecutivePecks();
 
-            if (!this.isFlying() && !this.isDrumming()) {
-                this.setFlying(true);
-            }
+            if (!this.isFlying() && !this.isDrumming()) this.setFlying(true);
 
             return true;
         }
