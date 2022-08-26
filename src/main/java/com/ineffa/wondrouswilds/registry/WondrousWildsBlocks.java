@@ -16,9 +16,6 @@ import net.minecraft.util.registry.Registry;
 
 public class WondrousWildsBlocks {
 
-    public static final Block SMALL_POLYPORE = registerBlock("small_polypore", new SmallPolyporeBlock(FabricBlockSettings.of(Material.PLANT, MapColor.BROWN).sounds(BlockSoundGroup.GRASS).nonOpaque().breakInstantly().noCollision()));
-    public static final Block BIG_POLYPORE = registerBlock("big_polypore", new BigPolyporeBlock(FabricBlockSettings.of(Material.PLANT, MapColor.BROWN).sounds(BlockSoundGroup.GRASS).nonOpaque().breakInstantly()));
-
     public static final Block PURPLE_VIOLET = registerBlock("purple_violet", new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
     public static final Block PINK_VIOLET = registerBlock("pink_violet", new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
     public static final Block RED_VIOLET = registerBlock("red_violet", new VioletBlock(FabricBlockSettings.of(Material.PLANT).noCollision().breakInstantly().sounds(BlockSoundGroup.GRASS)));
@@ -27,6 +24,13 @@ public class WondrousWildsBlocks {
     public static final Block POTTED_PINK_VIOLET = registerBlock("potted_pink_violet", new FlowerPotBlock(PINK_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
     public static final Block POTTED_RED_VIOLET = registerBlock("potted_red_violet", new FlowerPotBlock(RED_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
     public static final Block POTTED_WHITE_VIOLET = registerBlock("potted_white_violet", new FlowerPotBlock(WHITE_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
+
+    public static final Block SMALL_POLYPORE = registerBlock("small_polypore", new SmallPolyporeBlock(FabricBlockSettings.of(Material.PLANT, MapColor.BROWN).sounds(BlockSoundGroup.GRASS).nonOpaque().breakInstantly().noCollision()));
+    public static final Block BIG_POLYPORE = registerBlock("big_polypore", new BigPolyporeBlock(FabricBlockSettings.of(Material.PLANT, MapColor.BROWN).sounds(BlockSoundGroup.GRASS).nonOpaque().breakInstantly()));
+
+    public static final Block YELLOW_BIRCH_LEAVES = registerBlock("yellow_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
+    public static final Block ORANGE_BIRCH_LEAVES = registerBlock("orange_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
+    public static final Block RED_BIRCH_LEAVES = registerBlock("red_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
 
     public static final Block DEAD_OAK_LOG = registerBlock("dead_oak_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG)));
     public static final Block DEAD_BIRCH_LOG = registerBlock("dead_birch_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG)));
@@ -62,10 +66,6 @@ public class WondrousWildsBlocks {
     public static final TreeHollowBlock MANGROVE_TREE_HOLLOW = (TreeHollowBlock) registerBlock("mangrove_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.RED).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
 
     public static final BirdhouseBlock BIRCH_BIRDHOUSE = (BirdhouseBlock) registerBlock("birch_birdhouse", new BirchBirdhouseBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_PLANKS).nonOpaque()));
-
-    public static final Block YELLOW_BIRCH_LEAVES = registerBlock("yellow_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
-    public static final Block ORANGE_BIRCH_LEAVES = registerBlock("orange_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
-    public static final Block RED_BIRCH_LEAVES = registerBlock("red_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
 
     public static final class BlockEntities {
         public static final BlockEntityType<TreeHollowBlockEntity> TREE_HOLLOW = registerBlockEntity("tree_hollow", FabricBlockEntityTypeBuilder.create(TreeHollowBlockEntity::new,

@@ -24,6 +24,10 @@ public class WondrousWildsItems {
     public static final BlockItem SMALL_POLYPORE = new BlockItem(WondrousWildsBlocks.SMALL_POLYPORE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem BIG_POLYPORE = new BlockItem(WondrousWildsBlocks.BIG_POLYPORE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
+    public static final BlockItem YELLOW_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.YELLOW_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem ORANGE_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.ORANGE_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem RED_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.RED_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+
     public static final BlockItem DEAD_OAK_LOG = new BlockItem(WondrousWildsBlocks.DEAD_OAK_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem DEAD_BIRCH_LOG = new BlockItem(WondrousWildsBlocks.DEAD_BIRCH_LOG, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
@@ -59,10 +63,6 @@ public class WondrousWildsItems {
 
     public static final BlockItem BIRCH_BIRDHOUSE = new BlockItem(WondrousWildsBlocks.BIRCH_BIRDHOUSE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
-    public static final BlockItem YELLOW_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.YELLOW_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
-    public static final BlockItem ORANGE_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.ORANGE_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
-    public static final BlockItem RED_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.RED_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
-
     public static final Item FIREFLY_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final Item WOODPECKER_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
@@ -76,6 +76,10 @@ public class WondrousWildsItems {
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "small_polypore"), SMALL_POLYPORE);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "big_polypore"), BIG_POLYPORE);
+
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "yellow_birch_leaves"), YELLOW_BIRCH_LEAVES);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "orange_birch_leaves"), ORANGE_BIRCH_LEAVES);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "red_birch_leaves"), RED_BIRCH_LEAVES);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "dead_oak_log"), DEAD_OAK_LOG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "dead_birch_log"), DEAD_BIRCH_LOG);
@@ -111,10 +115,6 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "mangrove_tree_hollow"), MANGROVE_TREE_HOLLOW);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_birdhouse"), BIRCH_BIRDHOUSE);
-
-        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "yellow_birch_leaves"), YELLOW_BIRCH_LEAVES);
-        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "orange_birch_leaves"), ORANGE_BIRCH_LEAVES);
-        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "red_birch_leaves"), RED_BIRCH_LEAVES);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
