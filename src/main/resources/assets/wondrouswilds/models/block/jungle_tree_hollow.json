@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "minecraft:block/jungle_log_top",
+    "side": "minecraft:block/jungle_log",
+    "front": "wondrouswilds:block/jungle_tree_hollow"
+  }
+}

@@ -21,6 +21,7 @@ public class WondrousWildsUtils {
             .put(Blocks.OAK_LOG, WondrousWildsBlocks.OAK_TREE_HOLLOW)
             .put(Blocks.SPRUCE_LOG, WondrousWildsBlocks.SPRUCE_TREE_HOLLOW)
             .put(Blocks.BIRCH_LOG, WondrousWildsBlocks.BIRCH_TREE_HOLLOW)
+            .put(Blocks.JUNGLE_LOG, WondrousWildsBlocks.JUNGLE_TREE_HOLLOW)
             .build();
 
     public static Set<BlockPos> getCenteredCuboid(BlockPos center, int horizontalRadius) {
