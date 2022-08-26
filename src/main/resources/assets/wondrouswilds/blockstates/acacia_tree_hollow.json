@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wondrouswilds:block/acacia_tree_hollow"
+    },
+    "facing=south": {
+      "model": "wondrouswilds:block/acacia_tree_hollow",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "wondrouswilds:block/acacia_tree_hollow",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "wondrouswilds:block/acacia_tree_hollow",
+      "y": 270
+    }
+  }
+}

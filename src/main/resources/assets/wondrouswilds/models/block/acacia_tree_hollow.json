@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "minecraft:block/acacia_log_top",
+    "side": "minecraft:block/acacia_log",
+    "front": "wondrouswilds:block/acacia_tree_hollow"
+  }
+}
