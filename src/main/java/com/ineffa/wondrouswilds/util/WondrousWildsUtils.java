@@ -18,6 +18,7 @@ public class WondrousWildsUtils {
     public static final Direction[] HORIZONTAL_DIRECTIONS = Arrays.stream(Direction.values()).filter((direction) -> direction.getAxis().isHorizontal()).toArray(Direction[]::new);
 
     public static final Map<Block, TreeHollowBlock> TREE_HOLLOW_MAP = new ImmutableMap.Builder<Block, TreeHollowBlock>()
+            .put(Blocks.OAK_LOG, WondrousWildsBlocks.OAK_TREE_HOLLOW)
             .put(Blocks.BIRCH_LOG, WondrousWildsBlocks.BIRCH_TREE_HOLLOW)
             .build();
 

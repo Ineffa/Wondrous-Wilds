@@ -49,7 +49,9 @@ public class WondrousWildsItems {
     public static final BlockItem HOLLOW_STRIPPED_CRIMSON_STEM = new BlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_CRIMSON_STEM, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem HOLLOW_STRIPPED_WARPED_STEM = new BlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_WARPED_STEM, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
+    public static final BlockItem OAK_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.OAK_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem BIRCH_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.BIRCH_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+
     public static final BlockItem BIRCH_BIRDHOUSE = new BlockItem(WondrousWildsBlocks.BIRCH_BIRDHOUSE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
     public static final BlockItem YELLOW_BIRCH_LEAVES = new BlockItem(WondrousWildsBlocks.YELLOW_BIRCH_LEAVES, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
@@ -95,6 +97,7 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_stripped_crimson_stem"), HOLLOW_STRIPPED_CRIMSON_STEM);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "hollow_stripped_warped_stem"), HOLLOW_STRIPPED_WARPED_STEM);
 
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "oak_tree_hollow"), OAK_TREE_HOLLOW);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_tree_hollow"), BIRCH_TREE_HOLLOW);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_birdhouse"), BIRCH_BIRDHOUSE);
 
