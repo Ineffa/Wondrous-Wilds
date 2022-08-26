@@ -1,7 +1,7 @@
 {
   "parent": "wondrouswilds:block/hollow_log",
   "textures": {
-    "end": "minecraft:block/birch_log_top",
+    "end": "wondrouswilds:block/dead_birch_log_top",
     "outer": "wondrouswilds:block/dead_birch_log",
     "inner": "minecraft:block/stripped_birch_log"
   }
