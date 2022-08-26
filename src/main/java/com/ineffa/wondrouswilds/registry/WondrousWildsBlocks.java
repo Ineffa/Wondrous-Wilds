@@ -28,6 +28,7 @@ public class WondrousWildsBlocks {
     public static final Block POTTED_RED_VIOLET = registerBlock("potted_red_violet", new FlowerPotBlock(RED_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
     public static final Block POTTED_WHITE_VIOLET = registerBlock("potted_white_violet", new FlowerPotBlock(WHITE_VIOLET, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
 
+    public static final Block DEAD_OAK_LOG = registerBlock("dead_oak_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG)));
     public static final Block DEAD_BIRCH_LOG = registerBlock("dead_birch_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG)));
 
     public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque()));
@@ -39,6 +40,8 @@ public class WondrousWildsBlocks {
     public static final Block HOLLOW_MANGROVE_LOG = registerBlock("hollow_mangrove_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.MANGROVE_LOG).nonOpaque()));
     public static final Block HOLLOW_CRIMSON_STEM = registerBlock("hollow_crimson_stem", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.CRIMSON_STEM).nonOpaque()));
     public static final Block HOLLOW_WARPED_STEM = registerBlock("hollow_warped_stem", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.WARPED_STEM).nonOpaque()));
+
+    public static final Block HOLLOW_DEAD_OAK_LOG = registerBlock("hollow_dead_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(DEAD_OAK_LOG).nonOpaque()));
     public static final Block HOLLOW_DEAD_BIRCH_LOG = registerBlock("hollow_dead_birch_log", new HollowLogBlock(FabricBlockSettings.copyOf(DEAD_BIRCH_LOG).nonOpaque()));
     public static final Block HOLLOW_STRIPPED_OAK_LOG = registerBlock("hollow_stripped_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_OAK_LOG).nonOpaque()));
     public static final Block HOLLOW_STRIPPED_SPRUCE_LOG = registerBlock("hollow_stripped_spruce_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_SPRUCE_LOG).nonOpaque()));

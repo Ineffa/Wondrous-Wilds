@@ -1,6 +1,8 @@
 {
   "values": [
+    "wondrouswilds:dead_oak_log",
     "wondrouswilds:hollow_oak_log",
+    "wondrouswilds:hollow_dead_oak_log",
     "wondrouswilds:hollow_stripped_oak_log"
   ]
 }
