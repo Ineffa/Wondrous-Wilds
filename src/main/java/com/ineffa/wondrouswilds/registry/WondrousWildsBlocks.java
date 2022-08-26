@@ -33,6 +33,7 @@ public class WondrousWildsBlocks {
     public static final Block RED_BIRCH_LEAVES = registerBlock("red_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
 
     public static final Block DEAD_OAK_LOG = registerBlock("dead_oak_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG)));
+    public static final Block DEAD_SPRUCE_LOG = registerBlock("dead_spruce_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.SPRUCE_LOG)));
     public static final Block DEAD_BIRCH_LOG = registerBlock("dead_birch_log", new PillarBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LOG)));
 
     public static final Block HOLLOW_OAK_LOG = registerBlock("hollow_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.OAK_LOG).nonOpaque()));
@@ -46,6 +47,7 @@ public class WondrousWildsBlocks {
     public static final Block HOLLOW_WARPED_STEM = registerBlock("hollow_warped_stem", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.WARPED_STEM).nonOpaque()));
 
     public static final Block HOLLOW_DEAD_OAK_LOG = registerBlock("hollow_dead_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(DEAD_OAK_LOG).nonOpaque()));
+    public static final Block HOLLOW_DEAD_SPRUCE_LOG = registerBlock("hollow_dead_spruce_log", new HollowLogBlock(FabricBlockSettings.copyOf(DEAD_SPRUCE_LOG).nonOpaque()));
     public static final Block HOLLOW_DEAD_BIRCH_LOG = registerBlock("hollow_dead_birch_log", new HollowLogBlock(FabricBlockSettings.copyOf(DEAD_BIRCH_LOG).nonOpaque()));
     public static final Block HOLLOW_STRIPPED_OAK_LOG = registerBlock("hollow_stripped_oak_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_OAK_LOG).nonOpaque()));
     public static final Block HOLLOW_STRIPPED_SPRUCE_LOG = registerBlock("hollow_stripped_spruce_log", new HollowLogBlock(FabricBlockSettings.copyOf(Blocks.STRIPPED_SPRUCE_LOG).nonOpaque()));
