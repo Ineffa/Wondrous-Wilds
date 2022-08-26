@@ -101,9 +101,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Nullable
     private UUID angryAt;
 
-    private Direction clingSide;
-
     private int consecutivePecks;
+
+    @Environment(value = EnvType.SERVER)
+    private Direction clingSide;
 
     @Environment(value = EnvType.SERVER)
     private int cannotEnterNestTicks;
@@ -709,6 +710,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
             this.setHeadYaw(this.isPecking() || this.isDrumming() ? this.getYaw() : MathHelper.clampAngle(this.getHeadYaw(), this.getYaw(), this.getMaxHeadRotation()));
         }
+        else if (this.getClingAngle() != 0) this.setClingAngle(0);
     }
 
     @Override
