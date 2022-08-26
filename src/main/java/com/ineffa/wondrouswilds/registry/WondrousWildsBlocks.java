@@ -59,6 +59,8 @@ public class WondrousWildsBlocks {
     public static final TreeHollowBlock JUNGLE_TREE_HOLLOW = (TreeHollowBlock) registerBlock("jungle_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.DIRT_BROWN).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
     public static final TreeHollowBlock ACACIA_TREE_HOLLOW = (TreeHollowBlock) registerBlock("acacia_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.ORANGE).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
     public static final TreeHollowBlock DARK_OAK_TREE_HOLLOW = (TreeHollowBlock) registerBlock("dark_oak_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.BROWN).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
+    public static final TreeHollowBlock MANGROVE_TREE_HOLLOW = (TreeHollowBlock) registerBlock("mangrove_tree_hollow", new TreeHollowBlock(FabricBlockSettings.of(Material.WOOD, MapColor.RED).strength(2.0f).sounds(BlockSoundGroup.WOOD)));
+
     public static final BirdhouseBlock BIRCH_BIRDHOUSE = (BirdhouseBlock) registerBlock("birch_birdhouse", new BirchBirdhouseBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_PLANKS).nonOpaque()));
 
     public static final Block YELLOW_BIRCH_LEAVES = registerBlock("yellow_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
@@ -66,7 +68,10 @@ public class WondrousWildsBlocks {
     public static final Block RED_BIRCH_LEAVES = registerBlock("red_birch_leaves", new LeavesBlock(FabricBlockSettings.copyOf(Blocks.BIRCH_LEAVES)));
 
     public static final class BlockEntities {
-        public static final BlockEntityType<TreeHollowBlockEntity> TREE_HOLLOW = registerBlockEntity("tree_hollow", FabricBlockEntityTypeBuilder.create(TreeHollowBlockEntity::new, OAK_TREE_HOLLOW, SPRUCE_TREE_HOLLOW, BIRCH_TREE_HOLLOW, JUNGLE_TREE_HOLLOW, ACACIA_TREE_HOLLOW, DARK_OAK_TREE_HOLLOW).build(null));
+        public static final BlockEntityType<TreeHollowBlockEntity> TREE_HOLLOW = registerBlockEntity("tree_hollow", FabricBlockEntityTypeBuilder.create(TreeHollowBlockEntity::new,
+                OAK_TREE_HOLLOW, SPRUCE_TREE_HOLLOW, BIRCH_TREE_HOLLOW, JUNGLE_TREE_HOLLOW, ACACIA_TREE_HOLLOW, DARK_OAK_TREE_HOLLOW, MANGROVE_TREE_HOLLOW
+        ).build(null));
+
         public static final BlockEntityType<BirdhouseBlockEntity> BIRDHOUSE = registerBlockEntity("birdhouse", FabricBlockEntityTypeBuilder.create(BirdhouseBlockEntity::new, BIRCH_BIRDHOUSE).build(null));
 
         private static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(String name, BlockEntityType<T> blockEntityType) {

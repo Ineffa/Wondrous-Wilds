@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "minecraft:block/mangrove_log_top",
+    "side": "minecraft:block/mangrove_log",
+    "front": "wondrouswilds:block/mangrove_tree_hollow"
+  }
+}

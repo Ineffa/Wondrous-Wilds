@@ -55,6 +55,7 @@ public class WondrousWildsItems {
     public static final BlockItem JUNGLE_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.JUNGLE_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem ACACIA_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.ACACIA_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem DARK_OAK_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.DARK_OAK_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem MANGROVE_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.MANGROVE_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
     public static final BlockItem BIRCH_BIRDHOUSE = new BlockItem(WondrousWildsBlocks.BIRCH_BIRDHOUSE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
@@ -107,6 +108,7 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "jungle_tree_hollow"), JUNGLE_TREE_HOLLOW);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "acacia_tree_hollow"), ACACIA_TREE_HOLLOW);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "dark_oak_tree_hollow"), DARK_OAK_TREE_HOLLOW);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "mangrove_tree_hollow"), MANGROVE_TREE_HOLLOW);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_birdhouse"), BIRCH_BIRDHOUSE);
 
