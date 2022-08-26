@@ -19,6 +19,7 @@ public class WondrousWildsUtils {
 
     public static final Map<Block, TreeHollowBlock> TREE_HOLLOW_MAP = new ImmutableMap.Builder<Block, TreeHollowBlock>()
             .put(Blocks.OAK_LOG, WondrousWildsBlocks.OAK_TREE_HOLLOW)
+            .put(Blocks.SPRUCE_LOG, WondrousWildsBlocks.SPRUCE_TREE_HOLLOW)
             .put(Blocks.BIRCH_LOG, WondrousWildsBlocks.BIRCH_TREE_HOLLOW)
             .build();
 
