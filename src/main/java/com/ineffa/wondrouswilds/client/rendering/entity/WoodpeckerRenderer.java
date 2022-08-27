@@ -2,6 +2,9 @@ package com.ineffa.wondrouswilds.client.rendering.entity;
 
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
@@ -21,6 +24,11 @@ public class WoodpeckerRenderer extends ExtendedGeoEntityRenderer<WoodpeckerEnti
         super(ctx, new WoodpeckerModel());
 
         this.shadowRadius = 0.225F;
+    }
+
+    @Override
+    public RenderLayer getRenderType(WoodpeckerEntity entity, float partialTicks, MatrixStack stack, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
+        return RenderLayer.getEntityTranslucent(this.getTextureResource(entity));
     }
 
     @Nullable
