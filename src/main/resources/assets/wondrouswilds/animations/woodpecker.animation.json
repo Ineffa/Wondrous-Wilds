@@ -89,18 +89,18 @@
 				"rightWingConstant": {
 					"rotation": {
 						"vector": [
-							"math.lerp(math.sin(query.flap_angle * 100) * -10, 5, query.swing_amount)",
+							"math.lerp(math.sin(query.flap_angle * 100) * 14, 5, query.swing_amount)",
 							"-90 - math.lerp(math.cos(query.flap_angle * 100) * 70, 0, query.swing_amount)",
-							"math.lerp(math.cos(query.flap_angle * 100) * -20, 0, query.swing_amount)"
+							"math.lerp(math.sin(query.flap_angle * 100) * 8, 0, query.swing_amount)"
 						]
 					}
 				},
 				"leftWingConstant": {
 					"rotation": {
 						"vector": [
-							"math.lerp(math.sin(query.flap_angle * 100) * -10, 5, query.swing_amount)",
+							"math.lerp(math.sin(query.flap_angle * 100) * 14, 5, query.swing_amount)",
 							"90 - math.lerp(math.cos(query.flap_angle * 100) * -70, 0, query.swing_amount)",
-							"math.lerp(math.cos(query.flap_angle * 100) * 20, 0, query.swing_amount)"
+							"math.lerp(math.sin(query.flap_angle * 100) * -8, 0, query.swing_amount)"
 						]
 					}
 				},
