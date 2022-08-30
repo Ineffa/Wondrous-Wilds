@@ -130,6 +130,9 @@ public class WondrousWildsItems {
         ComposterBlockInvoker.addCompostableItem(0.65F, RED_VIOLET);
         ComposterBlockInvoker.addCompostableItem(0.65F, WHITE_VIOLET);
 
+        ComposterBlockInvoker.addCompostableItem(0.3F, SMALL_POLYPORE);
+        ComposterBlockInvoker.addCompostableItem(0.65F, BIG_POLYPORE);
+
         ComposterBlockInvoker.addCompostableItem(0.3F, YELLOW_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
