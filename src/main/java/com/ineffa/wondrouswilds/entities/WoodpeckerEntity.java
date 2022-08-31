@@ -500,8 +500,15 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
+    public boolean shouldFindNest() {
+        return BlockNester.super.shouldFindNest() && !this.hasAttackTarget() && this.getAttacker() == null;
+    }
+
+    @Override
     public boolean shouldReturnToNest() {
         if (this.getCannotInhabitNestTicks() > 0 || !this.hasNestPos()) return false;
+
+        if (this.hasAttackTarget() || this.getAttacker() != null) return false;
 
         return this.getWorld().isNight() || this.getWorld().isRaining();
     }
