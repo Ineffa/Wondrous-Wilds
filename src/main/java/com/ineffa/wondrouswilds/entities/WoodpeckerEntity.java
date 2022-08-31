@@ -650,8 +650,6 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                     }
 
                     this.setPeckChainTicks(this.getPeckChainTicks() - 1);
-
-                    if (this.getCannotInhabitNestTicks() > 0) this.setCannotInhabitNestTicks(this.getCannotInhabitNestTicks() - 1);
                 }
             }
 
@@ -709,6 +707,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             }
 
             this.tickAngerLogic((ServerWorld) this.getWorld(), false);
+
+            if (this.getCannotInhabitNestTicks() > 0) this.setCannotInhabitNestTicks(this.getCannotInhabitNestTicks() - 1);
         }
 
         if (this.isClinging()) {
