@@ -482,7 +482,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public int getMinTicksOutOfNest() {
-        return 400;
+        return 600;
     }
 
     @Override
