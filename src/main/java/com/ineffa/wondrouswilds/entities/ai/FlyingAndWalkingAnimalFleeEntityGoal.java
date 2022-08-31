@@ -54,7 +54,15 @@ public class FlyingAndWalkingAnimalFleeEntityGoal<T extends LivingEntity> extend
     @Override
     public void start() {
         if (!this.animal.isFlying()) this.animal.setFlying(true);
+    }
 
+    @Override
+    public boolean shouldContinue() {
+        return super.shouldContinue() && this.canStart();
+    }
+
+    @Override
+    public void tick() {
         double speed = this.mob.squaredDistanceTo(this.targetEntity) < 49.0D ? this.fastSpeed : this.slowSpeed;
         this.animal.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), speed);
     }
