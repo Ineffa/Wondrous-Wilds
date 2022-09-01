@@ -33,7 +33,9 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean canStart() {
-        return this.woodpecker.getRandom().nextInt(100) == 0 && this.woodpecker.canWander() && this.findTargetPos();
+        if (!(this.woodpecker.getRandom().nextInt(100) == 0 && this.woodpecker.canWander())) return false;
+
+        return this.findTargetPos();
     }
 
     @Override
@@ -49,7 +51,7 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public boolean shouldContinue() {
-        return !this.shouldStop && this.woodpecker.canWander() && this.isTargetPos(this.woodpecker.getWorld(), this.targetPos);
+        return !this.shouldStop && this.woodpecker.canWander() && this.canPlayWithPos(this.woodpecker.getWorld(), this.getTargetPos());
     }
 
     @Override
@@ -124,9 +126,13 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
         }
     }
 
+    protected boolean canPlayWithPos(WorldView world, BlockPos pos) {
+        return world.getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH);
+    }
+
     @Override
     protected boolean isTargetPos(WorldView world, BlockPos pos) {
-        if (!world.getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) return false;
+        if (!this.canPlayWithPos(world, pos)) return false;
 
         if (!WondrousWildsUtils.canEntitySeeBlock(this.woodpecker, pos, false)) return false;
 
