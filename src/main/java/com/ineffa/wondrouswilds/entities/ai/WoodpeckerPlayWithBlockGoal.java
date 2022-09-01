@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.entities.ai;
 
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
+import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
@@ -126,6 +127,8 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
     @Override
     protected boolean isTargetPos(WorldView world, BlockPos pos) {
         if (!world.getBlockState(pos).isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) return false;
+
+        if (!WondrousWildsUtils.canEntitySeeBlock(this.woodpecker, pos, false)) return false;
 
         this.canClingToTarget = this.woodpecker.canClingToPos(pos, true, null);
 

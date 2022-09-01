@@ -4,9 +4,16 @@ import com.google.common.collect.ImmutableMap;
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.RaycastContext;
+import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -68,5 +75,22 @@ public class WondrousWildsUtils {
     public static boolean isPosAtWorldOrigin(BlockPos pos) {
         BlockPos origin = BlockPos.ORIGIN;
         return pos.getX() == origin.getX() && pos.getY() == origin.getY() && pos.getZ() == origin.getZ();
+    }
+
+    public static boolean canEntitySeeBlock(LivingEntity entity, BlockPos posToCheck, boolean ignoreFluids) {
+        World world = entity.getWorld();
+
+        BlockState lookState = world.getBlockState(posToCheck);
+        if (lookState == null) return false;
+
+        VoxelShape shape = lookState.getOutlineShape(world, posToCheck);
+        if (shape == null || shape.isEmpty()) return false;
+
+        Box blockBoundingBox = shape.getBoundingBox();
+        if (blockBoundingBox == null) return false;
+
+        Vec3d raycastStart = new Vec3d(entity.getX(), entity.getEyeY(), entity.getZ());
+        Vec3d raycastEnd = blockBoundingBox.getCenter().add(posToCheck.getX(), posToCheck.getY(), posToCheck.getZ());
+        return world.raycast(new RaycastContext(raycastStart, raycastEnd, RaycastContext.ShapeType.COLLIDER, ignoreFluids ? RaycastContext.FluidHandling.NONE : RaycastContext.FluidHandling.ANY, entity)).getBlockPos().equals(posToCheck);
     }
 }
