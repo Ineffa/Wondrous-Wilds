@@ -1,6 +1,6 @@
 package com.ineffa.wondrouswilds.blocks;
 
-import com.ineffa.wondrouswilds.blocks.entity.BirdhouseBlockEntity;
+import com.ineffa.wondrouswilds.blocks.entity.NestBoxBlockEntity;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -24,39 +24,39 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
-public abstract class BirdhouseBlock extends InhabitableNestBlock {
+public abstract class NestBoxBlock extends InhabitableNestBlock {
 
-    public BirdhouseBlock(Settings settings) {
+    public NestBoxBlock(Settings settings) {
         super(settings);
     }
 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BirdhouseBlockEntity(pos, state);
+        return new NestBoxBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient() ? null : checkType(type, WondrousWildsBlocks.BlockEntities.BIRDHOUSE, BirdhouseBlockEntity::serverTick);
+        return world.isClient() ? null : checkType(type, WondrousWildsBlocks.BlockEntities.NEST_BOX, NestBoxBlockEntity::serverTick);
     }
 
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomName() && world.getBlockEntity(pos) instanceof BirdhouseBlockEntity birdhouse)
-            birdhouse.setCustomName(itemStack.getName());
+        if (itemStack.hasCustomName() && world.getBlockEntity(pos) instanceof NestBoxBlockEntity nestBox)
+            nestBox.setCustomName(itemStack.getName());
     }
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isClient() && player.isCreative() && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS) && world.getBlockEntity(pos) instanceof BirdhouseBlockEntity birdhouse) {
+        if (!world.isClient() && player.isCreative() && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS) && world.getBlockEntity(pos) instanceof NestBoxBlockEntity nestBox) {
             ItemStack itemStack = new ItemStack(this);
-            if (birdhouse.hasInhabitants()) {
+            if (nestBox.hasInhabitants()) {
                 NbtCompound nbtCompound = new NbtCompound();
 
-                nbtCompound.put(BirdhouseBlockEntity.INHABITANTS_KEY, birdhouse.getInhabitantsNbt());
-                BlockItem.setBlockEntityNbt(itemStack, WondrousWildsBlocks.BlockEntities.BIRDHOUSE, nbtCompound);
+                nbtCompound.put(NestBoxBlockEntity.INHABITANTS_KEY, nestBox.getInhabitantsNbt());
+                BlockItem.setBlockEntityNbt(itemStack, WondrousWildsBlocks.BlockEntities.NEST_BOX, nbtCompound);
 
                 itemStack.setSubNbt("BlockStateTag", nbtCompound);
 
@@ -85,7 +85,7 @@ public abstract class BirdhouseBlock extends InhabitableNestBlock {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient()) return ActionResult.SUCCESS;
 
-        if (world.getBlockEntity(pos) instanceof BirdhouseBlockEntity birdhouse) player.openHandledScreen(birdhouse);
+        if (world.getBlockEntity(pos) instanceof NestBoxBlockEntity nestBox) player.openHandledScreen(nestBox);
 
         return ActionResult.CONSUME;
     }

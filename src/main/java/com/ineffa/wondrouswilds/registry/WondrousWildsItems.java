@@ -63,7 +63,7 @@ public class WondrousWildsItems {
     public static final BlockItem DARK_OAK_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.DARK_OAK_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final BlockItem MANGROVE_TREE_HOLLOW = new BlockItem(WondrousWildsBlocks.MANGROVE_TREE_HOLLOW, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
-    public static final BlockItem BIRCH_BIRDHOUSE = new BlockItem(WondrousWildsBlocks.BIRCH_BIRDHOUSE, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
+    public static final BlockItem BIRCH_NEST_BOX = new BlockItem(WondrousWildsBlocks.BIRCH_NEST_BOX, new FabricItemSettings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
 
     public static final Item FIREFLY_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
     public static final Item WOODPECKER_SPAWN_EGG = new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WondrousWilds.WONDROUS_WILDS_ITEM_GROUP));
@@ -118,7 +118,7 @@ public class WondrousWildsItems {
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "dark_oak_tree_hollow"), DARK_OAK_TREE_HOLLOW);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "mangrove_tree_hollow"), MANGROVE_TREE_HOLLOW);
 
-        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_birdhouse"), BIRCH_BIRDHOUSE);
+        Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "birch_nest_box"), BIRCH_NEST_BOX);
 
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "firefly_spawn_egg"), FIREFLY_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(WondrousWilds.MOD_ID, "woodpecker_spawn_egg"), WOODPECKER_SPAWN_EGG);
@@ -137,7 +137,7 @@ public class WondrousWildsItems {
         ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
 
-        Trades.addWandererTrade(true, BIRCH_BIRDHOUSE, 1, 6, 4);
+        Trades.addWandererTrade(true, BIRCH_NEST_BOX, 1, 6, 4);
 
         Trades.initialize();
     }

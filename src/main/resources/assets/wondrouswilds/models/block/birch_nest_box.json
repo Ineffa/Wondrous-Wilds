@@ -2,7 +2,7 @@
   "parent": "minecraft:block/block",
   "texture_size": [48, 46],
   "textures": {
-    "texture": "wondrouswilds:block/birch_birdhouse",
+    "texture": "wondrouswilds:block/birch_nest_box",
     "particle": "#texture"
   },
   "elements": [

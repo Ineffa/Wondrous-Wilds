@@ -220,12 +220,12 @@ public interface InhabitableNestBlockEntity {
                 if (inhabitantEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity) flyingEntity.setFlying(true);
             }
 
-            if (inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.isTame() && woodpecker.getMainHandStack().isEmpty() && world.getBlockEntity(nestPos) instanceof BirdhouseBlockEntity birdhouse && !birdhouse.isEmpty()) {
+            if (inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.isTame() && woodpecker.getMainHandStack().isEmpty() && world.getBlockEntity(nestPos) instanceof NestBoxBlockEntity nestBox && !nestBox.isEmpty()) {
                 int slotToTakeFrom = 0;
-                ItemStack birdhouseItem = birdhouse.getStack(slotToTakeFrom);
-                if (!birdhouseItem.isEmpty()) {
-                    woodpecker.setStackInHand(Hand.MAIN_HAND, birdhouseItem.copy());
-                    birdhouse.removeStack(slotToTakeFrom);
+                ItemStack nestBoxItem = nestBox.getStack(slotToTakeFrom);
+                if (!nestBoxItem.isEmpty()) {
+                    woodpecker.setStackInHand(Hand.MAIN_HAND, nestBoxItem.copy());
+                    nestBox.removeStack(slotToTakeFrom);
                 }
             }
 

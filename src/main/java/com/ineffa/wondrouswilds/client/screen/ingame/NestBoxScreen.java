@@ -1,7 +1,7 @@
 package com.ineffa.wondrouswilds.client.screen.ingame;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
-import com.ineffa.wondrouswilds.screen.BirdhouseScreenHandler;
+import com.ineffa.wondrouswilds.screen.NestBoxScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,11 +13,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 @Environment(value = EnvType.CLIENT)
-public class BirdhouseScreen extends HandledScreen<BirdhouseScreenHandler> {
+public class NestBoxScreen extends HandledScreen<NestBoxScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(WondrousWilds.MOD_ID, "textures/gui/container/birdhouse.png");
+    private static final Identifier TEXTURE = new Identifier(WondrousWilds.MOD_ID, "textures/gui/container/nest_box.png");
 
-    public BirdhouseScreen(BirdhouseScreenHandler handler, PlayerInventory inventory, Text title) {
+    public NestBoxScreen(NestBoxScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
     }
 

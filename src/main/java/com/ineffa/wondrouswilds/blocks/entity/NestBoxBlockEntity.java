@@ -3,7 +3,7 @@ package com.ineffa.wondrouswilds.blocks.entity;
 import com.google.common.collect.Lists;
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
-import com.ineffa.wondrouswilds.screen.BirdhouseScreenHandler;
+import com.ineffa.wondrouswilds.screen.NestBoxScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,18 +21,18 @@ import net.minecraft.world.World;
 import java.util.Iterator;
 import java.util.List;
 
-public class BirdhouseBlockEntity extends LootableContainerBlockEntity implements InhabitableNestBlockEntity {
+public class NestBoxBlockEntity extends LootableContainerBlockEntity implements InhabitableNestBlockEntity {
 
     private final List<Inhabitant> inhabitants = Lists.newArrayList();
 
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 
-    public BirdhouseBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(WondrousWildsBlocks.BlockEntities.BIRDHOUSE, blockPos, blockState);
+    public NestBoxBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(WondrousWildsBlocks.BlockEntities.NEST_BOX, blockPos, blockState);
     }
 
-    public static void serverTick(World world, BlockPos pos, BlockState state, BirdhouseBlockEntity birdhouse) {
-        tickInhabitants(world, pos, state, birdhouse.getInhabitants());
+    public static void serverTick(World world, BlockPos pos, BlockState state, NestBoxBlockEntity nestBox) {
+        tickInhabitants(world, pos, state, nestBox.getInhabitants());
     }
 
     private static void tickInhabitants(World world, BlockPos pos, BlockState state, List<Inhabitant> inhabitants) {
@@ -91,12 +91,12 @@ public class BirdhouseBlockEntity extends LootableContainerBlockEntity implement
 
     @Override
     protected Text getContainerName() {
-        return Text.translatable("container." + WondrousWilds.MOD_ID + ".birdhouse");
+        return Text.translatable("container." + WondrousWilds.MOD_ID + ".nest_box");
     }
 
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new BirdhouseScreenHandler(syncId, playerInventory, this);
+        return new NestBoxScreenHandler(syncId, playerInventory, this);
     }
 
     @Override

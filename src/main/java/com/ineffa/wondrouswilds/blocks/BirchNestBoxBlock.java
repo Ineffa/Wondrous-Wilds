@@ -10,7 +10,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 
 @SuppressWarnings("deprecation")
-public class BirchBirdhouseBlock extends BirdhouseBlock {
+public class BirchNestBoxBlock extends NestBoxBlock {
 
     private static final VoxelShape ROOF_SHAPE = Block.createCuboidShape(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     private static final VoxelShape NORTH_BOX_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 2.0D, 16.0D, 14.0D, 16.0D);
@@ -22,7 +22,7 @@ public class BirchBirdhouseBlock extends BirdhouseBlock {
     private static final VoxelShape EAST_SHAPE = VoxelShapes.union(ROOF_SHAPE, EAST_BOX_SHAPE);
     private static final VoxelShape WEST_SHAPE = VoxelShapes.union(ROOF_SHAPE, WEST_BOX_SHAPE);
 
-    public BirchBirdhouseBlock(Settings settings) {
+    public BirchNestBoxBlock(Settings settings) {
         super(settings);
     }
 

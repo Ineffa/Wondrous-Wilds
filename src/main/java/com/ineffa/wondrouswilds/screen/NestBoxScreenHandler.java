@@ -9,16 +9,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-public class BirdhouseScreenHandler extends ScreenHandler {
+public class NestBoxScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
 
-    public BirdhouseScreenHandler(int syncId, PlayerInventory playerInventory) {
+    public NestBoxScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleInventory(1));
     }
 
-    public BirdhouseScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(WondrousWildsScreenHandlers.BIRDHOUSE, syncId);
+    public NestBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+        super(WondrousWildsScreenHandlers.NEST_BOX, syncId);
 
         checkSize(inventory, 1);
 

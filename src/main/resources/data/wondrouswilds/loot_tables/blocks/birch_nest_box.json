@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "wondrouswilds:birch_birdhouse"
+          "name": "wondrouswilds:birch_nest_box"
         }
       ],
       "conditions": [
