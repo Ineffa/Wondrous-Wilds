@@ -4,6 +4,7 @@ import com.ineffa.wondrouswilds.blocks.InhabitableNestBlock;
 import com.ineffa.wondrouswilds.entities.FlyingAndWalkingAnimalEntity;
 import com.ineffa.wondrouswilds.entities.BlockNester;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
+import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -220,12 +221,14 @@ public interface InhabitableNestBlockEntity {
                 if (inhabitantEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity) flyingEntity.setFlying(true);
             }
 
-            if (inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.isTame() && woodpecker.getMainHandStack().isEmpty() && world.getBlockEntity(nestPos) instanceof NestBoxBlockEntity nestBox && !nestBox.isEmpty()) {
-                int slotToTakeFrom = 0;
-                ItemStack nestBoxItem = nestBox.getStack(slotToTakeFrom);
-                if (!nestBoxItem.isEmpty()) {
-                    woodpecker.setStackInHand(Hand.MAIN_HAND, nestBoxItem.copy());
-                    nestBox.removeStack(slotToTakeFrom);
+            if (inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.isTame()) {
+                if (woodpecker.getMainHandStack().isEmpty() && world.getBlockEntity(nestPos) instanceof NestBoxBlockEntity nestBox && !nestBox.isEmpty()) {
+                    int slotToTakeFrom = 0;
+                    ItemStack nestBoxItem = nestBox.getStack(slotToTakeFrom);
+                    if (!nestBoxItem.isEmpty()) {
+                        woodpecker.setStackInHand(Hand.MAIN_HAND, nestBoxItem.copy());
+                        nestBox.removeStack(slotToTakeFrom);
+                    }
                 }
             }
 
@@ -234,7 +237,12 @@ public interface InhabitableNestBlockEntity {
             world.playSound(null, nestPos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0F, 1.0F);
             world.emitGameEvent(GameEvent.BLOCK_CHANGE, nestPos, GameEvent.Emitter.of(inhabitantEntity, world.getBlockState(nestPos)));
 
-            return world.spawnEntity(inhabitantEntity);
+            if (world.spawnEntity(inhabitantEntity)) {
+                if (releaseState != InhabitantReleaseState.EMERGENCY && inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.getRandom().nextInt(10) == 0) woodpecker.dropItem(WondrousWildsItems.WOODPECKER_CREST_FEATHER);
+
+                return true;
+            }
+            else return false;
         }
         return false;
     }
