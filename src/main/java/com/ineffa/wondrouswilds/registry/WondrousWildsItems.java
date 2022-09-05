@@ -98,6 +98,11 @@ public class WondrousWildsItems {
         ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
 
+        Trades.addWandererTrade(false, PURPLE_VIOLET, 2, 1, 16);
+        Trades.addWandererTrade(false, PINK_VIOLET, 2, 1, 16);
+        Trades.addWandererTrade(false, RED_VIOLET, 2, 1, 16);
+        Trades.addWandererTrade(false, WHITE_VIOLET, 2, 1, 16);
+
         Trades.addWandererTrade(true, BIRCH_NEST_BOX, 1, 6, 4);
 
         Trades.initialize();
