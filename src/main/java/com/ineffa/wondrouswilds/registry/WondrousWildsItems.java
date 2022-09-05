@@ -103,6 +103,9 @@ public class WondrousWildsItems {
         Trades.addWandererTrade(false, RED_VIOLET, 2, 1, 16);
         Trades.addWandererTrade(false, WHITE_VIOLET, 2, 1, 16);
 
+        Trades.addWandererTrade(false, SMALL_POLYPORE, 3, 1, 12);
+        Trades.addWandererTrade(false, BIG_POLYPORE, 1, 1, 8);
+
         Trades.addWandererTrade(true, BIRCH_NEST_BOX, 1, 6, 4);
 
         Trades.initialize();
