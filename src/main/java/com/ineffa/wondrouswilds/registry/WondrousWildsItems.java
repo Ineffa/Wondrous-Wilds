@@ -2,7 +2,7 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.items.LovifierItem;
-import com.ineffa.wondrouswilds.items.SecretScrollItem;
+import com.ineffa.wondrouswilds.items.ScrollOfSecretsItem;
 import com.ineffa.wondrouswilds.items.recipes.ShapedSecretRecipe;
 import com.ineffa.wondrouswilds.items.recipes.ShapelessSecretRecipe;
 import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
@@ -77,7 +77,7 @@ public class WondrousWildsItems {
 
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
 
-    public static final SecretScrollItem SECRET_SCROLL_NEST_BOX = registerSecretScrollItem("secret_scroll_nest_box", BIRCH_NEST_BOX);
+    public static final ScrollOfSecretsItem SCROLL_OF_SECRETS_NEST_BOX = registerScrollOfSecretsItem("scroll_of_secrets_nest_box", BIRCH_NEST_BOX);
 
     public static final Item FIREFLY_SPAWN_EGG = registerItem("firefly_spawn_egg", new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
     public static final Item WOODPECKER_SPAWN_EGG = registerItem("woodpecker_spawn_egg", new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
@@ -92,8 +92,8 @@ public class WondrousWildsItems {
         return (BlockItem) registerItem(Registry.BLOCK.getId(block).getPath(), new BlockItem(block, new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
     }
 
-    private static SecretScrollItem registerSecretScrollItem(String name, Item... itemsToUnlock) {
-        return (SecretScrollItem) registerItem(name, new SecretScrollItem(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP).maxCount(1), itemsToUnlock));
+    private static ScrollOfSecretsItem registerScrollOfSecretsItem(String name, Item... itemsToUnlock) {
+        return (ScrollOfSecretsItem) registerItem(name, new ScrollOfSecretsItem(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP).maxCount(1), itemsToUnlock));
     }
 
     public static void initialize() {
@@ -117,7 +117,7 @@ public class WondrousWildsItems {
         Trades.addWandererTrade(false, 12, SMALL_POLYPORE, 3, 1);
         Trades.addWandererTrade(false, 8, BIG_POLYPORE, 1, 1);
 
-        Trades.addWandererTrade(true, 1, SECRET_SCROLL_NEST_BOX, 1, 8, WOODPECKER_CREST_FEATHER, 10);
+        Trades.addWandererTrade(true, 1, SCROLL_OF_SECRETS_NEST_BOX, 1, 8, WOODPECKER_CREST_FEATHER, 10);
 
         Trades.initialize();
 

@@ -18,12 +18,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class SecretScrollItem extends Item {
+public class ScrollOfSecretsItem extends Item {
 
     protected final Set<Item> itemsToUnlock = new HashSet<>();
     protected final Map<Item, Identifier> itemIds = new HashMap<>();
 
-    public SecretScrollItem(Settings settings, Item... itemsToUnlock) {
+    public ScrollOfSecretsItem(Settings settings, Item... itemsToUnlock) {
         super(settings);
 
         for (Item item : itemsToUnlock) {
@@ -52,10 +52,10 @@ public class SecretScrollItem extends Item {
                 if (user instanceof ServerPlayerEntity serverPlayer && serverPlayer.getRecipeBook().contains(itemToUnlockId)) continue;
                 else if (hasAllRecipes) hasAllRecipes = false;
 
-                Optional<? extends Recipe<?>> potentialRecipe = recipeManager.get(itemToUnlockId);
-                if (potentialRecipe.isPresent()) recipesToUnlock.add(potentialRecipe.get());
+                Optional<? extends Recipe<?>> recipe = recipeManager.get(itemToUnlockId);
+                if (recipe.isPresent()) recipesToUnlock.add(recipe.get());
 
-                else WondrousWilds.LOGGER.error("Secret Scroll failed to find recipe for " + itemToUnlockId.toString());
+                else WondrousWilds.LOGGER.error("Scroll of Secrets failed to find recipe for " + itemToUnlockId.toString());
             }
 
             if (hasAllRecipes) return TypedActionResult.fail(itemStack);
