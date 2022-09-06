@@ -120,6 +120,8 @@ public class WondrousWildsItems {
         Trades.addWandererTrade(true, BIRCH_NEST_BOX, 1, 6, 4);
 
         Trades.initialize();
+
+        RecipeSerializers.initialize();
     }
 
     public static final class Trades {
