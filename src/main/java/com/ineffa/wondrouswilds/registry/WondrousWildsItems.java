@@ -2,12 +2,16 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.items.LovifierItem;
+import com.ineffa.wondrouswilds.items.recipes.ShapedSecretRecipe;
+import com.ineffa.wondrouswilds.items.recipes.ShapelessSecretRecipe;
 import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.village.TradeOffer;
@@ -129,5 +133,16 @@ public class WondrousWildsItems {
         private static void registerWandererTrades(boolean rare, List<TradeOffers.Factory> tradesToRegister) {
             TradeOfferHelper.registerWanderingTraderOffers(rare ? 2 : 1, factories -> factories.addAll(tradesToRegister));
         }
+    }
+
+    public static final class RecipeSerializers {
+        public static final RecipeSerializer<ShapedSecretRecipe> SECRET_SHAPED = registerRecipeSerializer("crafting_shaped_secret", new ShapedSecretRecipe.Serializer());
+        public static final RecipeSerializer<ShapelessSecretRecipe> SECRET_SHAPELESS = registerRecipeSerializer("crafting_shapeless_secret", new ShapelessSecretRecipe.Serializer());
+
+        private static <S extends RecipeSerializer<T>, T extends Recipe<?>> S registerRecipeSerializer(String name, S serializer) {
+            return Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(WondrousWilds.MOD_ID, name), serializer);
+        }
+
+        public static void initialize() {}
     }
 }

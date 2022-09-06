@@ -10,6 +10,8 @@
     "ComposterBlockInvoker",
     "FoliagePlacerTypeInvoker",
     "MobEntityMixin",
+    "RecipeUnlockerMixin",
+    "ShapedRecipeInvoker",
     "TreeConfiguredFeaturesInvoker",
     "TreeDecoratorTypeInvoker",
     "TrunkPlacerTypeInvoker"
