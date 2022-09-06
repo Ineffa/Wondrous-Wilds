@@ -1,0 +1,21 @@
+{
+  "type": "wondrouswilds:crafting_shaped_secret",
+  "group": "nest_box",
+  "pattern": [
+    "PPP",
+    "PLP",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:birch_planks"
+    },
+    "L": {
+      "tag": "minecraft:leaves"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:birch_nest_box",
+    "count": 1
+  }
+}
