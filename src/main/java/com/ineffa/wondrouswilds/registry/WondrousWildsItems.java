@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.items.LovifierItem;
+import com.ineffa.wondrouswilds.items.SecretScrollItem;
 import com.ineffa.wondrouswilds.items.recipes.ShapedSecretRecipe;
 import com.ineffa.wondrouswilds.items.recipes.ShapelessSecretRecipe;
 import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
@@ -76,6 +77,8 @@ public class WondrousWildsItems {
 
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
 
+    public static final SecretScrollItem SECRET_SCROLL_NEST_BOX = registerSecretScrollItem("secret_scroll_nest_box", BIRCH_NEST_BOX);
+
     public static final Item FIREFLY_SPAWN_EGG = registerItem("firefly_spawn_egg", new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
     public static final Item WOODPECKER_SPAWN_EGG = registerItem("woodpecker_spawn_egg", new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
 
@@ -87,6 +90,10 @@ public class WondrousWildsItems {
 
     private static BlockItem registerBlockItem(Block block) {
         return (BlockItem) registerItem(Registry.BLOCK.getId(block).getPath(), new BlockItem(block, new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
+    }
+
+    private static SecretScrollItem registerSecretScrollItem(String name, Item... itemsToUnlock) {
+        return (SecretScrollItem) registerItem(name, new SecretScrollItem(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP).maxCount(1), itemsToUnlock));
     }
 
     public static void initialize() {
