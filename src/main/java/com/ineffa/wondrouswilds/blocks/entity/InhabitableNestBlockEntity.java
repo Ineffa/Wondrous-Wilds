@@ -238,7 +238,7 @@ public interface InhabitableNestBlockEntity {
             world.emitGameEvent(GameEvent.BLOCK_CHANGE, nestPos, GameEvent.Emitter.of(inhabitantEntity, world.getBlockState(nestPos)));
 
             if (world.spawnEntity(inhabitantEntity)) {
-                if (releaseState != InhabitantReleaseState.EMERGENCY && inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.getRandom().nextInt(10) == 0) woodpecker.dropItem(WondrousWildsItems.WOODPECKER_CREST_FEATHER);
+                if (releaseState == InhabitantReleaseState.RELEASE && inhabitantEntity instanceof WoodpeckerEntity woodpecker && woodpecker.getRandom().nextInt(10) == 0) woodpecker.dropItem(WondrousWildsItems.WOODPECKER_CREST_FEATHER);
 
                 return true;
             }
