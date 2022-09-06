@@ -109,15 +109,15 @@ public class WondrousWildsItems {
         ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
 
-        Trades.addWandererTrade(false, PURPLE_VIOLET, 2, 1, 16);
-        Trades.addWandererTrade(false, PINK_VIOLET, 2, 1, 16);
-        Trades.addWandererTrade(false, RED_VIOLET, 2, 1, 16);
-        Trades.addWandererTrade(false, WHITE_VIOLET, 2, 1, 16);
+        Trades.addWandererTrade(false, 16, PURPLE_VIOLET, 2, 1);
+        Trades.addWandererTrade(false, 16, PINK_VIOLET, 2, 1);
+        Trades.addWandererTrade(false, 16, RED_VIOLET, 2, 1);
+        Trades.addWandererTrade(false, 16, WHITE_VIOLET, 2, 1);
 
-        Trades.addWandererTrade(false, SMALL_POLYPORE, 3, 1, 12);
-        Trades.addWandererTrade(false, BIG_POLYPORE, 1, 1, 8);
+        Trades.addWandererTrade(false, 12, SMALL_POLYPORE, 3, 1);
+        Trades.addWandererTrade(false, 8, BIG_POLYPORE, 1, 1);
 
-        Trades.addWandererTrade(true, BIRCH_NEST_BOX, 1, 6, 4);
+        Trades.addWandererTrade(true, 1, SECRET_SCROLL_NEST_BOX, 1, 8, WOODPECKER_CREST_FEATHER, 10);
 
         Trades.initialize();
 
@@ -128,10 +128,18 @@ public class WondrousWildsItems {
         public static final List<TradeOffers.Factory> COMMON_WANDERER_TRADES = new ArrayList<>();
         public static final List<TradeOffers.Factory> RARE_WANDERER_TRADES = new ArrayList<>();
 
-        public static void addWandererTrade(boolean rare, ItemConvertible itemToSell, int amountToSell, int price, int maxUses) {
+        public static void addWandererTrade(boolean rare, int maxUses, ItemConvertible itemToSell, int amountToSell, int emeraldCost) {
+            addWandererTrade(rare, maxUses, itemToSell, amountToSell, emeraldCost, null, 0);
+        }
+
+        public static void addWandererTrade(boolean rare, int maxUses, ItemConvertible itemToSell, int amountToSell, int emeraldCost, ItemConvertible bonusItemToBuy, int bonusItemToBuyCost) {
+            addWandererTrade(rare, maxUses, itemToSell, amountToSell, Items.EMERALD, emeraldCost, bonusItemToBuy, bonusItemToBuyCost);
+        }
+
+        public static void addWandererTrade(boolean rare, int maxUses, ItemConvertible itemToSell, int amountToSell, ItemConvertible firstItemToBuy, int firstItemToBuyCost, ItemConvertible secondItemToBuy, int secondItemToBuyCost) {
             List<TradeOffers.Factory> listToAddTo = rare ? RARE_WANDERER_TRADES : COMMON_WANDERER_TRADES;
 
-            listToAddTo.add((entity, random) -> new TradeOffer(new ItemStack(Items.EMERALD, price), new ItemStack(itemToSell, amountToSell), maxUses, 1, 1.0F));
+            listToAddTo.add((entity, random) -> new TradeOffer(new ItemStack(firstItemToBuy, firstItemToBuyCost), new ItemStack(secondItemToBuy, secondItemToBuyCost), new ItemStack(itemToSell, amountToSell), maxUses, 1, 1.0F));
         }
 
         public static void initialize() {
