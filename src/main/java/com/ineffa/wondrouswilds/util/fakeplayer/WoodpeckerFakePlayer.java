@@ -4,6 +4,7 @@ import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import org.jetbrains.annotations.Nullable;
@@ -11,14 +12,22 @@ import org.jetbrains.annotations.Nullable;
 public class WoodpeckerFakePlayer extends FakePlayerEntity {
 
     private final WoodpeckerEntity woodpecker;
+    private final WoodpeckerFakeAbilities woodpeckerAbilities;
 
     public WoodpeckerFakePlayer(WoodpeckerEntity woodpecker) {
         super(woodpecker.getWorld(), woodpecker.getBlockPos(), woodpecker.getYaw(), new GameProfile(woodpecker.getUuid(), woodpecker.getName().getString()));
+
         this.woodpecker = woodpecker;
+        this.woodpeckerAbilities = new WoodpeckerFakeAbilities(woodpecker);
 
         this.copyPositionAndRotation(woodpecker);
 
         this.setInvulnerable(woodpecker.isInvulnerable());
+    }
+
+    @Override
+    public PlayerAbilities getAbilities() {
+        return this.woodpeckerAbilities;
     }
 
     @Override
