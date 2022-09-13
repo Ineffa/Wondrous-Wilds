@@ -5,30 +5,20 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
-public class WoodpeckerFakePlayer extends FakeServerPlayerEntity {
+public class WoodpeckerFakePlayer extends FakePlayerEntity {
 
     private final WoodpeckerEntity woodpecker;
 
     public WoodpeckerFakePlayer(WoodpeckerEntity woodpecker) {
-        super((ServerWorld) woodpecker.getWorld(), new GameProfile(UUID.fromString("62ca5b38-99b2-4cea-93a1-b32935725151"), woodpecker.getName().getString()));
+        super(woodpecker.getWorld(), woodpecker.getBlockPos(), woodpecker.getYaw(), new GameProfile(woodpecker.getUuid(), woodpecker.getName().getString()));
+        this.woodpecker = woodpecker;
 
         this.copyPositionAndRotation(woodpecker);
 
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            ItemStack itemStack = woodpecker.getEquippedStack(slot);
-            if (itemStack.isEmpty()) continue;
-            this.equipStack(slot, itemStack.copy());
-        }
-
         this.setInvulnerable(woodpecker.isInvulnerable());
-
-        this.woodpecker = woodpecker;
     }
 
     @Override
@@ -73,12 +63,28 @@ public class WoodpeckerFakePlayer extends FakeServerPlayerEntity {
     }
 
     @Override
-    public boolean isCreative() {
-        return false;
+    public void equipStack(EquipmentSlot slot, ItemStack stack) {
+        this.woodpecker.equipStack(slot, stack);
     }
 
     @Override
-    public boolean isSpectator() {
-        return false;
+    public void onEquipStack(EquipmentSlot slot, ItemStack oldStack, ItemStack newStack) {
+        this.woodpecker.onEquipStack(slot, oldStack, newStack);
+    }
+
+    @Override
+    public ItemStack getEquippedStack(EquipmentSlot slot) {
+        return this.woodpecker.getEquippedStack(slot);
+    }
+
+    @Override
+    public ItemStack getOffHandStack() {
+        return this.woodpecker.getOffHandStack();
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getPickBlockStack() {
+        return this.woodpecker.getPickBlockStack();
     }
 }

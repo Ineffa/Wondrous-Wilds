@@ -4,12 +4,14 @@ import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
+import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
 import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
 import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
 import com.ineffa.wondrouswilds.util.fakeplayer.WoodpeckerFakePlayer;
+import com.ineffa.wondrouswilds.util.fakeplayer.WoodpeckerItemUsageContext;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -36,7 +38,6 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -629,18 +630,24 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
                             if (peckState.isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH)) {
                                 WoodpeckerFakePlayer fakePlayer = new WoodpeckerFakePlayer(this);
-                                Hand hand = Hand.MAIN_HAND;
 
                                 boolean successfulInteraction;
+                                boolean usedItem = false;
 
-                                if (!(successfulInteraction = (peckState.onUse(this.getWorld(), fakePlayer, hand, hitResult)).isAccepted())) {
-                                    ItemStack heldItem = fakePlayer.getMainHandStack();
-                                    if (!heldItem.isEmpty()) {
-                                        successfulInteraction = heldItem.useOnBlock(new ItemUsageContext(fakePlayer, hand, hitResult)).isAccepted();
-                                    }
+                                if (!(successfulInteraction = (peckState.onUse(this.getWorld(), fakePlayer, Hand.MAIN_HAND, hitResult)).isAccepted())) {
+                                    ItemStack heldItem = this.getMainHandStack();
+                                    if (!heldItem.isEmpty() && (successfulInteraction = heldItem.useOnBlock(new WoodpeckerItemUsageContext(this, fakePlayer, heldItem, hitResult)).isAccepted())) usedItem = true;
                                 }
 
-                                if (successfulInteraction) this.setConsecutivePecks(this.getConsecutivePecks() + 1);
+                                if (successfulInteraction) {
+                                    PacketByteBuf buf = PacketByteBufs.create();
+                                    buf.writeVarInt(this.getId());
+                                    buf.writeBlockHitResult(hitResult);
+                                    buf.writeBoolean(usedItem);
+                                    for (ServerPlayerEntity receiver : PlayerLookup.tracking(this)) ServerPlayNetworking.send(receiver, WoodpeckerInteractWithBlockPacket.ID, buf);
+
+                                    this.setConsecutivePecks(this.getConsecutivePecks() + 1);
+                                }
                             }
 
                             peckSound = peckState.getSoundGroup().getHitSound();

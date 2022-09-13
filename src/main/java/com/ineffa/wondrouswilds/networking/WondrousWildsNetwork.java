@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.networking;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
+import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -16,6 +17,7 @@ public final class WondrousWildsNetwork {
     @Environment(value = EnvType.CLIENT)
     public static void registerS2CPackets() {
         ClientPlayNetworking.registerGlobalReceiver(WoodpeckerDrillPacket.ID, WoodpeckerDrillPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(WoodpeckerInteractWithBlockPacket.ID, WoodpeckerInteractWithBlockPacket::receive);
     }
 
     //public static void registerC2SPackets() {}
