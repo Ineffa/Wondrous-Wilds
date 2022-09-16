@@ -868,6 +868,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
+    public boolean canBeLeashedBy(PlayerEntity player) {
+        return this.isTame() && super.canBeLeashedBy(player);
+    }
+
+    @Override
     protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.95F;
     }
