@@ -551,7 +551,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     public boolean canWander() {
-        return !this.isClinging() && !this.hasAttackTarget() && this.getAttacker() == null;
+        return !this.isClinging() && !this.hasAttackTarget() && this.getAttacker() == null && !this.isLeashed();
     }
 
     public boolean hasAttackTarget() {
