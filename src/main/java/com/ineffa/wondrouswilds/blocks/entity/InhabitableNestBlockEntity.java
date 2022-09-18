@@ -38,6 +38,7 @@ import static com.ineffa.wondrouswilds.registry.WondrousWildsEntities.DEFAULT_NE
 public interface InhabitableNestBlockEntity {
 
     String INHABITANTS_KEY = "Inhabitants";
+    String IS_FRESH_KEY = "IsFresh";
     String ENTITY_DATA_KEY = "EntityData";
     String CAPACITY_WEIGHT_KEY = "CapacityWeight";
     String TICKS_IN_NEST_KEY = "TicksInNest";
@@ -54,10 +55,10 @@ public interface InhabitableNestBlockEntity {
     default NbtList getInhabitantsNbt() {
         NbtList nbtList = new NbtList();
         for (Inhabitant inhabitant : this.getInhabitants()) {
-            NbtCompound copy = inhabitant.entityData.copy();
             NbtCompound nbt = new NbtCompound();
 
-            nbt.put(ENTITY_DATA_KEY, copy);
+            nbt.putBoolean(IS_FRESH_KEY, inhabitant.isFresh);
+            nbt.put(ENTITY_DATA_KEY, inhabitant.entityData.copy());
             nbt.putInt(CAPACITY_WEIGHT_KEY, inhabitant.capacityWeight);
             nbt.putInt(MIN_OCCUPATION_TICKS_KEY, inhabitant.minOccupationTicks);
             nbt.putInt(TICKS_IN_NEST_KEY, inhabitant.ticksInNest);
@@ -215,8 +216,7 @@ public interface InhabitableNestBlockEntity {
             if (inhabitantEntity instanceof AnimalEntity) ageInhabitant(inhabitant.ticksInNest, (AnimalEntity) inhabitantEntity);
 
             if (inhabitant.isFresh) {
-                if (world instanceof ServerWorldAccess serverWorldAccess)
-                    inhabitantEntity.initialize(serverWorldAccess, serverWorldAccess.getLocalDifficulty(inhabitantEntity.getBlockPos()), SpawnReason.CHUNK_GENERATION, null, nbtCompound);
+                if (world instanceof ServerWorldAccess serverWorldAccess) inhabitantEntity.initialize(serverWorldAccess, serverWorldAccess.getLocalDifficulty(inhabitantEntity.getBlockPos()), SpawnReason.CHUNK_GENERATION, null, nbtCompound);
 
                 if (inhabitantEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity) flyingEntity.setFlying(true);
             }
