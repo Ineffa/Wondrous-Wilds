@@ -132,6 +132,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public WoodpeckerEntity(EntityType<? extends WoodpeckerEntity> entityType, World world) {
         super(entityType, world);
 
+        this.lookControl = new WoodpeckerLookControl(this);
+
         this.ignoreCameraFrustum = true;
     }
 
