@@ -172,7 +172,7 @@ public interface InhabitableNestBlockEntity {
             for (BlockNester inhabitant : inhabitants) {
                 if (!inhabitant.defendsNest() || !(inhabitant instanceof MobEntity inhabitantEntity) || (inhabitant instanceof WoodpeckerEntity woodpecker && woodpecker.isTame())) continue;
 
-                if (attacker.getPos().squaredDistanceTo(inhabitantEntity.getPos()) > inhabitantEntity.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE)) continue;
+                if (attacker.getPos().distanceTo(inhabitantEntity.getPos()) > inhabitantEntity.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE)) continue;
 
                 inhabitantEntity.setTarget(attacker);
 
