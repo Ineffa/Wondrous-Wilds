@@ -610,7 +610,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                             LivingEntity attackTarget = this.getTarget();
                             double distanceFromTarget = this.squaredDistanceTo(attackTarget.getX(), attackTarget.getY(), attackTarget.getZ());
 
-                            if (distanceFromTarget <= this.getPeckReach()) this.tryAttack(attackTarget);
+                            if (distanceFromTarget <= this.getPeckReach() + 1.0D) this.tryAttack(attackTarget);
                         }
                         else if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                             BlockState peckState = this.getWorld().getBlockState(this.getClingPos());

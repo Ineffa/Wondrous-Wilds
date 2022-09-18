@@ -32,14 +32,18 @@ public class WoodpeckerAttackGoal extends MeleeAttackGoal {
     protected void attack(LivingEntity target, double squaredDistance) {
         double maxDistance = this.getSquaredMaxAttackDistance(target);
         if (squaredDistance <= maxDistance) {
-            if (this.woodpecker.isPecking())
-                this.woodpecker.setVelocity(this.woodpecker.getVelocity().multiply(0.9D));
-
-            else if (this.isCooledDown()) {
+            if (!this.woodpecker.isPecking() && this.isCooledDown()) {
                 this.resetCooldown();
 
                 this.woodpecker.startPeckChain(1);
             }
         }
+
+        if (this.woodpecker.isPecking() && squaredDistance <= super.getSquaredMaxAttackDistance(target)) this.woodpecker.setVelocity(this.woodpecker.getVelocity().multiply(0.9D));
+    }
+
+    @Override
+    protected double getSquaredMaxAttackDistance(LivingEntity entity) {
+        return super.getSquaredMaxAttackDistance(entity) * 3.0D;
     }
 }
