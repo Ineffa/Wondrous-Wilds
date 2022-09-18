@@ -22,6 +22,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.BodyControl;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -33,6 +34,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -575,6 +577,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
         this.goalSelector.add(9, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
         this.goalSelector.add(10, new LookAroundGoal(this));
+
+        this.targetSelector.add(0, new ActiveTargetGoal<>(this, PhantomEntity.class, true));
     }
 
     @Nullable
