@@ -879,7 +879,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     protected BodyControl createBodyControl() {
-        return new RelaxedBodyControl(this);
+        return new WoodpeckerBodyControl(this);
     }
 
     @Override
