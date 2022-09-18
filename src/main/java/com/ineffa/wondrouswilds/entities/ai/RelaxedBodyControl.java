@@ -36,6 +36,8 @@ public class RelaxedBodyControl extends BodyControl {
             else if (this.shouldSlowlyAdjustBody()) {
                 ++this.bodyAdjustTicks;
                 if (this.bodyAdjustTicks > 10) this.slowlyAdjustBody();
+
+                this.entity.setYaw(this.entity.getBodyYaw()); // Fixes desync present in vanilla body controller
             }
         }
     }
