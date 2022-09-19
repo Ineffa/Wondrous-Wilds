@@ -60,6 +60,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -328,7 +329,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     public boolean isMakingNest() {
-        return this.canMakeNestInPos(this.getClingPos()) && (this.getConsecutivePecks() > 0 || this.isPecking());
+        return this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && this.canMakeNestInPos(this.getClingPos()) && (this.getConsecutivePecks() > 0 || this.isPecking());
     }
 
     public int getClingAngle() {
@@ -612,7 +613,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
                             if (distanceFromTarget <= this.getPeckReach() + 1.0D) this.tryAttack(attackTarget);
                         }
-                        else if (this.isClinging() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
+                        else if (this.isClinging() && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                             BlockState peckState = this.getWorld().getBlockState(this.getClingPos());
 
                             this.setConsecutivePecks(this.getConsecutivePecks() + 1);
@@ -672,7 +673,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
                 if (!this.isPecking()) {
                     if (!this.isDrumming()) {
-                        boolean canMakeNest = this.canMakeNestInPos(this.getClingPos());
+                        boolean canMakeNest = this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && this.canMakeNestInPos(this.getClingPos());
                         if (shouldInteract || (canMakeNest && this.shouldFindNest())) {
                             if (this.getRandom().nextInt(shouldInteract ? 40 : 20) == 0 && hasValidClingPos) {
                                 int randomLength = 1 + this.getRandom().nextInt(4);
