@@ -7,6 +7,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class WoodpeckerFakePlayer extends FakePlayerEntity {
@@ -59,6 +60,38 @@ public class WoodpeckerFakePlayer extends FakePlayerEntity {
     @Override
     public ItemEntity dropStack(ItemStack stack, float yOffset) {
         return this.woodpecker.dropStack(stack, yOffset);
+    }
+
+    @Nullable
+    @Override
+    public ItemEntity dropItem(ItemStack stack, boolean throwRandomly, boolean retainOwnership) {
+        if (stack.isEmpty()) return null;
+
+        if (this.woodpecker.getWorld().isClient()) this.woodpecker.swingHand(Hand.MAIN_HAND);
+
+        ItemEntity itemEntity = new ItemEntity(this.woodpecker.getWorld(), this.woodpecker.getX(), this.woodpecker.getEyeY() - 0.3D, this.woodpecker.getZ(), stack);
+        itemEntity.setPickupDelay(40);
+
+        if (retainOwnership) itemEntity.setThrower(this.woodpecker.getUuid());
+
+        if (throwRandomly) {
+            float f = this.woodpecker.getRandom().nextFloat() * 0.5F;
+            float g = this.woodpecker.getRandom().nextFloat() * ((float) Math.PI * 2.0F);
+            itemEntity.setVelocity(-MathHelper.sin(g) * f, 0.2F, MathHelper.cos(g) * f);
+        }
+        else {
+            float g = MathHelper.sin(this.woodpecker.getPitch() * ((float) Math.PI / 180.0F));
+            float h = MathHelper.cos(this.woodpecker.getPitch() * ((float) Math.PI / 180.0F));
+            float i = MathHelper.sin(this.woodpecker.getYaw() * ((float) Math.PI / 180.0F));
+            float j = MathHelper.cos(this.woodpecker.getYaw() * ((float) Math.PI / 180.0F));
+            float k = this.woodpecker.getRandom().nextFloat() * ((float) Math.PI * 2.0F);
+            float l = 0.02F * this.woodpecker.getRandom().nextFloat();
+            float f = 0.3F;
+            itemEntity.setVelocity((double) (-i * h * f) + Math.cos(k) * (double) l, -g * f + 0.1F + (this.woodpecker.getRandom().nextFloat() - this.woodpecker.getRandom().nextFloat()) * 0.1F, (double) (j * h * f) + Math.sin(k) * (double) l);
+        }
+
+        this.woodpecker.getEntityWorld().spawnEntity(itemEntity);
+        return itemEntity;
     }
 
     @Override
