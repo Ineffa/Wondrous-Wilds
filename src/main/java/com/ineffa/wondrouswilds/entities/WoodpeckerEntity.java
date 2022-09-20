@@ -729,7 +729,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             this.setYaw(this.getClingAngle());
             this.setBodyYaw(this.getYaw());
 
-            this.setHeadYaw(this.isPecking() || this.isDrumming() ? this.getYaw() : MathHelper.clampAngle(this.getHeadYaw(), this.getYaw(), this.getMaxHeadRotation()));
+            boolean straightenHead = this.isPecking() || this.isDrumming();
+            this.setHeadYaw(straightenHead ? this.getYaw() : MathHelper.clampAngle(this.getHeadYaw(), this.getYaw(), this.getMaxHeadRotation()));
+            if (straightenHead) this.setPitch(0.0F);
         }
         else if (this.getClingAngle() != 0) this.setClingAngle(0);
     }
