@@ -253,7 +253,7 @@
 				"headConstant": {
 					"rotation": {
 						"vector": [
-							"65 + (math.cos(query.anim_time * 75) * 0.8)",
+							"(query.head_pitch * 0.5) + 65 + (math.cos(query.anim_time * 75) * 0.8)",
 							"math.cos((query.anim_time - 1.5) * 37.5) * -1.5",
 							"(query.head_yaw * 0.5) + (math.sin((query.anim_time - 1.2) * 45) * 1.2)"
 						]
