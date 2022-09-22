@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "wondrouswilds:woodpecker_crest_feather"
+    },
+    "title": {
+      "translate": "advancement.wondrouswilds.obtain_woodpecker_crest_feather.title"
+    },
+    "description": {
+      "translate": "advancement.wondrouswilds.obtain_woodpecker_crest_feather.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "criteria": {
+    "obtain_woodpecker_crest_feather": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wondrouswilds:woodpecker_crest_feather"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

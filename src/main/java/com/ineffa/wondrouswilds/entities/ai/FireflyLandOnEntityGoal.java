@@ -1,10 +1,10 @@
 package com.ineffa.wondrouswilds.entities.ai;
 
 import com.ineffa.wondrouswilds.entities.FireflyEntity;
+import com.ineffa.wondrouswilds.registry.WondrousWildsAdvancementCriteria;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -65,9 +65,10 @@ public class FireflyLandOnEntityGoal extends Goal {
 
             this.firefly.startRiding(this.entityToLandOn);
 
-            if (!this.world.isClient() && this.entityToLandOn instanceof PlayerEntity) {
-                ServerWorld serverWorld = (ServerWorld) this.world;
-                for (ServerPlayerEntity player : serverWorld.getPlayers()) player.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(this.entityToLandOn));
+            if (this.world instanceof ServerWorld serverWorld && this.entityToLandOn instanceof ServerPlayerEntity playerToLandOn) {
+                WondrousWildsAdvancementCriteria.FIREFLY_LANDED_ON_HEAD.trigger(playerToLandOn, this.firefly);
+
+                for (ServerPlayerEntity player : serverWorld.getPlayers()) player.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(playerToLandOn));
             }
         }
     }

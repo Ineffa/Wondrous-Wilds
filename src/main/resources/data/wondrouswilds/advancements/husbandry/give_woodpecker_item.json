@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:cake"
+    },
+    "title": {
+      "translate": "advancement.wondrouswilds.give_woodpecker_item.title"
+    },
+    "description": {
+      "translate": "advancement.wondrouswilds.give_woodpecker_item.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "criteria": {
+    "give_woodpecker_any_item": {
+      "trigger": "wondrouswilds:gave_woodpecker_item"
+    }
+  }
+}

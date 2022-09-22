@@ -45,6 +45,8 @@ public class WondrousWilds implements ModInitializer {
 
 		WondrousWildsScreenHandlers.initialize();
 
+		WondrousWildsAdvancementCriteria.initialize();
+
 		upgradeBirchForests();
 
 		ServerEntityEvents.ENTITY_LOAD.register(WondrousWilds::hookEntityCreation);

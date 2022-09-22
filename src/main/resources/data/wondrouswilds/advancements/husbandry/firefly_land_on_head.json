@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:saddle"
+    },
+    "title": {
+      "translate": "advancement.wondrouswilds.firefly_land_on_head.title"
+    },
+    "description": {
+      "translate": "advancement.wondrouswilds.firefly_land_on_head.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "firefly_land_on_head": {
+      "trigger": "wondrouswilds:firefly_landed_on_head"
+    }
+  }
+}

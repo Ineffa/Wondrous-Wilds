@@ -5,10 +5,7 @@ import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
-import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
-import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
-import com.ineffa.wondrouswilds.registry.WondrousWildsSounds;
-import com.ineffa.wondrouswilds.registry.WondrousWildsTags;
+import com.ineffa.wondrouswilds.registry.*;
 import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
 import com.ineffa.wondrouswilds.util.fakeplayer.WoodpeckerFakePlayer;
 import com.ineffa.wondrouswilds.util.fakeplayer.WoodpeckerItemUsageContext;
@@ -763,6 +760,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                 boolean isNewItemType = playerHeldStack.getItem() != woodpeckerHeldStack.getItem();
                 if (isNewItemType && !woodpeckerHeldStack.isEmpty()) break transferToWoodpecker;
 
+                ItemStack priorPlayerHeldStack = playerHeldStack.copy();
+
                 if (!player.isSneaking()) {
                     if (!isNewItemType) {
                         int amountToTransfer = Math.min(playerHeldStack.getCount(), woodpeckerSpaceRemaining);
@@ -775,6 +774,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                         if (!player.getAbilities().creativeMode) player.setStackInHand(hand, ItemStack.EMPTY);
                         this.setStackInHand(Hand.MAIN_HAND, playerHeldStack.copy());
                     }
+
+                    if (player instanceof ServerPlayerEntity serverPlayer) WondrousWildsAdvancementCriteria.GAVE_WOODPECKER_ITEM.trigger(serverPlayer, priorPlayerHeldStack);
                     return ActionResult.SUCCESS;
                 }
 
@@ -788,6 +789,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                 }
                 else woodpeckerHeldStack.increment(1);
 
+                if (player instanceof ServerPlayerEntity serverPlayer) WondrousWildsAdvancementCriteria.GAVE_WOODPECKER_ITEM.trigger(serverPlayer, priorPlayerHeldStack);
                 return ActionResult.SUCCESS;
             }
         }

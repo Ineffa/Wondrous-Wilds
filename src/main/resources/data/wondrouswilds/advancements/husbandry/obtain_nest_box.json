@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "wondrouswilds:birch_nest_box"
+    },
+    "title": {
+      "translate": "advancement.wondrouswilds.obtain_nest_box.title"
+    },
+    "description": {
+      "translate": "advancement.wondrouswilds.obtain_nest_box.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "wondrouswilds:husbandry/obtain_woodpecker_crest_feather",
+  "criteria": {
+    "obtain_nest_box": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "wondrouswilds:nest_boxes"
+          }
+        ]
+      }
+    }
+  }
+}
