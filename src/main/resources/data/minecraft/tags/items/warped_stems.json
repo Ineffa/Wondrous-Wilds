@@ -1,6 +1,9 @@
 {
   "values": [
+    "wondrouswilds:dead_warped_stem",
+    "wondrouswilds:dead_warped_hyphae",
     "wondrouswilds:hollow_warped_stem",
+    "wondrouswilds:hollow_dead_warped_stem",
     "wondrouswilds:hollow_stripped_warped_stem"
   ]
 }

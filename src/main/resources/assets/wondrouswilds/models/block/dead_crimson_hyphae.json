@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wondrouswilds:block/dead_crimson_stem",
+    "side": "wondrouswilds:block/dead_crimson_stem"
+  }
+}

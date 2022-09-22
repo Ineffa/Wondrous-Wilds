@@ -40,6 +40,22 @@ public class WondrousWildsItems {
     public static final BlockItem DEAD_OAK_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_OAK_LOG);
     public static final BlockItem DEAD_SPRUCE_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_SPRUCE_LOG);
     public static final BlockItem DEAD_BIRCH_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_BIRCH_LOG);
+    public static final BlockItem DEAD_JUNGLE_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_JUNGLE_LOG);
+    public static final BlockItem DEAD_ACACIA_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_ACACIA_LOG);
+    public static final BlockItem DEAD_DARK_OAK_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_DARK_OAK_LOG);
+    public static final BlockItem DEAD_MANGROVE_LOG = registerBlockItem(WondrousWildsBlocks.DEAD_MANGROVE_LOG);
+    public static final BlockItem DEAD_CRIMSON_STEM = registerBlockItem(WondrousWildsBlocks.DEAD_CRIMSON_STEM);
+    public static final BlockItem DEAD_WARPED_STEM = registerBlockItem(WondrousWildsBlocks.DEAD_WARPED_STEM);
+
+    public static final BlockItem DEAD_OAK_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_OAK_WOOD);
+    public static final BlockItem DEAD_SPRUCE_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_SPRUCE_WOOD);
+    public static final BlockItem DEAD_BIRCH_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_BIRCH_WOOD);
+    public static final BlockItem DEAD_JUNGLE_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_JUNGLE_WOOD);
+    public static final BlockItem DEAD_ACACIA_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_ACACIA_WOOD);
+    public static final BlockItem DEAD_DARK_OAK_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_DARK_OAK_WOOD);
+    public static final BlockItem DEAD_MANGROVE_WOOD = registerBlockItem(WondrousWildsBlocks.DEAD_MANGROVE_WOOD);
+    public static final BlockItem DEAD_CRIMSON_HYPHAE = registerBlockItem(WondrousWildsBlocks.DEAD_CRIMSON_HYPHAE);
+    public static final BlockItem DEAD_WARPED_HYPHAE = registerBlockItem(WondrousWildsBlocks.DEAD_WARPED_HYPHAE);
 
     public static final BlockItem HOLLOW_OAK_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_OAK_LOG);
     public static final BlockItem HOLLOW_SPRUCE_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_SPRUCE_LOG);
@@ -54,6 +70,12 @@ public class WondrousWildsItems {
     public static final BlockItem HOLLOW_DEAD_OAK_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_OAK_LOG);
     public static final BlockItem HOLLOW_DEAD_SPRUCE_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_SPRUCE_LOG);
     public static final BlockItem HOLLOW_DEAD_BIRCH_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG);
+    public static final BlockItem HOLLOW_DEAD_JUNGLE_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_JUNGLE_LOG);
+    public static final BlockItem HOLLOW_DEAD_ACACIA_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_ACACIA_LOG);
+    public static final BlockItem HOLLOW_DEAD_DARK_OAK_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_DARK_OAK_LOG);
+    public static final BlockItem HOLLOW_DEAD_MANGROVE_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_MANGROVE_LOG);
+    public static final BlockItem HOLLOW_DEAD_CRIMSON_STEM = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_CRIMSON_STEM);
+    public static final BlockItem HOLLOW_DEAD_WARPED_STEM = registerBlockItem(WondrousWildsBlocks.HOLLOW_DEAD_WARPED_STEM);
 
     public static final BlockItem HOLLOW_STRIPPED_OAK_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_OAK_LOG);
     public static final BlockItem HOLLOW_STRIPPED_SPRUCE_LOG = registerBlockItem(WondrousWildsBlocks.HOLLOW_STRIPPED_SPRUCE_LOG);

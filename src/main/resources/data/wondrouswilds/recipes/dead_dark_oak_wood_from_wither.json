@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "dead_bark",
+  "pattern": [
+    "LLL",
+    "LWL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:dark_oak_wood"
+    },
+    "W": {
+      "item": "minecraft:wither_rose"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:dead_dark_oak_wood",
+    "count": 8
+  }
+}

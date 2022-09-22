@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "hollow_dead_log",
+  "pattern": [
+    "LLL",
+    "LWL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "wondrouswilds:hollow_dark_oak_log"
+    },
+    "W": {
+      "item": "minecraft:wither_rose"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:hollow_dead_dark_oak_log",
+    "count": 8
+  }
+}

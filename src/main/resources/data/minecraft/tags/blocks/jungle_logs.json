@@ -1,6 +1,9 @@
 {
   "values": [
+    "wondrouswilds:dead_jungle_log",
+    "wondrouswilds:dead_jungle_wood",
     "wondrouswilds:hollow_jungle_log",
+    "wondrouswilds:hollow_dead_jungle_log",
     "wondrouswilds:hollow_stripped_jungle_log"
   ]
 }

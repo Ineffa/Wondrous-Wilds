@@ -1,6 +1,9 @@
 {
   "values": [
+    "wondrouswilds:dead_acacia_log",
+    "wondrouswilds:dead_acacia_wood",
     "wondrouswilds:hollow_acacia_log",
+    "wondrouswilds:hollow_dead_acacia_log",
     "wondrouswilds:hollow_stripped_acacia_log"
   ]
 }

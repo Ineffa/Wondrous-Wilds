@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "dead_bark",
+  "pattern": [
+    "LL",
+    "LL"
+  ],
+  "key": {
+    "L": {
+      "item": "wondrouswilds:dead_crimson_stem"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:dead_crimson_hyphae",
+    "count": 3
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "hollow_dead_log",
+  "pattern": [
+    "LLL",
+    "LWL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "wondrouswilds:hollow_crimson_stem"
+    },
+    "W": {
+      "item": "minecraft:wither_rose"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:hollow_dead_crimson_stem",
+    "count": 8
+  }
+}

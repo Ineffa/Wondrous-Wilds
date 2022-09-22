@@ -1,14 +1,12 @@
 {
   "values": [
+    "#wondrouswilds:overworld_natural_hollow_dead_logs",
     "wondrouswilds:hollow_oak_log",
     "wondrouswilds:hollow_spruce_log",
     "wondrouswilds:hollow_birch_log",
     "wondrouswilds:hollow_jungle_log",
     "wondrouswilds:hollow_acacia_log",
     "wondrouswilds:hollow_dark_oak_log",
-    "wondrouswilds:hollow_mangrove_log",
-    "wondrouswilds:hollow_dead_oak_log",
-    "wondrouswilds:hollow_dead_spruce_log",
-    "wondrouswilds:hollow_dead_birch_log"
+    "wondrouswilds:hollow_mangrove_log"
   ]
 }

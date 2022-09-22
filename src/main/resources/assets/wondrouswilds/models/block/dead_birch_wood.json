@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wondrouswilds:block/dead_birch_log",
+    "side": "wondrouswilds:block/dead_birch_log"
+  }
+}

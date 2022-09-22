@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "hollow_dead_log",
+  "pattern": [
+    " L ",
+    "L L",
+    " L "
+  ],
+  "key": {
+    "L": {
+      "item": "wondrouswilds:dead_acacia_log"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:hollow_dead_acacia_log",
+    "count": 4
+  }
+}

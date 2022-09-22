@@ -1,6 +1,9 @@
 {
   "values": [
+    "wondrouswilds:dead_crimson_stem",
+    "wondrouswilds:dead_crimson_hyphae",
     "wondrouswilds:hollow_crimson_stem",
+    "wondrouswilds:hollow_dead_crimson_stem",
     "wondrouswilds:hollow_stripped_crimson_stem"
   ]
 }

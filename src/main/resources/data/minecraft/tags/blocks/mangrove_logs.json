@@ -1,6 +1,9 @@
 {
   "values": [
+    "wondrouswilds:dead_mangrove_log",
+    "wondrouswilds:dead_mangrove_wood",
     "wondrouswilds:hollow_mangrove_log",
+    "wondrouswilds:hollow_dead_mangrove_log",
     "wondrouswilds:hollow_stripped_mangrove_log"
   ]
 }

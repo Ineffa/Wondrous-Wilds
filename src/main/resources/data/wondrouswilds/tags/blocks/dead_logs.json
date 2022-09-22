@@ -1,5 +1,16 @@
 {
   "values": [
-    "#wondrouswilds:overworld_natural_dead_logs"
+    "#wondrouswilds:overworld_natural_dead_logs",
+    "wondrouswilds:dead_crimson_stem",
+    "wondrouswilds:dead_warped_stem",
+    "wondrouswilds:dead_oak_wood",
+    "wondrouswilds:dead_spruce_wood",
+    "wondrouswilds:dead_birch_wood",
+    "wondrouswilds:dead_jungle_wood",
+    "wondrouswilds:dead_acacia_wood",
+    "wondrouswilds:dead_dark_oak_wood",
+    "wondrouswilds:dead_mangrove_wood",
+    "wondrouswilds:dead_crimson_hyphae",
+    "wondrouswilds:dead_warped_hyphae"
   ]
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "wondrouswilds:block/dead_spruce_log",
+    "side": "wondrouswilds:block/dead_spruce_log"
+  }
+}
