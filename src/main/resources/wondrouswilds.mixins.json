@@ -9,6 +9,7 @@
     "BodyControlMixin",
     "ComposterBlockInvoker",
     "FoliagePlacerTypeInvoker",
+    "MobEntityAccessor",
     "MobEntityMixin",
     "RecipeUnlockerMixin",
     "ShapedRecipeInvoker",

@@ -1,10 +1,17 @@
 package com.ineffa.wondrouswilds;
 
+import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
+import com.ineffa.wondrouswilds.mixin.MobEntityAccessor;
 import com.ineffa.wondrouswilds.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.*;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
+import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.SpawnSettings;
@@ -39,6 +46,8 @@ public class WondrousWilds implements ModInitializer {
 		WondrousWildsScreenHandlers.initialize();
 
 		upgradeBirchForests();
+
+		ServerEntityEvents.ENTITY_LOAD.register(WondrousWilds::hookEntityCreation);
 	}
 
 	private static void upgradeBirchForests() {
@@ -87,5 +96,11 @@ public class WondrousWilds implements ModInitializer {
 
 			context.getEffects().setGrassColor(12232267);
 		});
+	}
+
+	private static void hookEntityCreation(Entity entityBeingCreated, ServerWorld world) {
+
+		if (entityBeingCreated instanceof FoxEntity fox)
+			((MobEntityAccessor) fox).getTargetSelector().add(7, new ActiveTargetGoal<>(fox, WoodpeckerEntity.class, 20, true, true, entity -> !((WoodpeckerEntity) entity).isFlying()));
 	}
 }
