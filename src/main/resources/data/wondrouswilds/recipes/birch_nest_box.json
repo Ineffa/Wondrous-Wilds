@@ -1,17 +1,17 @@
 {
-  "type": "wondrouswilds:crafting_shaped_secret",
+  "type": "minecraft:crafting_shaped",
   "group": "nest_box",
   "pattern": [
     "PPP",
-    "PLP",
+    "PFP",
     "PPP"
   ],
   "key": {
     "P": {
       "item": "minecraft:birch_planks"
     },
-    "L": {
-      "tag": "minecraft:leaves"
+    "F": {
+      "item": "wondrouswilds:woodpecker_crest_feather"
     }
   },
   "result": {
