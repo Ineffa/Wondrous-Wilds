@@ -13,7 +13,7 @@ public class WoodpeckerFakeAbilities extends PlayerAbilities {
         this.allowFlying = true;
 
         this.creativeMode = false;
-        this.allowModifyWorld = false;
+        this.allowModifyWorld = true;
     }
 
     @Override
