@@ -88,6 +88,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     public static final int PECKS_NEEDED_FOR_NEST = 200;
 
+    public static final EntityDimensions BABY_SIZE = EntityDimensions.fixed(0.1875F, 0.28125F);
+
     private int playSessionsBeforeTame;
 
     private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> otherWoodpecker.getTarget() == this;
@@ -900,6 +902,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         return dimensions.height * 0.95F;
+    }
+
+    @Override
+    public EntityDimensions getDimensions(EntityPose pose) {
+        return this.isBaby() ? BABY_SIZE : super.getDimensions(pose);
     }
 
     @Override
