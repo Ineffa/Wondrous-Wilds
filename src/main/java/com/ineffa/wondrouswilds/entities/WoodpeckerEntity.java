@@ -522,7 +522,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public boolean defendsNest() {
-        return true;
+        return !this.isBaby();
     }
 
     @Override
