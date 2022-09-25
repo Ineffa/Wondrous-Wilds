@@ -12,19 +12,27 @@ import software.bernie.shadowed.eliotlash.molang.MolangParser;
 
 public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
 
+    public static final Identifier MODEL_PATH = new Identifier(WondrousWilds.MOD_ID, "geo/woodpecker.geo.json");
+    public static final Identifier TEXTURE_PATH = new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker/woodpecker.png");
+    public static final Identifier ANIMATION_PATH = new Identifier(WondrousWilds.MOD_ID, "animations/woodpecker.animation.json");
+
+    public static final Identifier BABY_MODEL_PATH = new Identifier(WondrousWilds.MOD_ID, "geo/woodpecker_baby.geo.json");
+    public static final Identifier BABY_TEXTURE_PATH = new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker/woodpecker_baby.png");
+    public static final Identifier BABY_ANIMATION_PATH = new Identifier(WondrousWilds.MOD_ID, "animations/woodpecker_baby.animation.json");
+
     @Override
     public Identifier getModelResource(WoodpeckerEntity entity) {
-        return new Identifier(WondrousWilds.MOD_ID, "geo/woodpecker.geo.json");
+        return entity.isBaby() ? BABY_MODEL_PATH : MODEL_PATH;
     }
 
     @Override
     public Identifier getTextureResource(WoodpeckerEntity entity) {
-        return new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker.png");
+        return entity.isBaby() ? BABY_TEXTURE_PATH : TEXTURE_PATH;
     }
 
     @Override
     public Identifier getAnimationResource(WoodpeckerEntity entity) {
-        return new Identifier(WondrousWilds.MOD_ID, "animations/woodpecker.animation.json");
+        return entity.isBaby() ? BABY_ANIMATION_PATH : ANIMATION_PATH;
     }
 
     @Override
@@ -51,7 +59,7 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
         float extraSwing = 0.0F;
         if (!flying) extraSwing = 0.5F * MathHelper.clamp(swingAmount * 10.0F, 0.0F, 1.0F);
 
-        parser.setValue("query.swing", swing * 0.15D);
+        parser.setValue("query.swing", swing * (entity.isBaby() ? 0.3D : 0.15D));
         parser.setValue("query.swing_amount", MathHelper.clamp(swingAmount + extraSwing, 0.0D, flying ? 1.0D : 1.25D));
 
         float flapAngle = MathHelper.lerp(delta, entity.prevFlapAngle, entity.flapAngle);

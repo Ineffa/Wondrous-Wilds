@@ -70,6 +70,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -581,8 +583,20 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Nullable
     @Override
-    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return null;
+    public PassiveEntity createChild(ServerWorld world, PassiveEntity otherParent) {
+        WoodpeckerEntity babyWoodpecker = WondrousWildsEntities.WOODPECKER.create(world);
+
+        if (babyWoodpecker != null) {
+            babyWoodpecker.setPlaySessionsBeforeTame(this.getRandom().nextBetween(5, 15));
+
+            List<WoodpeckerEntity> parentsWithNest = new ArrayList<>();
+            if (this.hasNestPos()) parentsWithNest.add(this);
+            if (otherParent != this && otherParent instanceof WoodpeckerEntity otherWoodpecker && otherWoodpecker.hasNestPos()) parentsWithNest.add(otherWoodpecker);
+
+            if (!parentsWithNest.isEmpty()) babyWoodpecker.setNestPos(parentsWithNest.get(this.getRandom().nextInt(parentsWithNest.size())).getNestPos());
+        }
+
+        return babyWoodpecker;
     }
 
     @Override

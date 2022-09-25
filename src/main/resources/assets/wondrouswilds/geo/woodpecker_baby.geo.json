@@ -1,0 +1,332 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "coreConstant",
+					"pivot": [0, 8, 0]
+				},
+				{
+					"name": "coreOverlap",
+					"parent": "coreConstant",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "core",
+					"parent": "coreOverlap",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "bodyConstant",
+					"parent": "core",
+					"pivot": [0, 1, 0]
+				},
+				{
+					"name": "bodyOverlap",
+					"parent": "bodyConstant",
+					"pivot": [0, 1, 0]
+				},
+				{
+					"name": "body",
+					"parent": "bodyOverlap",
+					"pivot": [0, 1, 0]
+				},
+				{
+					"name": "neckConstant",
+					"parent": "body",
+					"pivot": [0, 3, -2]
+				},
+				{
+					"name": "neckOverlap",
+					"parent": "neckConstant",
+					"pivot": [0, 3, -2]
+				},
+				{
+					"name": "neck",
+					"parent": "neckOverlap",
+					"pivot": [0, 3, -2]
+				},
+				{
+					"name": "breathController",
+					"parent": "neck",
+					"pivot": [0, 2, 0],
+					"cubes": [
+						{"origin": [-1.5, 1, -2], "size": [3, 2, 4], "uv": [8, 0]}
+					]
+				},
+				{
+					"name": "headConstant",
+					"parent": "neck",
+					"pivot": [0, 2.75, -2]
+				},
+				{
+					"name": "headOverlap",
+					"parent": "headConstant",
+					"pivot": [0, 2.75, -2]
+				},
+				{
+					"name": "head",
+					"parent": "headOverlap",
+					"pivot": [0, 2.75, -2],
+					"cubes": [
+						{"origin": [-1, 2.5, -3.75], "size": [2, 2, 3], "uv": [11, 13]}
+					]
+				},
+				{
+					"name": "beakConstant",
+					"parent": "head",
+					"pivot": [0, 3.25, -3.75]
+				},
+				{
+					"name": "beakOverlap",
+					"parent": "beakConstant",
+					"pivot": [0, 3.25, -3.75]
+				},
+				{
+					"name": "beak",
+					"parent": "beakOverlap",
+					"pivot": [0, 3.25, -3.75],
+					"cubes": [
+						{"origin": [-0.5, 2.75, -5.5], "size": [1, 1, 2], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "heldItem",
+					"parent": "beak",
+					"pivot": [0, 3.25, -5.5]
+				},
+				{
+					"name": "crestConstant",
+					"parent": "head",
+					"pivot": [0, 4.5, -2.25]
+				},
+				{
+					"name": "crestOverlap",
+					"parent": "crestConstant",
+					"pivot": [0, 4.5, -2.25]
+				},
+				{
+					"name": "crest",
+					"parent": "crestOverlap",
+					"pivot": [0, 4.5, -2.25],
+					"cubes": [
+						{"origin": [-0.5, 3.75, -4.25], "size": [1, 2, 4], "uv": [0, 16]}
+					]
+				},
+				{
+					"name": "crestTipConstant",
+					"parent": "crest",
+					"pivot": [0, 5.75, -2.25]
+				},
+				{
+					"name": "crestTipOverlap",
+					"parent": "crestTipConstant",
+					"pivot": [0, 5.75, -2.25]
+				},
+				{
+					"name": "crestTip",
+					"parent": "crestTipOverlap",
+					"pivot": [0, 5.75, -2.25],
+					"cubes": [
+						{"origin": [0, 5.75, -4.25], "size": [0, 1, 4], "uv": [11, 14]}
+					]
+				},
+				{
+					"name": "wingsConstant",
+					"parent": "neck",
+					"pivot": [0, 2, -2]
+				},
+				{
+					"name": "wingsOverlap",
+					"parent": "wingsConstant",
+					"pivot": [0, 2, -2]
+				},
+				{
+					"name": "wings",
+					"parent": "wingsOverlap",
+					"pivot": [0, 2, -3]
+				},
+				{
+					"name": "rightWingConstant",
+					"parent": "wings",
+					"pivot": [-1.5, 2, -2]
+				},
+				{
+					"name": "rightWingOverlap",
+					"parent": "rightWingConstant",
+					"pivot": [-1.5, 2, -2]
+				},
+				{
+					"name": "rightWing",
+					"parent": "rightWingOverlap",
+					"pivot": [-1.5, 2, -2],
+					"cubes": [
+						{"origin": [-2.5, 1, -2], "size": [1, 2, 6], "inflate": 0.001, "uv": [0, 8]}
+					]
+				},
+				{
+					"name": "leftWingConstant",
+					"parent": "wings",
+					"pivot": [1.5, 2, -2]
+				},
+				{
+					"name": "leftWingOverlap",
+					"parent": "leftWingConstant",
+					"pivot": [1.5, 2, -2]
+				},
+				{
+					"name": "leftWing",
+					"parent": "leftWingOverlap",
+					"pivot": [1.5, 2, -2],
+					"cubes": [
+						{"origin": [1.5, 1, -2], "size": [1, 2, 6], "inflate": 0.001, "uv": [0, 8], "mirror": true}
+					]
+				},
+				{
+					"name": "tailConstant",
+					"parent": "neck",
+					"pivot": [-0.5, 2.5, 2]
+				},
+				{
+					"name": "tailOverlap",
+					"parent": "tailConstant",
+					"pivot": [-0.5, 2.5, 2]
+				},
+				{
+					"name": "tail",
+					"parent": "tailOverlap",
+					"pivot": [-0.5, 2.5, 2],
+					"cubes": [
+						{"origin": [-1.5, 2.5, 2], "size": [3, 0, 3], "uv": [14, 6]}
+					]
+				},
+				{
+					"name": "neckMatcherConstant",
+					"parent": "core",
+					"pivot": [0, 3, -2]
+				},
+				{
+					"name": "neckMatcherOverlap",
+					"parent": "neckMatcherConstant",
+					"pivot": [0, 3, -2]
+				},
+				{
+					"name": "neckMatcher",
+					"parent": "neckMatcherOverlap",
+					"pivot": [0, 3, -2]
+				},
+				{
+					"name": "legsBottomConstant",
+					"parent": "neckMatcher",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "legsBottomOverlap",
+					"parent": "legsBottomConstant",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "legsBottom",
+					"parent": "legsBottomOverlap",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "legsConstant",
+					"parent": "legsBottom",
+					"pivot": [0, 1, 0]
+				},
+				{
+					"name": "legsOverlap",
+					"parent": "legsConstant",
+					"pivot": [0, 1, 0]
+				},
+				{
+					"name": "legs",
+					"parent": "legsOverlap",
+					"pivot": [0, 1, 0]
+				},
+				{
+					"name": "rightLegConstant",
+					"parent": "legs",
+					"pivot": [-0.75, 1, 0]
+				},
+				{
+					"name": "rightLegOverlap",
+					"parent": "rightLegConstant",
+					"pivot": [-0.75, 1, 0]
+				},
+				{
+					"name": "rightLeg",
+					"parent": "rightLegOverlap",
+					"pivot": [-0.75, 1, 0],
+					"cubes": [
+						{"origin": [-1.25, 0, 0], "size": [1, 2, 0], "uv": [2, 3]}
+					]
+				},
+				{
+					"name": "rightFootConstant",
+					"parent": "rightLeg",
+					"pivot": [-0.75, 0, 0]
+				},
+				{
+					"name": "rightFootOverlap",
+					"parent": "rightFootConstant",
+					"pivot": [-0.75, 0, 0]
+				},
+				{
+					"name": "rightFoot",
+					"parent": "rightFootOverlap",
+					"pivot": [-0.75, 0, 0],
+					"cubes": [
+						{"origin": [-1.25, 0, -1], "size": [1, 0, 1], "uv": [10, 20]}
+					]
+				},
+				{
+					"name": "leftLegConstant",
+					"parent": "legs",
+					"pivot": [0.75, 1, 0]
+				},
+				{
+					"name": "leftLegOverlap",
+					"parent": "leftLegConstant",
+					"pivot": [0.75, 1, 0]
+				},
+				{
+					"name": "leftLeg",
+					"parent": "leftLegOverlap",
+					"pivot": [0.75, 1, 0],
+					"cubes": [
+						{"origin": [0.25, 0, 0], "size": [1, 2, 0], "uv": [0, 3]}
+					]
+				},
+				{
+					"name": "leftFootConstant",
+					"parent": "leftLeg",
+					"pivot": [0.75, 0, 0]
+				},
+				{
+					"name": "leftFootOverlap",
+					"parent": "leftFootConstant",
+					"pivot": [0.75, 0, 0]
+				},
+				{
+					"name": "leftFoot",
+					"parent": "leftFootOverlap",
+					"pivot": [0.75, 0, 0],
+					"cubes": [
+						{"origin": [0.25, 0, -1], "size": [1, 0, 1], "uv": [10, 21]}
+					]
+				}
+			]
+		}
+	]
+}
