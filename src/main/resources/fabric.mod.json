@@ -16,6 +16,15 @@
     "sources": "https://github.com/Ineffa/Wondrous-Wilds",
     "issues": "https://github.com/Ineffa/Wondrous-Wilds/issues"
   },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/faWrjKWndf",
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/wondrous-wilds",
+        "modmenu.modrinth": "https://modrinth.com/mod/wondrous-wilds"
+      }
+    }
+  },
 
   "license": "GNU Lesser General Public License v3.0",
   "icon": "assets/wondrouswilds/wondrous_wilds_logo.png",
@@ -29,6 +38,9 @@
     ],
     "client": [
       "com.ineffa.wondrouswilds.client.WondrousWildsClient"
+    ],
+    "modmenu": [
+      "com.ineffa.wondrouswilds.client.WondrousWildsModMenu"
     ]
   },
   "mixins": [
