@@ -1,5 +1,6 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.entities.ai.FireflyHideGoal;
 import com.ineffa.wondrouswilds.entities.ai.FireflyLandOnEntityGoal;
 import com.ineffa.wondrouswilds.entities.ai.FireflyWanderFlyingGoal;
@@ -134,7 +135,7 @@ public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnim
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 2.0D));
         this.goalSelector.add(2, new FireflyHideGoal(this, 1.0D, 16, 16));
-        this.goalSelector.add(3, new FireflyLandOnEntityGoal(this, LivingEntity.class));
+        if (WondrousWilds.config.mobSettings.firefliesLandOnMobs) this.goalSelector.add(3, new FireflyLandOnEntityGoal(this, LivingEntity.class));
         this.goalSelector.add(4, new FireflyWanderLandGoal(this, 1.0D));
         this.goalSelector.add(4, new FireflyWanderFlyingGoal(this));
     }

@@ -22,7 +22,7 @@ public class ClientPlayNetworkHandlerMixin {
 
     @Inject(at = @At("TAIL"), method = "onGameJoin")
     private void sendIncompatibilityWarning(GameJoinS2CPacket packet, CallbackInfo callback) {
-        if (this.client.player != null) {
+        if (WondrousWilds.config.clientSettings.showShadersWarning && this.client.player != null) {
             FabricLoader fabricInstance = FabricLoader.getInstance();
             if (fabricInstance.isModLoaded("iris") || fabricInstance.isModLoaded("optifabric")) {
                 this.client.player.sendMessage(Text.translatable("mod." + WondrousWilds.MOD_ID + ".warning.shaders").formatted(Formatting.RED));

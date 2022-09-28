@@ -74,6 +74,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import static com.ineffa.wondrouswilds.WondrousWilds.config;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.TREE_HOLLOW_MAP;
 
@@ -316,6 +317,10 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         return (state.getBlock() instanceof PillarBlock && state.isIn(BlockTags.OVERWORLD_NATURAL_LOGS) && state.get(PillarBlock.AXIS).isVertical()) || state.isIn(WondrousWildsTags.BlockTags.WOODPECKERS_INTERACT_WITH);
     }
 
+    public boolean canMakeNests() {
+        return config.mobSettings.woodpeckersBuildNests && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+    }
+
     public boolean canMakeNestInPos(BlockPos pos) {
         Block block = this.getWorld().getBlockState(pos).getBlock();
         return TREE_HOLLOW_MAP.containsKey(block);
@@ -326,7 +331,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     public boolean isMakingNest() {
-        return this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && this.canMakeNestInPos(this.getClingPos()) && (this.getConsecutivePecks() > 0 || this.isPecking());
+        return this.canMakeNests() && this.canMakeNestInPos(this.getClingPos()) && (this.getConsecutivePecks() > 0 || this.isPecking());
     }
 
     public int getClingAngle() {
@@ -568,7 +573,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.goalSelector.add(3, new WoodpeckerFleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.0D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
         this.goalSelector.add(4, new WoodpeckerFleeEntityGoal<>(this, PlayerEntity.class, 12.0F, 1.0D, 1.25D, entity -> !this.isTame()));
         this.goalSelector.add(5, new FindOrReturnToBlockNestGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
+        if (config.mobSettings.woodpeckersInteractWithBlocks) this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(7, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
         this.goalSelector.add(8, new WoodpeckerWanderLandGoal(this, 1.0D));
         this.goalSelector.add(8, new WoodpeckerWanderFlyingGoal(this));
@@ -610,7 +615,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
                             if (distanceFromTarget <= this.getPeckReach() + 1.0D) this.tryAttack(attackTarget);
                         }
-                        else if (this.isClinging() && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
+                        else if (this.isClinging() && this.canMakeNests() && this.canMakeNestInPos(this.getClingPos()) && this.hasValidClingPos()) {
                             BlockState peckState = this.getWorld().getBlockState(this.getClingPos());
 
                             this.setConsecutivePecks(this.getConsecutivePecks() + 1);
@@ -670,14 +675,14 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
                 if (!this.isPecking()) {
                     if (!this.isDrumming()) {
-                        boolean canMakeNest = this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && this.canMakeNestInPos(this.getClingPos());
+                        boolean canMakeNest = this.canMakeNests() && this.canMakeNestInPos(this.getClingPos());
                         if (shouldInteract || (canMakeNest && this.shouldFindNest())) {
                             if (this.getRandom().nextInt(shouldInteract ? 40 : 20) == 0 && hasValidClingPos) {
                                 int randomLength = 1 + this.getRandom().nextInt(4);
                                 this.startPeckChain(canMakeNest ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength);
                             }
                         }
-                        else if (this.hasNestPos() && this.getRandom().nextInt(600) == 0) this.startDrumming();
+                        else if (config.mobSettings.woodpeckersDrum && this.hasNestPos() && this.getRandom().nextInt(config.mobSettings.woodpeckerDrumChance) == 0) this.startDrumming();
                     }
                 }
 
