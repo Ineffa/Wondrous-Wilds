@@ -25,6 +25,7 @@ import software.bernie.geckolib3.GeckoLib;
 import java.util.function.Predicate;
 
 public class WondrousWilds implements ModInitializer {
+
 	public static final String MOD_ID = "wondrouswilds";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
@@ -32,9 +33,11 @@ public class WondrousWilds implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Wondrous Wilds initializing!");
 
+		// Initialize GeckoLib
 		GeckoLibMod.DISABLE_IN_DEV = true;
 		GeckoLib.initialize();
 
+		// Initialize mod
 		WondrousWildsSounds.initialize();
 
 		WondrousWildsEntities.initialize();
