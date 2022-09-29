@@ -87,5 +87,27 @@
   "advancement.wondrouswilds.obtain_nest_box.description": "Construct a Nest Box",
   "subtitles.wondrouswilds.entity.woodpecker.chirp": "Woodpecker chirps",
   "subtitles.wondrouswilds.entity.woodpecker.drum": "Woodpecker drums",
-  "mod.wondrouswilds.warning.shaders": "WARNING: Currently, Wondrous Wilds (and other mods using GeckoLib) will not work properly with shader mods such as Iris Shaders or OptiFine. You most likely won't crash, but animations will be severely if not completely broken. This is NOT an issue with Wondrous Wilds itself, but rather an issue between these shader mods and GeckoLib"
+  "mod.wondrouswilds.warning.shaders": "WARNING: Currently, Wondrous Wilds (and other mods using GeckoLib) will not work properly with shader mods such as Iris Shaders or OptiFine. You most likely won't crash, but animations will be severely if not completely broken. This is NOT an issue with Wondrous Wilds itself, but rather an issue between these shader mods and GeckoLib. You can disable this warning in the client settings of the mod's config",
+
+  "text.autoconfig.wondrouswilds.title": "Wondrous Wilds Configuration",
+  "text.autoconfig.wondrouswilds.option.clientSettings": "Client Settings",
+  "text.autoconfig.wondrouswilds.option.clientSettings.showShadersWarning": "Show Shaders Warning",
+  "text.autoconfig.wondrouswilds.option.clientSettings.showShadersWarning.@Tooltip": "Whether to display a warning when joining a world while using Iris or OptiFine/OptiFabric",
+  "text.autoconfig.wondrouswilds.option.mobSettings": "Mob Settings",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesSpawnNaturally": "Fireflies Spawn Naturally",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesSpawnNaturally.@Tooltip[0]": "Whether Fireflies are able to spawn naturally in the world",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesSpawnNaturally.@Tooltip[1]": "They will still be able to spawn from other methods, such as spawn eggs or commands, regardless of this setting",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesLandOnMobs": "Fireflies Land on Mobs",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesLandOnMobs.@Tooltip": "Whether Fireflies should try to land on top of other mobs/entities and ride them",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersDrum": "Woodpeckers Drum",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersDrum.@Tooltip": "Whether Woodpeckers should perform their drumming sound and animation while clinging to a log",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckerDrumChance": "Woodpecker Drum Chance",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckerDrumChance.@Tooltip[0]": "Defines the average number of ticks before a Woodpecker will choose to drum",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckerDrumChance.@Tooltip[1]": "20 ticks equals 1 second, so the default (600) means 30 seconds on average",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersInteractWithBlocks": "Woodpeckers Interact With Blocks",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersInteractWithBlocks.@Tooltip[0]": "Whether Woodpeckers will try to interact/play with certain blocks",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersInteractWithBlocks.@Tooltip[1]": "The list of blocks that they can interact with is defined by the \"woodpeckers_interact_with\" block tag",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersBuildNests": "Woodpeckers Build Nests",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersBuildNests.@Tooltip[0]": "Whether homeless Woodpeckers will be able to build their own nests by drilling into a log",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersBuildNests.@Tooltip[1]": "This behavior is also controlled by the vanilla \"mobGriefing\" game rule"
 }

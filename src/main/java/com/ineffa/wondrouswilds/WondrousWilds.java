@@ -1,8 +1,11 @@
 package com.ineffa.wondrouswilds;
 
+import com.ineffa.wondrouswilds.config.WondrousWildsConfig;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.mixin.MobEntityAccessor;
 import com.ineffa.wondrouswilds.registry.*;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.*;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -25,15 +28,28 @@ import software.bernie.geckolib3.GeckoLib;
 import java.util.function.Predicate;
 
 public class WondrousWilds implements ModInitializer {
+
 	public static final String MOD_ID = "wondrouswilds";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static WondrousWildsConfig config;
 
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Wondrous Wilds initializing!");
 
+		// Initialize GeckoLib
 		GeckoLibMod.DISABLE_IN_DEV = true;
 		GeckoLib.initialize();
+
+		// Initialize config
+		LOGGER.info("Initializing Wondrous Wilds config");
+
+		AutoConfig.register(WondrousWildsConfig.class, GsonConfigSerializer::new);
+		config = AutoConfig.getConfigHolder(WondrousWildsConfig.class).getConfig();
+
+		// Initialize mod
+		LOGGER.info("Initializing Wondrous Wilds content");
 
 		WondrousWildsSounds.initialize();
 
@@ -50,6 +66,8 @@ public class WondrousWilds implements ModInitializer {
 		upgradeBirchForests();
 
 		ServerEntityEvents.ENTITY_LOAD.register(WondrousWilds::hookEntityCreation);
+
+		LOGGER.info("Wondrous Wilds initialized and ready!");
 	}
 
 	private static void upgradeBirchForests() {
