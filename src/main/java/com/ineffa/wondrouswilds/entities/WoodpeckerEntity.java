@@ -322,7 +322,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     public boolean canMakeNests() {
-        return config.mobSettings.woodpeckersBuildNests && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
+        return config.mobSettings.woodpeckersBuildNests && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) && !this.isBaby();
     }
 
     public boolean canMakeNestInPos(BlockPos pos) {
