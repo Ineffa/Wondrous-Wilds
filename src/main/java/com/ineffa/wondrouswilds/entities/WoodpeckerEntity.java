@@ -14,6 +14,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
@@ -46,6 +47,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.stat.Stats;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -70,10 +72,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 
 import static com.ineffa.wondrouswilds.WondrousWilds.config;
@@ -86,6 +85,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public static final String NEST_POS_KEY = "NestPos";
     public static final String PLAY_SESSIONS_BEFORE_TAME_KEY = "PlaySessionsBeforeTame";
     public static final String TAME_KEY = "Tame";
+    public static final String MATE_KEY = "Mate";
+    public static final String HAS_EGGS_KEY = "HasEggs";
 
     public static final int PECKS_NEEDED_FOR_NEST = 200;
 
@@ -103,6 +104,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     private static final TrackedData<Integer> ANGER_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Byte> CHIRP_DELAY = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Boolean> TAME = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Optional<UUID>> MATE = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
+    private static final TrackedData<Boolean> HAS_EGGS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(10, 15);
     @Nullable
     private UUID angryAt;
@@ -162,6 +165,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.dataTracker.startTracking(ANGER_TICKS, 0);
         this.dataTracker.startTracking(CHIRP_DELAY, (byte) 0);
         this.dataTracker.startTracking(TAME, false);
+        this.dataTracker.startTracking(MATE, Optional.empty());
+        this.dataTracker.startTracking(HAS_EGGS, false);
     }
 
     @Override
@@ -172,9 +177,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
         if (this.hasNestPos()) nbt.put(NEST_POS_KEY, NbtHelper.fromBlockPos(Objects.requireNonNull(this.getNestPos())));
 
+        nbt.putInt(PLAY_SESSIONS_BEFORE_TAME_KEY, this.getPlaySessionsBeforeTame());
+
         nbt.putBoolean(TAME_KEY, this.isTame());
 
-        nbt.putInt(PLAY_SESSIONS_BEFORE_TAME_KEY, this.getPlaySessionsBeforeTame());
+        if (this.getMateUuid() != null) nbt.putUuid(MATE_KEY, this.getMateUuid());
+
+        nbt.putBoolean(HAS_EGGS_KEY, this.hasEggs());
     }
 
     @Override
@@ -186,9 +195,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
         if (nbt.contains(NEST_POS_KEY)) this.setNestPos(NbtHelper.toBlockPos(nbt.getCompound(NEST_POS_KEY)));
 
+        this.setPlaySessionsBeforeTame(nbt.getInt(PLAY_SESSIONS_BEFORE_TAME_KEY));
+
         this.setTame(nbt.getBoolean(TAME_KEY));
 
-        this.setPlaySessionsBeforeTame(nbt.getInt(PLAY_SESSIONS_BEFORE_TAME_KEY));
+        if (nbt.contains(MATE_KEY)) this.setMateUuid(nbt.getUuid(MATE_KEY));
+
+        this.setHasEggs(nbt.getBoolean(HAS_EGGS_KEY));
     }
 
     @Override
@@ -455,6 +468,35 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.dataTracker.set(TAME, tame);
     }
 
+    @Nullable
+    public UUID getMateUuid() {
+        return this.dataTracker.get(MATE).orElse(null);
+    }
+
+    public void setMateUuid(@Nullable UUID uuid) {
+        this.dataTracker.set(MATE, Optional.ofNullable(uuid));
+    }
+
+    public boolean hasMate() {
+        return this.getMateUuid() != null;
+    }
+
+    public boolean isMate(UUID uuidToCheck) {
+        return Objects.equals(this.getMateUuid(), uuidToCheck);
+    }
+
+    public boolean isMate(Entity entity) {
+        return this.isMate(entity.getUuid());
+    }
+
+    public boolean hasEggs() {
+        return this.dataTracker.get(HAS_EGGS);
+    }
+
+    public void setHasEggs(boolean hasEggs) {
+        this.dataTracker.set(HAS_EGGS, hasEggs);
+    }
+
     public int getDrummingTicks() {
         return this.dataTracker.get(DRUMMING_TICKS);
     }
@@ -522,7 +564,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
         if (this.hasAttackTarget() || this.getAttacker() != null) return false;
 
-        return this.getWorld().isNight() || this.getWorld().isRaining();
+        return this.getWorld().isNight() || this.getWorld().isRaining() || this.hasEggs();
     }
 
     @Override
@@ -576,21 +618,52 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.goalSelector.add(2, new WoodpeckerAttackGoal(this, 1.0D, true));
         this.goalSelector.add(3, new WoodpeckerFleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.0D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
         this.goalSelector.add(4, new WoodpeckerFleeEntityGoal<>(this, PlayerEntity.class, 12.0F, 1.0D, 1.25D, entity -> !this.isTame()));
-        this.goalSelector.add(5, new FindOrReturnToBlockNestGoal(this, 1.0D, 24, 24));
-        if (config.mobSettings.woodpeckersInteractWithBlocks) this.goalSelector.add(6, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(7, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
-        this.goalSelector.add(8, new WoodpeckerWanderLandGoal(this, 1.0D));
-        this.goalSelector.add(8, new WoodpeckerWanderFlyingGoal(this));
-        this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
-        this.goalSelector.add(9, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
-        this.goalSelector.add(10, new LookAroundGoal(this));
+        this.goalSelector.add(5, new WoodpeckerMateGoal(this, 1.0D));
+        this.goalSelector.add(6, new FindOrReturnToBlockNestGoal(this, 1.0D, 24, 24));
+        if (config.mobSettings.woodpeckersInteractWithBlocks) this.goalSelector.add(7, new WoodpeckerPlayWithBlockGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(8, new WoodpeckerClingToLogGoal(this, 1.0D, 24, 24));
+        this.goalSelector.add(9, new WoodpeckerWanderLandGoal(this, 1.0D));
+        this.goalSelector.add(9, new WoodpeckerWanderFlyingGoal(this));
+        this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 16.0F));
+        this.goalSelector.add(10, new LookAtEntityGoal(this, MobEntity.class, 16.0F));
+        this.goalSelector.add(11, new LookAroundGoal(this));
 
         this.targetSelector.add(0, new ActiveTargetGoal<>(this, PhantomEntity.class, true));
+    }
+
+    @Override
+    public void breed(ServerWorld world, AnimalEntity other) {
+        if (!(other instanceof WoodpeckerEntity otherWoodpecker)) return;
+
+        this.setMateUuid(otherWoodpecker.getUuid());
+        otherWoodpecker.setMateUuid(this.getUuid());
+
+        this.setHasEggs(true);
+
+        ServerPlayerEntity serverPlayerEntity = this.getLovingPlayer();
+        if (serverPlayerEntity == null && other.getLovingPlayer() != null) serverPlayerEntity = other.getLovingPlayer();
+
+        if (serverPlayerEntity != null) {
+            serverPlayerEntity.incrementStat(Stats.ANIMALS_BRED);
+            Criteria.BRED_ANIMALS.trigger(serverPlayerEntity, this, other, null);
+        }
+
+        this.setBreedingAge(6000);
+        other.setBreedingAge(6000);
+
+        this.resetLoveTicks();
+        other.resetLoveTicks();
+
+        world.sendEntityStatus(this, EntityStatuses.ADD_BREEDING_PARTICLES);
+
+        if (world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) world.spawnEntity(new ExperienceOrbEntity(world, this.getX(), this.getY(), this.getZ(), this.getRandom().nextInt(7) + 1));
     }
 
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity otherParent) {
+        if (!(otherParent instanceof WoodpeckerEntity otherWoodpecker)) return null;
+
         WoodpeckerEntity babyWoodpecker = WondrousWildsEntities.WOODPECKER.create(world);
 
         if (babyWoodpecker != null) {
@@ -598,12 +671,30 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
             List<WoodpeckerEntity> parentsWithNest = new ArrayList<>();
             if (this.hasNestPos()) parentsWithNest.add(this);
-            if (otherParent != this && otherParent instanceof WoodpeckerEntity otherWoodpecker && otherWoodpecker.hasNestPos()) parentsWithNest.add(otherWoodpecker);
+            if (otherWoodpecker != this && otherWoodpecker.hasNestPos()) parentsWithNest.add(otherWoodpecker);
 
             if (!parentsWithNest.isEmpty()) babyWoodpecker.setNestPos(parentsWithNest.get(this.getRandom().nextInt(parentsWithNest.size())).getNestPos());
         }
 
         return babyWoodpecker;
+    }
+
+    @Override
+    public boolean canBreedWith(AnimalEntity other) {
+        if (this.hasEggs() || !super.canBreedWith(other)) return false;
+
+        WoodpeckerEntity otherWoodpecker = (WoodpeckerEntity) other;
+
+        if (otherWoodpecker.hasEggs()) return false;
+
+        if (this.hasMate()) return this.isMate(otherWoodpecker.getUuid());
+
+        return !otherWoodpecker.hasMate();
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.isOf(Items.GOLDEN_APPLE);
     }
 
     @Override
