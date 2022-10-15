@@ -55,7 +55,7 @@ public abstract class InhabitableNestBlock extends BlockWithEntity {
         super.afterBreak(world, player, pos, state, blockEntity, stack);
 
         if (!world.isClient() && blockEntity instanceof InhabitableNestBlockEntity nest) {
-            nest.alertInhabitants(player, state, InhabitableNestBlockEntity.InhabitantReleaseState.EMERGENCY);
+            nest.alertInhabitants(state, InhabitableNestBlockEntity.InhabitantReleaseReason.EMERGENCY, InhabitableNestBlockEntity.InhabitantAlertScenario.DESTRUCTION, player);
 
             if (nest instanceof TreeHollowBlockEntity) world.updateComparators(pos, this);
         }

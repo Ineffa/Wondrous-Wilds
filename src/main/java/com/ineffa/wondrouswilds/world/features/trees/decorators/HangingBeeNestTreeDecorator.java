@@ -6,6 +6,7 @@ import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Util;
@@ -53,7 +54,7 @@ public class HangingBeeNestTreeDecorator extends TreeDecorator {
                     int beeCount = 2 + random.nextInt(2);
                     for (int i = 0; i < beeCount; ++i) {
                         NbtCompound nbt = new NbtCompound();
-                        nbt.putString("id", Registry.ENTITY_TYPE.getId(EntityType.BEE).toString());
+                        nbt.putString(Entity.ID_KEY, Registry.ENTITY_TYPE.getId(EntityType.BEE).toString());
                         blockEntity.addBee(nbt, random.nextInt(599), false);
                     }
                 });

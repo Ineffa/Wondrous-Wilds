@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
+import com.ineffa.wondrouswilds.blocks.entity.NestBoxBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
@@ -82,7 +83,6 @@ import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.TREE_HOLLOW_MAP;
 public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements BlockNester, Angerable, IAnimatable {
 
     public static final String CLING_POS_KEY = "ClingPos";
-    public static final String NEST_POS_KEY = "NestPos";
     public static final String PLAY_SESSIONS_BEFORE_TAME_KEY = "PlaySessionsBeforeTame";
     public static final String TAME_KEY = "Tame";
     public static final String MATE_KEY = "Mate";
@@ -568,8 +568,33 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
-    public boolean defendsNest() {
-        return !this.isBaby();
+    public boolean shouldDefendNestAgainstVisitor(LivingEntity visitor, InhabitableNestBlockEntity.InhabitantAlertScenario scenario) {
+        if (this.isBaby()) return false;
+
+        if (visitor instanceof PlayerEntity && this.isTame()) return false;
+
+        return !(visitor instanceof WoodpeckerEntity woodpecker && (scenario == InhabitableNestBlockEntity.InhabitantAlertScenario.VISITOR || woodpecker.isBaby() || this.isMate(woodpecker)));
+    }
+
+    @Override
+    public void onExitingNest(BlockPos nestPos) {
+        if (!this.isFlying()) this.setFlying(true);
+
+        if (!this.isTame()) return;
+
+        if (this.getMainHandStack().isEmpty() && this.getWorld().getBlockEntity(nestPos) instanceof NestBoxBlockEntity nestBox && !nestBox.isEmpty()) {
+            int slotToTakeFrom = 0;
+            ItemStack nestBoxItem = nestBox.getStack(slotToTakeFrom);
+            if (!nestBoxItem.isEmpty()) {
+                this.setStackInHand(Hand.MAIN_HAND, nestBoxItem.copy());
+                nestBox.removeStack(slotToTakeFrom);
+            }
+        }
+    }
+
+    @Override
+    public void afterExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason) {
+        if (reason == InhabitableNestBlockEntity.InhabitantReleaseReason.NATURAL && this.isTame() && this.getRandom().nextInt(10) == 0) this.dropItem(WondrousWildsItems.WOODPECKER_CREST_FEATHER);
     }
 
     @Override

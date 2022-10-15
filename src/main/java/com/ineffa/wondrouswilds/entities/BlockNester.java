@@ -1,9 +1,13 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 
 public interface BlockNester {
+
+    String NEST_POS_KEY = "NestPos";
 
     int getNestCapacityWeight();
 
@@ -34,7 +38,13 @@ public interface BlockNester {
 
     boolean shouldReturnToNest();
 
-    boolean defendsNest();
+    default boolean shouldDefendNestAgainstVisitor(LivingEntity visitor, InhabitableNestBlockEntity.InhabitantAlertScenario scenario) {
+        return scenario == InhabitableNestBlockEntity.InhabitantAlertScenario.INTRUSION || scenario == InhabitableNestBlockEntity.InhabitantAlertScenario.DESTRUCTION;
+    }
+
+    void onExitingNest(BlockPos nestPos);
+
+    void afterExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason);
 
     int getWanderRadiusFromNest();
 }

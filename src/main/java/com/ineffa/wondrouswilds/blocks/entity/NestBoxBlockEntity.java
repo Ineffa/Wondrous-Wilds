@@ -42,7 +42,7 @@ public class NestBoxBlockEntity extends LootableContainerBlockEntity implements 
         while (iterator.hasNext()) {
             Inhabitant inhabitant = iterator.next();
             if (inhabitant.ticksInNest > inhabitant.minOccupationTicks) {
-                if (InhabitableNestBlockEntity.tryReleasingInhabitant(world, pos, state, InhabitantReleaseState.RELEASE, inhabitant, null)) {
+                if (InhabitableNestBlockEntity.tryNaturallyReleasingInhabitant(world, pos, state, inhabitant)) {
                     released = true;
                     iterator.remove();
                 }
