@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "wondrouswilds:music_disc_avian"
+    },
+    "title": {
+      "translate": "advancement.wondrouswilds.find_avian_music_disc.title"
+    },
+    "description": {
+      "translate": "advancement.wondrouswilds.find_avian_music_disc.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "get_avian_music_disc": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wondrouswilds:music_disc_avian"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
