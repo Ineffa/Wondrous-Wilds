@@ -60,7 +60,7 @@ public class TreeHollowBlockEntity extends BlockEntity implements InhabitableNes
         for (int i = 0; i < nbtList.size(); ++i) {
             NbtCompound nbtCompound = nbtList.getCompound(i);
 
-            Inhabitant inhabitant = new Inhabitant(nbtCompound.getBoolean(IS_FRESH_KEY), nbtCompound.getCompound(ENTITY_DATA_KEY), nbtCompound.getInt(CAPACITY_WEIGHT_KEY), nbtCompound.getInt(MIN_OCCUPATION_TICKS_KEY), nbtCompound.getInt(TICKS_IN_NEST_KEY));
+            Inhabitant inhabitant = new Inhabitant(nbtCompound.getBoolean(IS_FRESH_KEY), nbtCompound.getCompound(ENTITY_DATA_KEY), nbtCompound.getInt(CAPACITY_WEIGHT_KEY), nbtCompound.getInt(MIN_OCCUPATION_TICKS_KEY), nbtCompound.getInt(TICKS_IN_NEST_KEY), nbtCompound.getBoolean(IS_BABY_KEY));
             this.getInhabitants().add(inhabitant);
         }
     }

@@ -38,6 +38,7 @@ public interface InhabitableNestBlockEntity {
     String CAPACITY_WEIGHT_KEY = "CapacityWeight";
     String TICKS_IN_NEST_KEY = "TicksInNest";
     String MIN_OCCUPATION_TICKS_KEY = "MinOccupationTicks";
+    String IS_BABY_KEY = "IsBaby";
 
     List<String> IRRELEVANT_INHABITANT_NBT_KEYS = Arrays.asList("CannotEnterNestTicks", "Air", "DeathTime", "FallDistance", "FallFlying", "Fire", "HurtByTimestamp", "HurtTime", "Motion", "OnGround", "PortalCooldown", "Pos", "Rotation", "Passengers", "Leash", "UUID");
 
@@ -57,15 +58,24 @@ public interface InhabitableNestBlockEntity {
             nbt.putInt(CAPACITY_WEIGHT_KEY, inhabitant.capacityWeight);
             nbt.putInt(MIN_OCCUPATION_TICKS_KEY, inhabitant.minOccupationTicks);
             nbt.putInt(TICKS_IN_NEST_KEY, inhabitant.ticksInNest);
+            nbt.putBoolean(IS_BABY_KEY, inhabitant.isBaby);
 
             nbtList.add(nbt);
         }
         return nbtList;
     }
 
-    /*default int getInhabitantCount() {
-        return this.getInhabitantList(.size();
-    }*/
+    default int getInhabitantCount() {
+        return this.getInhabitants().size();
+    }
+
+    default int getBabyInhabitantCount() {
+        int babyCount = 0;
+
+        for (Inhabitant inhabitant : this.getInhabitants()) if (inhabitant.isBaby) ++babyCount;
+
+        return babyCount;
+    }
 
     default boolean hasInhabitants() {
         return !this.getInhabitants().isEmpty();
@@ -73,6 +83,10 @@ public interface InhabitableNestBlockEntity {
 
     default int getMaxCapacity() {
         return 100;
+    }
+
+    default int getMaxBabyInhabitantCount() {
+        return 3;
     }
 
     default int getUsedCapacity() {
@@ -98,7 +112,7 @@ public interface InhabitableNestBlockEntity {
     default boolean tryAddingInhabitant(BlockNester nester) {
         if (!(nester instanceof MobEntity nesterEntity)) return false;
 
-        boolean canFit = !this.isCapacityFilled() && this.canFitNester(nester);
+        boolean canFit = !this.isCapacityFilled() && this.canFitNester(nester) && !(nesterEntity.isBaby() && this.getBabyInhabitantCount() >= this.getMaxBabyInhabitantCount());
 
         if (this.hasInhabitants() && this.alertInhabitants(InhabitantReleaseReason.ALERT, canFit ? InhabitantAlertScenario.VISITOR : InhabitantAlertScenario.INTRUSION, nesterEntity)) return false;
 
@@ -130,17 +144,17 @@ public interface InhabitableNestBlockEntity {
         NbtCompound entityData = new NbtCompound();
         entity.saveNbt(entityData);
 
-        this.getInhabitants().add(new Inhabitant(false, entityData, inhabitant.getNestCapacityWeight(), 0, inhabitant.getMinTicksInNest()));
+        this.getInhabitants().add(new Inhabitant(false, entityData, inhabitant.getNestCapacityWeight(), 0, inhabitant.getMinTicksInNest(), entity.isBaby()));
     }
 
-    default void addFreshInhabitant(EntityType<?> entityType) {
+    default void addFreshInhabitant(EntityType<?> entityType, boolean isBaby) {
         if (!DEFAULT_NESTER_CAPACITY_WEIGHTS.containsKey(entityType)) return;
 
         NbtCompound entityData = new NbtCompound();
         entityData.putString(Entity.ID_KEY, Registry.ENTITY_TYPE.getId(entityType).toString());
         entityData.put(BlockNester.NEST_POS_KEY, NbtHelper.fromBlockPos(this.getNestPos()));
 
-        this.getInhabitants().add(new Inhabitant(true, entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 0, 600));
+        this.getInhabitants().add(new Inhabitant(true, entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 0, 600, isBaby));
     }
 
     default boolean alertInhabitants(InhabitantReleaseReason reason, @Nullable InhabitableNestBlockEntity.InhabitantAlertScenario scenario, @Nullable LivingEntity visitor) {
@@ -243,8 +257,9 @@ public interface InhabitableNestBlockEntity {
         final int capacityWeight;
         final int minOccupationTicks;
         int ticksInNest;
+        final boolean isBaby;
 
-        protected Inhabitant(boolean isFresh, NbtCompound entityData, int capacityWeight, int ticksInNest, int minOccupationTicks) {
+        protected Inhabitant(boolean isFresh, NbtCompound entityData, int capacityWeight, int ticksInNest, int minOccupationTicks, boolean isBaby) {
             removeIrrelevantNbt(entityData);
 
             this.isFresh = isFresh;
@@ -252,6 +267,7 @@ public interface InhabitableNestBlockEntity {
             this.capacityWeight = capacityWeight;
             this.ticksInNest = ticksInNest;
             this.minOccupationTicks = minOccupationTicks;
+            this.isBaby = isBaby;
         }
     }
 
