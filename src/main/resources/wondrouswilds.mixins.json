@@ -12,6 +12,7 @@
     "FoliagePlacerTypeInvoker",
     "MobEntityAccessor",
     "MobEntityMixin",
+    "MusicDiscItemInvoker",
     "RecipeUnlockerMixin",
     "ShapedRecipeInvoker",
     "TreeConfiguredFeaturesInvoker",

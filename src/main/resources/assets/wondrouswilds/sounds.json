@@ -25,5 +25,14 @@
         "attenuation_distance": 64
       }
     ]
+  },
+
+  "music_disc.avian": {
+    "sounds": [
+      {
+        "name": "wondrouswilds:records/avian",
+        "stream": true
+      }
+    ]
   }
 }

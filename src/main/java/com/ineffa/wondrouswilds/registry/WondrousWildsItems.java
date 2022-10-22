@@ -6,6 +6,7 @@ import com.ineffa.wondrouswilds.items.ScrollOfSecretsItem;
 import com.ineffa.wondrouswilds.items.recipes.ShapedSecretRecipe;
 import com.ineffa.wondrouswilds.items.recipes.ShapelessSecretRecipe;
 import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
+import com.ineffa.wondrouswilds.mixin.MusicDiscItemInvoker;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
@@ -14,6 +15,7 @@ import net.minecraft.item.*;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOffers;
@@ -98,6 +100,8 @@ public class WondrousWildsItems {
     public static final BlockItem BIRCH_NEST_BOX = registerBlockItem(WondrousWildsBlocks.BIRCH_NEST_BOX);
 
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
+
+    public static final Item MUSIC_DISC_AVIAN = registerItem("music_disc_avian", MusicDiscItemInvoker.createNewMusicDisc(14, WondrousWildsSounds.MUSIC_DISC_AVIAN, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).group(WONDROUS_WILDS_ITEM_GROUP)));
 
     //public static final ScrollOfSecretsItem SCROLL_OF_SECRETS_NEST_BOX = registerScrollOfSecretsItem("scroll_of_secrets_nest_box", BIRCH_NEST_BOX);
 
