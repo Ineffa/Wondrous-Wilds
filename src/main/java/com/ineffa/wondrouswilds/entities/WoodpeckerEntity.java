@@ -228,7 +228,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         Item itemToHold;
         int i = 1 + random.nextInt(100);
         if (i <= 1) itemToHold = Items.WOODEN_AXE;
-        else if (i <= 5) itemToHold = Items.MUSIC_DISC_OTHERSIDE;
+        else if (i <= 5) itemToHold = WondrousWildsItems.MUSIC_DISC_AVIAN;
         else if (i <= 13) itemToHold = Items.GLASS_BOTTLE;
         else if (i <= 25) itemToHold = Items.HONEYCOMB;
         else if (i <= 43) itemToHold = Items.BONE_MEAL;
