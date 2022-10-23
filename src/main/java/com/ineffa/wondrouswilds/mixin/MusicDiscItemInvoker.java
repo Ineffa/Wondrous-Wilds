@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface MusicDiscItemInvoker {
 
     @Invoker("<init>")
-    static MusicDiscItem createNewMusicDisc(int comparatorOutput, SoundEvent sound, Item.Settings settings) {
+    static MusicDiscItem createNewMusicDisc(int comparatorOutput, SoundEvent sound, Item.Settings settings, int lengthInSeconds) {
         throw new AssertionError();
     }
 }

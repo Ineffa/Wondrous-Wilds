@@ -101,7 +101,7 @@ public class WondrousWildsItems {
 
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
 
-    public static final Item MUSIC_DISC_AVIAN = registerItem("music_disc_avian", MusicDiscItemInvoker.createNewMusicDisc(14, WondrousWildsSounds.MUSIC_DISC_AVIAN, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).group(WONDROUS_WILDS_ITEM_GROUP)));
+    public static final Item MUSIC_DISC_AVIAN = registerItem("music_disc_avian", MusicDiscItemInvoker.createNewMusicDisc(14, WondrousWildsSounds.MUSIC_DISC_AVIAN, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).group(WONDROUS_WILDS_ITEM_GROUP), 218));
 
     //public static final ScrollOfSecretsItem SCROLL_OF_SECRETS_NEST_BOX = registerScrollOfSecretsItem("scroll_of_secrets_nest_box", BIRCH_NEST_BOX);
 
