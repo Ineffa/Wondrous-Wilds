@@ -877,6 +877,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
+    protected void onSwimmingStart() {
+        super.onSwimmingStart();
+
+        if (!this.isFlying()) this.setFlying(true);
+    }
+
+    @Override
     public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
