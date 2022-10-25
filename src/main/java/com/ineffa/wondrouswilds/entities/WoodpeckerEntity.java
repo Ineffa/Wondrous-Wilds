@@ -297,6 +297,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
         this.setFlying(false);
 
+        for (WoodpeckerEntity woodpeckerInSpot : this.getWorld().getEntitiesByClass(WoodpeckerEntity.class, this.getBoundingBox().expand(0.5D), woodpecker -> woodpecker != this && woodpecker.isClinging()))
+            woodpeckerInSpot.setFlying(true);
+
         return true;
     }
 
