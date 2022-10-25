@@ -947,11 +947,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         else if (this.isClinging())
             event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
 
-        else if (this.isOnGround())
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
-
         else
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
 
         return PlayState.CONTINUE;
     }
