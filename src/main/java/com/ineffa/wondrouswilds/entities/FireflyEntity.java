@@ -284,7 +284,6 @@ public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnim
     @Override
     public void registerControllers(AnimationData animationData) {
         AnimationController<FireflyEntity> molangAnimationController = new AnimationController<>(this, "molangAnimationController", 2, this::molangAnimationPredicate);
-
         AnimationController<FireflyEntity> antennaMolangController = new AnimationController<>(this, "antennaMolangController", 2, this::antennaMolangPredicate);
 
         animationData.addAnimationController(molangAnimationController);
@@ -292,15 +291,17 @@ public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnim
     }
 
     private <E extends IAnimatable> PlayState molangAnimationPredicate(AnimationEvent<E> event) {
-        if (this.isFlying()) event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingMolang"));
+        if (this.isFlying())
+            event.getController().setAnimation(new AnimationBuilder().loop("flyingMolang"));
 
-        else event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedMolang"));
+        else
+            event.getController().setAnimation(new AnimationBuilder().loop("groundedMolang"));
 
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState antennaMolangPredicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("antennaeMolang"));
+        event.getController().setAnimation(new AnimationBuilder().loop("antennaeMolang"));
 
         return PlayState.CONTINUE;
     }
