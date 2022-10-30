@@ -69,7 +69,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -930,7 +929,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         return null;
     }
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimationFactory factory = new AnimationFactory(this);
 
     @Override
     public AnimationFactory getFactory() {
@@ -950,26 +949,26 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     private <E extends IAnimatable> PlayState constantAnimationPredicate(AnimationEvent<E> event) {
         if (this.isFlying())
-            event.getController().setAnimation(new AnimationBuilder().loop("flyingConstant"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingConstant"));
 
         else if (this.isClinging())
-            event.getController().setAnimation(new AnimationBuilder().loop("clingingConstant"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("clingingConstant"));
 
         else
-            event.getController().setAnimation(new AnimationBuilder().loop("groundedConstant"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedConstant"));
 
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState overlapAnimationPredicate(AnimationEvent<E> event) {
         if (this.isPecking())
-            event.getController().setAnimation(new AnimationBuilder().playOnce(this.getPeckAnimationToPlay()));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(this.getPeckAnimationToPlay()));
 
         else if (this.getChirpDelay() > 0 && this.getChirpDelay() <= 2)
-            event.getController().setAnimation(new AnimationBuilder().loop("chirpOverlap"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("chirpOverlap"));
 
         else
-            event.getController().setAnimation(new AnimationBuilder().loop("empty"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
 
         return PlayState.CONTINUE;
     }
@@ -986,13 +985,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     private <E extends IAnimatable> PlayState animationPredicate(AnimationEvent<E> event) {
         if (this.isFlying() && this.limbDistance >= 0.9F)
-            event.getController().setAnimation(new AnimationBuilder().loop("flap"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("flap"));
 
         else if (this.isDrumming() && this.isClinging())
-            event.getController().setAnimation(new AnimationBuilder().playOnce("drum"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
 
         else
-            event.getController().setAnimation(new AnimationBuilder().loop("empty"));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
 
         return PlayState.CONTINUE;
     }

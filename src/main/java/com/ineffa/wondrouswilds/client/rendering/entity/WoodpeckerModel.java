@@ -6,9 +6,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.molang.MolangParser;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.resource.GeckoLibCache;
+import software.bernie.shadowed.eliotlash.molang.MolangParser;
 
 public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
 
@@ -43,8 +43,8 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
         float f1 = MathHelper.lerpAngleDegrees(delta, entity.prevHeadYaw, entity.getHeadYaw());
         float headYaw = f1 - f;
 
-        parser.setValue("query.head_pitch", () -> headPitch);
-        parser.setValue("query.head_yaw", () -> headYaw);
+        parser.setValue("query.head_pitch", headPitch);
+        parser.setValue("query.head_yaw", headYaw);
 
         float swing = entity.limbAngle - entity.limbDistance * (1.0F - delta);
         float swingAmount = MathHelper.lerp(delta, entity.lastLimbDistance, entity.limbDistance);
