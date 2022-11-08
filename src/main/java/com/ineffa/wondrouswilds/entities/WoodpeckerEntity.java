@@ -730,6 +730,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             this.flapSpeed = MathHelper.clamp(1.0F - (this.limbDistance * 0.5F), 0.0F, 1.0F);
             this.prevFlapAngle = this.flapAngle;
             this.flapAngle += this.flapSpeed;
+
+            if (this.hasEggs() && this.getRandom().nextInt(3) == 0)
+                this.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getParticleX(1.0D), this.getRandomBodyY(), this.getParticleZ(1.0D), 0.0D, 0.0D, 0.0D);
         }
         else {
             if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof InhabitableNestBlockEntity)) this.clearNestPos();
