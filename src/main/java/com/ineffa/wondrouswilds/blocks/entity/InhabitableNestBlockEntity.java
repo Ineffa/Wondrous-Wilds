@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.blocks.entity;
 
 import com.ineffa.wondrouswilds.blocks.InhabitableNestBlock;
 import com.ineffa.wondrouswilds.entities.BlockNester;
+import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,6 +11,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
@@ -32,17 +34,32 @@ import static com.ineffa.wondrouswilds.registry.WondrousWildsEntities.DEFAULT_NE
 
 public interface InhabitableNestBlockEntity {
 
+    // Inhabitant data
     String INHABITANTS_KEY = "Inhabitants";
     String IS_FRESH_KEY = "IsFresh";
+    String IS_BABY_KEY = "IsBaby";
     String ENTITY_DATA_KEY = "EntityData";
     String CAPACITY_WEIGHT_KEY = "CapacityWeight";
-    String TICKS_IN_NEST_KEY = "TicksInNest";
     String MIN_OCCUPATION_TICKS_KEY = "MinOccupationTicks";
-    String IS_BABY_KEY = "IsBaby";
+    String TICKS_IN_NEST_KEY = "TicksInNest";
+
+    // Egg data
+    String EGGS_KEY = "Eggs";
+
+    String ENTITY_TYPE_TO_HATCH_KEY = "EntityTypeToHatch";
+    String DATA_TO_INHERIT_KEY = "DataToInherit";
+    String NOCTURNAL_KEY = "Nocturnal";
+
+    String MIN_CRACK_COOLDOWN_KEY = "MinCrackCooldown";
+    String MAX_CRACK_COOLDOWN_KEY = "MaxCrackCooldown";
+    String CRACK_COOLDOWN_KEY = "CrackCooldown";
+    String CRACKS_UNTIL_HATCH_KEY = "CracksUntilHatch";
 
     List<String> IRRELEVANT_INHABITANT_NBT_KEYS = Arrays.asList("CannotEnterNestTicks", "Air", "DeathTime", "FallDistance", "FallFlying", "Fire", "HurtByTimestamp", "HurtTime", "Motion", "OnGround", "PortalCooldown", "Pos", "Rotation", "Passengers", "Leash");
 
     List<Inhabitant> getInhabitants();
+
+    List<NesterEgg> getEggs();
 
     static void removeIrrelevantNbt(NbtCompound nbtCompound) {
         for (String key : IRRELEVANT_INHABITANT_NBT_KEYS) nbtCompound.remove(key);
@@ -65,14 +82,44 @@ public interface InhabitableNestBlockEntity {
         return nbtList;
     }
 
+    default NbtList getEggsNbt() {
+        NbtList nbtList = new NbtList();
+        for (NesterEgg egg : this.getEggs()) {
+            NbtCompound nbt = new NbtCompound();
+
+            nbt.putInt(CAPACITY_WEIGHT_KEY, egg.capacityWeight);
+
+            nbt.putString(ENTITY_TYPE_TO_HATCH_KEY, Registry.ENTITY_TYPE.getId(egg.getEntityTypeToHatch()).toString());
+
+            NbtCompound dataToInherit = egg.getDataToInherit();
+            if (dataToInherit != null) nbt.put(DATA_TO_INHERIT_KEY, dataToInherit);
+
+            nbt.putBoolean(NOCTURNAL_KEY, egg.isNocturnal());
+
+            nbt.putInt(MIN_CRACK_COOLDOWN_KEY, egg.crackCooldownRange.getLeft());
+            nbt.putInt(MAX_CRACK_COOLDOWN_KEY, egg.crackCooldownRange.getRight());
+            nbt.putInt(CRACK_COOLDOWN_KEY, egg.getCrackCooldown());
+            nbt.putInt(CRACKS_UNTIL_HATCH_KEY, egg.getCracksUntilHatch());
+
+            nbtList.add(nbt);
+        }
+        return nbtList;
+    }
+
     default int getInhabitantCount() {
         return this.getInhabitants().size();
     }
 
-    default int getBabyInhabitantCount() {
+    default int getEggCount() {
+        return this.getEggs().size();
+    }
+
+    default int getBabyCount() {
         int babyCount = 0;
 
         for (Inhabitant inhabitant : this.getInhabitants()) if (inhabitant.isBaby) ++babyCount;
+
+        babyCount += this.getEggCount();
 
         return babyCount;
     }
@@ -85,7 +132,7 @@ public interface InhabitableNestBlockEntity {
         return 100;
     }
 
-    default int getMaxBabyInhabitantCount() {
+    default int getMaxBabyCount() {
         return 3;
     }
 
@@ -93,6 +140,7 @@ public interface InhabitableNestBlockEntity {
         int usedCapacity = 0;
 
         for (Inhabitant inhabitant : this.getInhabitants()) usedCapacity += inhabitant.capacityWeight;
+        for (NesterEgg egg : this.getEggs()) usedCapacity += egg.capacityWeight;
 
         return usedCapacity;
     }
@@ -105,14 +153,22 @@ public interface InhabitableNestBlockEntity {
         return this.getUsedCapacity() >= this.getMaxCapacity();
     }
 
+    default boolean isFullWithBabies() {
+        return this.getBabyCount() >= this.getMaxBabyCount();
+    }
+
     default boolean canFitNester(BlockNester nester) {
         return nester.getNestCapacityWeight() <= this.getRemainingCapacity();
+    }
+
+    default boolean canFitEgg(NesterEgg egg) {
+        return egg.capacityWeight <= this.getRemainingCapacity() && !this.isFullWithBabies();
     }
 
     default boolean tryAddingInhabitant(BlockNester nester) {
         if (!(nester instanceof MobEntity nesterEntity)) return false;
 
-        boolean canFit = !this.isCapacityFilled() && this.canFitNester(nester) && !(nesterEntity.isBaby() && this.getBabyInhabitantCount() >= this.getMaxBabyInhabitantCount());
+        boolean canFit = !this.isCapacityFilled() && this.canFitNester(nester) && !(nesterEntity.isBaby() && this.isFullWithBabies());
 
         if (this.hasInhabitants() && this.alertInhabitants(InhabitantReleaseReason.ALERT, canFit ? InhabitantAlertScenario.VISITOR : InhabitantAlertScenario.INTRUSION, nesterEntity)) return false;
 
@@ -144,17 +200,33 @@ public interface InhabitableNestBlockEntity {
         NbtCompound entityData = new NbtCompound();
         entity.saveNbt(entityData);
 
-        this.getInhabitants().add(new Inhabitant(false, entityData, inhabitant.getNestCapacityWeight(), 0, inhabitant.getMinTicksInNest(), entity.isBaby()));
+        this.getInhabitants().add(new Inhabitant(false, entity.isBaby(), entityData, inhabitant.getNestCapacityWeight(), inhabitant.getMinTicksInNest(), 0));
     }
 
-    default void addFreshInhabitant(EntityType<?> entityType, boolean isBaby) {
+    default void addFreshInhabitant(EntityType<? extends BlockNester> entityType, boolean isBaby) {
         if (!DEFAULT_NESTER_CAPACITY_WEIGHTS.containsKey(entityType)) return;
 
         NbtCompound entityData = new NbtCompound();
         entityData.putString(Entity.ID_KEY, Registry.ENTITY_TYPE.getId(entityType).toString());
         entityData.put(BlockNester.NEST_POS_KEY, NbtHelper.fromBlockPos(this.getNestPos()));
+        if (isBaby) entityData.putInt("Age", PassiveEntity.BABY_AGE);
 
-        this.getInhabitants().add(new Inhabitant(true, entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 0, 600, isBaby));
+        this.getInhabitants().add(new Inhabitant(true, isBaby, entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 600, 0));
+    }
+
+    default boolean tryAddingEgg(NesterEgg egg) {
+        if (!this.canFitEgg(egg)) return false;
+
+        this.addEgg(egg);
+        return true;
+    }
+
+    default void addEgg(NesterEgg egg) {
+        this.getEggs().add(egg);
+    }
+
+    default void hatchEgg(NesterEgg egg) {
+        this.addFreshInhabitant(egg.getEntityTypeToHatch(), true);
     }
 
     default boolean alertInhabitants(InhabitantReleaseReason reason, @Nullable InhabitableNestBlockEntity.InhabitantAlertScenario scenario, @Nullable LivingEntity visitor) {
@@ -253,21 +325,23 @@ public interface InhabitableNestBlockEntity {
 
     class Inhabitant {
         final boolean isFresh;
+        final boolean isBaby;
         final NbtCompound entityData;
         final int capacityWeight;
         final int minOccupationTicks;
-        int ticksInNest;
-        final boolean isBaby;
 
-        protected Inhabitant(boolean isFresh, NbtCompound entityData, int capacityWeight, int ticksInNest, int minOccupationTicks, boolean isBaby) {
+        int ticksInNest;
+
+        protected Inhabitant(boolean isFresh, boolean isBaby, NbtCompound entityData, int capacityWeight, int minOccupationTicks, int ticksInNest) {
             removeIrrelevantNbt(entityData);
 
             this.isFresh = isFresh;
+            this.isBaby = isBaby;
             this.entityData = entityData;
             this.capacityWeight = capacityWeight;
-            this.ticksInNest = ticksInNest;
             this.minOccupationTicks = minOccupationTicks;
-            this.isBaby = isBaby;
+
+            this.ticksInNest = ticksInNest;
         }
     }
 

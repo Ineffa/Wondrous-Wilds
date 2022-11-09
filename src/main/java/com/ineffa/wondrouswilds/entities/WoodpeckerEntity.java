@@ -4,6 +4,8 @@ import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.blocks.entity.NestBoxBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
+import com.ineffa.wondrouswilds.entities.eggs.LaysEggsInNests;
+import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
 import com.ineffa.wondrouswilds.registry.*;
@@ -52,6 +54,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Pair;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -80,7 +83,7 @@ import static com.ineffa.wondrouswilds.WondrousWilds.config;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.TREE_HOLLOW_MAP;
 
-public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements BlockNester, Angerable, IAnimatable {
+public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements BlockNester, LaysEggsInNests, Angerable, IAnimatable {
 
     public static final String CLING_POS_KEY = "ClingPos";
     public static final String PLAY_SESSIONS_BEFORE_TAME_KEY = "PlaySessionsBeforeTame";
@@ -89,6 +92,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public static final String HAS_EGGS_KEY = "HasEggs";
 
     public static final int PECKS_NEEDED_FOR_NEST = 200;
+
+    public static final int BABY_CAPACITY_WEIGHT = 15;
 
     public static final EntityDimensions BABY_SIZE = EntityDimensions.fixed(0.1875F, 0.28125F);
 
@@ -515,7 +520,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public int getNestCapacityWeight() {
-        return this.isBaby() ? 15 : WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS.get(this.getType());
+        return this.isBaby() ? BABY_CAPACITY_WEIGHT : WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS.get(this.getType());
     }
 
     @Nullable
@@ -580,9 +585,23 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public void onExitingNest(BlockPos nestPos) {
         if (!this.isFlying()) this.setFlying(true);
 
+        if (!(this.getWorld().getBlockEntity(nestPos) instanceof InhabitableNestBlockEntity nest)) return;
+
+        if (this.hasEggs()) {
+            boolean laidEggs = false;
+
+            int eggsToLay = this.getRandom().nextBetween(1, 3);
+            for (int i = 0; i < eggsToLay; ++i) {
+                if (!nest.tryAddingEgg(this.createEggToLay())) break;
+                laidEggs = true;
+            }
+
+            this.setHasEggs(!laidEggs);
+        }
+
         if (!this.isTame()) return;
 
-        if (this.getMainHandStack().isEmpty() && this.getWorld().getBlockEntity(nestPos) instanceof NestBoxBlockEntity nestBox && !nestBox.isEmpty()) {
+        if (this.getMainHandStack().isEmpty() && nest instanceof NestBoxBlockEntity nestBox && !nestBox.isEmpty()) {
             int slotToTakeFrom = 0;
             ItemStack nestBoxItem = nestBox.getStack(slotToTakeFrom);
             if (!nestBoxItem.isEmpty()) {
@@ -720,6 +739,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     public boolean isBreedingItem(ItemStack stack) {
         return stack.isOf(Items.GOLDEN_APPLE);
+    }
+
+    @Override
+    public NesterEgg createEggToLay() {
+        return new NesterEgg(BABY_CAPACITY_WEIGHT, WondrousWildsEntities.WOODPECKER, null, false, new Pair<>(48000, 72000), this.getRandom());
     }
 
     @Override
