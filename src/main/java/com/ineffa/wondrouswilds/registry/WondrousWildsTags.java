@@ -20,6 +20,8 @@ public class WondrousWildsTags {
 
     public static class ItemTags {
         public static final TagKey<Item> VIOLETS = createItemTag("violets");
+
+        public static final TagKey<Item> BYCOCKETS = createItemTag("bycockets");
     }
 
     public static class BiomeTags {

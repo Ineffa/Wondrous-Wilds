@@ -3,6 +3,8 @@ package com.ineffa.wondrouswilds.registry;
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.items.LovifierItem;
 import com.ineffa.wondrouswilds.items.ScrollOfSecretsItem;
+import com.ineffa.wondrouswilds.items.armor.BycocketItem;
+import com.ineffa.wondrouswilds.items.armor.WondrousWildsArmorMaterial;
 import com.ineffa.wondrouswilds.items.recipes.ShapedSecretRecipe;
 import com.ineffa.wondrouswilds.items.recipes.ShapelessSecretRecipe;
 import com.ineffa.wondrouswilds.mixin.ComposterBlockInvoker;
@@ -12,8 +14,12 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
@@ -100,6 +106,7 @@ public class WondrousWildsItems {
     public static final BlockItem BIRCH_NEST_BOX = registerBlockItem(WondrousWildsBlocks.BIRCH_NEST_BOX);
 
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
+    public static final Item BLACK_BYCOCKET = registerItem("black_bycocket", new BycocketItem(DyeColor.BLACK));
 
     public static final Item MUSIC_DISC_AVIAN = registerItem("music_disc_avian", MusicDiscItemInvoker.createNewMusicDisc(14, WondrousWildsSounds.MUSIC_DISC_AVIAN, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).group(WONDROUS_WILDS_ITEM_GROUP), 218));
 
@@ -148,6 +155,10 @@ public class WondrousWildsItems {
         Trades.initialize();
 
         RecipeSerializers.initialize();
+    }
+
+    public static final class ArmorMaterials {
+        public static final WondrousWildsArmorMaterial BYCOCKET = new WondrousWildsArmorMaterial("bycocket", 10, new int[]{1, 2, 3, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.fromTag(ItemTags.WOOL));
     }
 
     public static final class Trades {

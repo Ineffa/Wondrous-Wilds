@@ -22,6 +22,10 @@ public class WondrousWildsClient implements ClientModInitializer {
         EntityRendererRegistry.register(WondrousWildsEntities.FIREFLY, FireflyRenderer::new);
         EntityRendererRegistry.register(WondrousWildsEntities.WOODPECKER, WoodpeckerRenderer::new);
 
+        GeoArmorRenderer.registerArmorRenderer(new BycocketRenderer(),
+                WondrousWildsItems.BLACK_BYCOCKET
+        );
+
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.SMALL_POLYPORE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.BIG_POLYPORE, RenderLayer.getCutout());
 
