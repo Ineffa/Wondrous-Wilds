@@ -29,10 +29,10 @@ public class FakePlayerEntity extends PlayerEntity {
     protected void tickNewAi() {}
 
     @Override
-    protected void tickNetherPortalCooldown() {}
+    protected void tickPortalCooldown() {}
 
     @Override
-    protected void tickNetherPortal() {}
+    protected void tickPortal() {}
 
     @Override
     protected void tickItemStackUsage(ItemStack stack) {}

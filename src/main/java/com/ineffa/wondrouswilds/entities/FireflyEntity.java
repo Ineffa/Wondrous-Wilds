@@ -40,6 +40,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Objects;
 
@@ -273,7 +274,7 @@ public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnim
         return null;
     }
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     @Override
     public AnimationFactory getFactory() {
@@ -291,16 +292,16 @@ public class FireflyEntity extends FlyingAndWalkingAnimalEntity implements IAnim
 
     private <E extends IAnimatable> PlayState molangAnimationPredicate(AnimationEvent<E> event) {
         if (this.isFlying())
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("flyingMolang"));
+            event.getController().setAnimation(new AnimationBuilder().loop("flyingMolang"));
 
         else
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("groundedMolang"));
+            event.getController().setAnimation(new AnimationBuilder().loop("groundedMolang"));
 
         return PlayState.CONTINUE;
     }
 
     private <E extends IAnimatable> PlayState antennaMolangPredicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("antennaeMolang"));
+        event.getController().setAnimation(new AnimationBuilder().loop("antennaeMolang"));
 
         return PlayState.CONTINUE;
     }
