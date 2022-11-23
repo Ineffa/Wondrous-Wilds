@@ -3,16 +3,19 @@ package com.ineffa.wondrouswilds.client;
 import com.ineffa.wondrouswilds.client.rendering.WondrousWildsColorProviders;
 import com.ineffa.wondrouswilds.client.rendering.entity.FireflyRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.WoodpeckerRenderer;
+import com.ineffa.wondrouswilds.client.rendering.entity.armor.BycocketRenderer;
 import com.ineffa.wondrouswilds.client.screen.WondrousWildsScreens;
 import com.ineffa.wondrouswilds.networking.WondrousWildsNetwork;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
+import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Environment(value = EnvType.CLIENT)
 public class WondrousWildsClient implements ClientModInitializer {
