@@ -22,3 +22,4 @@ public class BycocketModel extends AnimatedGeoModel<BycocketItem> {
         return null;
     }
 
+}
