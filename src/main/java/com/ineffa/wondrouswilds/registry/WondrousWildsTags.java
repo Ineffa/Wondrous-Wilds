@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -24,6 +25,10 @@ public class WondrousWildsTags {
         public static final TagKey<Item> BYCOCKETS = createItemTag("bycockets");
     }
 
+    public static class EntityTypeTags {
+        public static final TagKey<EntityType<?>> BYCOCKET_ALWAYS_ACCURATE = createEntityTypeTag("bycocket_always_accurate");
+    }
+
     public static class BiomeTags {
         public static final TagKey<Biome> SPAWNS_FIREFLIES_ON_SURFACE = createBiomeTag("spawns_fireflies_on_surface");
         public static final TagKey<Biome> SPAWNS_FIREFLIES_ON_SURFACE_ONLY_IN_RAIN = createBiomeTag("spawns_fireflies_on_surface_only_in_rain");
@@ -36,6 +41,10 @@ public class WondrousWildsTags {
 
     private static TagKey<Item> createItemTag(String name) {
         return TagKey.of(Registry.ITEM_KEY, new Identifier(WondrousWilds.MOD_ID, name));
+    }
+
+    private static TagKey<EntityType<?>> createEntityTypeTag(String name) {
+        return TagKey.of(Registry.ENTITY_TYPE_KEY, new Identifier(WondrousWilds.MOD_ID, name));
     }
 
     private static TagKey<Biome> createBiomeTag(String name) {

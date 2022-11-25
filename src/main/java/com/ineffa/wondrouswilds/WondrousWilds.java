@@ -56,6 +56,7 @@ public class WondrousWilds implements ModInitializer {
 		WondrousWildsEntities.initialize();
 		WondrousWildsBlocks.initialize();
 		WondrousWildsItems.initialize();
+		WondrousWildsEnchantments.initialize();
 
 		WondrousWildsFeatures.initialize();
 
