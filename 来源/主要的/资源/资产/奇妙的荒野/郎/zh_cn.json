@@ -88,4 +88,26 @@
   "subtitles.wondrouswilds.entity.woodpecker.chirp": "啄木鸟：鸣叫",
   "subtitles.wondrouswilds.entity.woodpecker.drum": "啄木鸟：敲击",
   "mod.wondrouswilds.warning.shaders": "警告：目前，奇趣荒野（以及其他使用GeckoLib的mods）将无法与Iris Shaders或OptiFine等光影mods正常工作。你很可能不会崩溃，但动画将被严重破坏，如果不是完全破坏的话。这不是奇趣荒野本身的问题，而是这些光影mods和GeckoLib之间的问题"
+  
+  "text.autoconfig.wondrouswilds.title": "奇趣荒野配置",
+  "text.autoconfig.wondrouswilds.option.clientSettings": "客户端设置",
+  "text.autoconfig.wondrouswilds.option.clientSettings.showShadersWarning": "显示光影警告",
+  "text.autoconfig.wondrouswilds.option.clientSettings.showShadersWarning.@Tooltip": "在使用Iris或OptiFine/OptiFabric时，加载世界是否显示警告",
+  "text.autoconfig.wondrouswilds.option.mobSettings": "生物设置",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesSpawnNaturally": "火虫自然生成",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesSpawnNaturally.@Tooltip[0]": "萤火虫是否能够在世界中自然生成",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesSpawnNaturally.@Tooltip[1]": "不管这个设置如何，它们仍然能够从其他方法中生成，例如刷怪蛋或指令",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesLandOnMobs": "萤火虫降落在生物身上",
+  "text.autoconfig.wondrouswilds.option.mobSettings.firefliesLandOnMobs.@Tooltip": "萤火虫是否应该尝试降落在其他生物/实体的顶部并骑在他们头顶",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersDrum": "啄木鸟敲击",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersDrum.@Tooltip": "啄木鸟是否应该在依附在原木上时进行敲击的声音和动画",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckerDrumChance": "啄木鸟敲击的概率",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckerDrumChance.@Tooltip[0]": "确定一只啄木鸟选择敲击起之前的平均时刻数",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckerDrumChance.@Tooltip[1]": "20刻等于1秒，所以默认（600刻）意味着平均30秒",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersInteractWithBlocks": "啄木鸟与方块互动",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersInteractWithBlocks.@Tooltip[0]": "啄木鸟是否会尝试与某些区块互动/游戏",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersInteractWithBlocks.@Tooltip[1]": "它们可以与之互动的方块列表由\"woodpeckers_interact_with\"方块标签定义。",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersBuildNests": "啄木鸟筑巢",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersBuildNests.@Tooltip[0]": "无家可归的啄木鸟是否能够通过在原木上打洞来建造自己的巢穴",
+  "text.autoconfig.wondrouswilds.option.mobSettings.woodpeckersBuildNests.@Tooltip[1]": "这种行为也被vanilla\"mobGriefing\"游戏规则所控制"
 }
