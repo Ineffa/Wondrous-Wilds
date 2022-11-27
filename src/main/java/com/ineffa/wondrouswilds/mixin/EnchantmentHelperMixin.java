@@ -28,10 +28,8 @@ public class EnchantmentHelperMixin {
 
         Item item = stack.getItem();
         block0: for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            // Simulates custom enchantment target behavior
-            if (enchantment instanceof SimulatesCustomEnchantmentTarget customEnchantment && !customEnchantment.isAcceptableItemInEnchantingTable(stack)) continue;
-
-            if (enchantment.isTreasure() && !treasureAllowed || !enchantment.isAvailableForRandomSelection() || !enchantment.type.isAcceptableItem(item) && !stack.isOf(Items.BOOK)) continue;
+            // Simulates custom enchantment target behavior using an interface
+            if (enchantment.isTreasure() && !treasureAllowed || !enchantment.isAvailableForRandomSelection() || (!enchantment.type.isAcceptableItem(item) || enchantment instanceof SimulatesCustomEnchantmentTarget customEnchantment && !customEnchantment.isAcceptableItemInEnchantingTable(stack)) && !stack.isOf(Items.BOOK)) continue;
 
             for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
                 if (power < enchantment.getMinPower(i) || power > enchantment.getMaxPower(i)) continue;
