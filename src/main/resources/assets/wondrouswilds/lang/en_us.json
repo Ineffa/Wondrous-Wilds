@@ -91,6 +91,8 @@
   "advancement.wondrouswilds.obtain_woodpecker_crest_feather.description": "Take a Woodpecker's shed crest feather",
   "advancement.wondrouswilds.obtain_nest_box.title": "Home Sweet Home",
   "advancement.wondrouswilds.obtain_nest_box.description": "Construct a Nest Box",
+  "advancement.wondrouswilds.sharpshot_kill.title": "Sharpshooter",
+  "advancement.wondrouswilds.sharpshot_kill.description": "Use a Bycocket to kill something with a sharpshot",
   "subtitles.wondrouswilds.entity.woodpecker.chirp": "Woodpecker chirps",
   "subtitles.wondrouswilds.entity.woodpecker.drum": "Woodpecker drums",
   "mod.wondrouswilds.warning.shaders": "WARNING: Currently, Wondrous Wilds (and other mods using GeckoLib) will not work properly with shader mods such as Iris Shaders or OptiFine. You most likely won't crash, but animations will be severely if not completely broken. This is NOT an issue with Wondrous Wilds itself, but rather an issue between these shader mods and GeckoLib. You can disable this warning in the client settings of the mod's config",

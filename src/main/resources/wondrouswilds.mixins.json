@@ -18,6 +18,7 @@
     "MusicDiscItemInvoker",
     "ProjectileUtilMixin",
     "RecipeUnlockerMixin",
+    "ServerPlayerEntityMixin",
     "ShapedRecipeInvoker",
     "TreeConfiguredFeaturesInvoker",
     "TreeDecoratorTypeInvoker",
