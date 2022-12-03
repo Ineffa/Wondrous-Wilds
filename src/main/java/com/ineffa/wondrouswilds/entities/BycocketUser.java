@@ -4,6 +4,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 
 public interface BycocketUser {
 
-    boolean shouldPreventSpread(ProjectileEntity projectile);
+    boolean isAccurateWith(ProjectileEntity projectile);
 
+    boolean canSharpshotWith(ProjectileEntity projectile);
 }

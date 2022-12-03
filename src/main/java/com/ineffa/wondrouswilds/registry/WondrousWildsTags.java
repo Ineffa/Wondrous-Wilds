@@ -27,6 +27,7 @@ public class WondrousWildsTags {
 
     public static class EntityTypeTags {
         public static final TagKey<EntityType<?>> BYCOCKET_ALWAYS_ACCURATE = createEntityTypeTag("bycocket_always_accurate");
+        public static final TagKey<EntityType<?>> BYCOCKET_ALWAYS_SHARPSHOTS = createEntityTypeTag("bycocket_always_sharpshots");
     }
 
     public static class BiomeTags {
