@@ -2,9 +2,11 @@ package com.ineffa.wondrouswilds.mixin;
 
 import com.ineffa.wondrouswilds.entities.BycocketUser;
 import com.ineffa.wondrouswilds.entities.projectiles.CanSharpshot;
+import com.ineffa.wondrouswilds.registry.WondrousWildsParticles;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -57,6 +59,10 @@ public abstract class MixinBycocketAbilityHandler extends Entity implements CanS
     public void registerSharpshot() {
         this.hasRegisteredSharpshot = true;
 
-        if (!this.getWorld().isClient()) this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 2.0F);
+        if (!this.getWorld().isClient()) {
+            this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 2.0F);
+
+            if (this.getWorld() instanceof ServerWorld serverWorld) serverWorld.spawnParticles(WondrousWildsParticles.SHARPSHOT_HIT, this.getX(), this.getBodyY(0.5D), this.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+        }
     }
 }

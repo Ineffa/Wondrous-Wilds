@@ -52,6 +52,7 @@ public class WondrousWilds implements ModInitializer {
 		LOGGER.info("Initializing Wondrous Wilds content");
 
 		WondrousWildsSounds.initialize();
+		WondrousWildsParticles.initialize();
 
 		WondrousWildsEntities.initialize();
 		WondrousWildsBlocks.initialize();
