@@ -21,5 +21,4 @@ public class BycocketModel extends AnimatedGeoModel<BycocketItem> {
     public Identifier getAnimationResource(BycocketItem animatable) {
         return null;
     }
-
 }

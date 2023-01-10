@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.unknown",
-				"texture_width": 50,
-				"texture_height": 35,
+				"texture_width": 52,
+				"texture_height": 27,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 4.5,
 				"visible_bounds_offset": [0, 1.75, 0]
@@ -23,36 +23,36 @@
 				{
 					"name": "bycocket",
 					"parent": "armorHead",
-					"pivot": [0, 28.25, 0]
+					"pivot": [0, 28, 0]
 				},
 				{
 					"name": "cap",
 					"parent": "bycocket",
-					"pivot": [-3, 28.25, 1],
+					"pivot": [-2.5, 28, 0.5],
 					"cubes": [
-						{"origin": [-4.5, 28.25, -4.5], "size": [9, 4, 9], "uv": [0, 10]}
+						{"origin": [-5, 28, -5], "size": [10, 5, 10], "uv": [0, 12]}
 					]
 				},
 				{
 					"name": "brim",
 					"parent": "cap",
-					"pivot": [0, 28.25, 0],
+					"pivot": [0.5, 28, -0.5],
 					"cubes": [
-						{"origin": [-5, 28.25, 5], "size": [10, 2, 0], "uv": [30, 0]},
-						{"origin": [5, 28.25, -5], "size": [0, 2, 10], "uv": [24, 13]},
-						{"origin": [-5, 28.25, -5], "size": [0, 2, 10], "uv": [24, 15]},
-						{"origin": [5, 28.25, -12.075], "size": [0, 2, 7.075], "pivot": [5, 29.25, -5], "rotation": [0, 45, 0], "uv": [30, 0]},
-						{"origin": [-5, 28.25, -12.075], "size": [0, 2, 7.075], "pivot": [-5, 29.25, -5], "rotation": [0, -45, 0], "uv": [27, 10]},
-						{"origin": [-3.5, 28.25, -8.55], "size": [7.075, 0, 7.075], "pivot": [0, 28.25, -5.05], "rotation": [0, -45, 0], "uv": [20, 10]},
-						{"origin": [-5, 28.249, -5], "size": [10, 0, 10], "uv": [0, 0]}
+						{"origin": [-5.5, 28, 5.5], "size": [11, 2, 0], "uv": [16, 9]},
+						{"origin": [5.5, 28, -5.5], "size": [0, 2, 11], "uv": [16, -4]},
+						{"origin": [-5.5, 28, -5.5], "size": [0, 2, 11], "uv": [16, -6]},
+						{"origin": [5.5, 28, -13.2775], "size": [0, 2, 7.7775], "pivot": [5.5, 29, -5.5], "rotation": [0, 45, 0], "uv": [16, -4]},
+						{"origin": [-5.5, 28, -13.2775], "size": [0, 2, 7.7775], "pivot": [-5.5, 29, -5.5], "rotation": [0, -45, 0], "uv": [16, -6]},
+						{"origin": [-5.50061, 28, -13.27764], "size": [7.775, 0, 7.775], "pivot": [-5.5, 28, -5.5], "rotation": [0, -45, 0], "uv": [31, 4]},
+						{"origin": [-5.5, 27.999, -5.5], "size": [11, 0, 11], "uv": [19, 11]}
 					]
 				},
 				{
 					"name": "feather",
 					"parent": "cap",
-					"pivot": [4.5, 30.25, 0],
+					"pivot": [5, 30, 0],
 					"cubes": [
-						{"origin": [4.5, 30.25, -4], "size": [0, 12, 8], "pivot": [4.5, 30.25, 0], "rotation": [-55, 5, 0], "uv": [0, 15]}
+						{"origin": [5, 30, -4], "size": [0, 12, 8], "pivot": [5, 30, 0], "rotation": [-55, 5, 0], "uv": [0, -8]}
 					]
 				}
 			]
