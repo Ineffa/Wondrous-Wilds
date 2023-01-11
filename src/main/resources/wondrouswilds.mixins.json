@@ -12,6 +12,7 @@
     "MobEntityAccessor",
     "MobEntityMixin",
     "RecipeUnlockerMixin",
+    "SaplingGeneratorMixin",
     "ShapedRecipeInvoker",
     "TreeConfiguredFeaturesInvoker",
     "TreeDecoratorTypeInvoker",
