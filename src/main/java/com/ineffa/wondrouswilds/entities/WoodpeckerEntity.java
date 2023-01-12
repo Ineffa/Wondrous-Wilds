@@ -727,6 +727,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
+    public void setBaby(boolean baby) {
+        this.setBreedingAge(baby ? -168000 : 0);
+    }
+
+    @Override
     public boolean canBreedWith(AnimalEntity other) {
         if (this.hasEggs() || !super.canBreedWith(other)) return false;
 
