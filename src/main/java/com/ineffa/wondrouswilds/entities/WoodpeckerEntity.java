@@ -630,6 +630,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
+    public int getMaxDistanceFromNest() {
+        return 128;
+    }
+
+    @Override
     public int getAngerTime() {
         return this.dataTracker.get(ANGER_TICKS);
     }
@@ -799,7 +804,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                 this.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getParticleX(1.0D), this.getRandomBodyY(), this.getParticleZ(1.0D), 0.0D, 0.0D, 0.0D);
         }
         else {
-            if (this.hasNestPos() && !(this.getWorld().getBlockEntity(this.getNestPos()) instanceof InhabitableNestBlockEntity)) this.clearNestPos();
+            if (this.age % 200 == 0)
+                if (this.hasNestPos() && !this.getNestPos().isWithinDistance(this.getPos(), this.getMaxDistanceFromNest())) this.clearNestPos();
 
             if (this.isPecking()) {
                 if (this.getPeckChainTicks() <= 0) this.stopPecking(false);

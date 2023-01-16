@@ -47,4 +47,6 @@ public interface BlockNester {
     void afterExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason);
 
     int getWanderRadiusFromNest();
+
+    int getMaxDistanceFromNest();
 }
