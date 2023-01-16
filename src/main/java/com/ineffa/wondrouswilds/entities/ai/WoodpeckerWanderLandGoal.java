@@ -34,7 +34,7 @@ public class WoodpeckerWanderLandGoal extends WanderAroundFarGoal {
     public void stop() {
         super.stop();
 
-        if (this.woodpecker.getRandom().nextBoolean()) this.woodpecker.setFlying(true);
+        if (this.woodpecker.getRandom().nextBoolean() && this.woodpecker.isAbleToFly()) this.woodpecker.setFlying(true);
     }
 
     @Nullable

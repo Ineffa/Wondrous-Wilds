@@ -102,6 +102,10 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
         this.navigation = flying ? this.flyNavigation : this.landNavigation;
     }
 
+    public boolean isAbleToFly() {
+        return true;
+    }
+
     public boolean wantsToLand() {
         return this.dataTracker.get(WANTS_TO_LAND);
     }

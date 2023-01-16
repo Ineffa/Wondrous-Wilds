@@ -46,7 +46,7 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
         this.ticksUnableToReach = 0;
         this.ticksTryingToReach = 0;
 
-        if (this.canClingToTarget && !this.woodpecker.isFlying()) this.woodpecker.setFlying(true);
+        if (this.canClingToTarget && !this.woodpecker.isFlying() && this.woodpecker.isAbleToFly()) this.woodpecker.setFlying(true);
     }
 
     @Override

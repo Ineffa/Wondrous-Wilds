@@ -25,7 +25,7 @@ public class FlyingAndWalkingAnimalEscapeDangerGoal extends EscapeDangerGoal {
     public void start() {
         super.start();
 
-        if (!this.animal.isFlying()) this.animal.setFlying(true);
+        if (!this.animal.isFlying() && this.animal.isAbleToFly()) this.animal.setFlying(true);
     }
 
     @Override

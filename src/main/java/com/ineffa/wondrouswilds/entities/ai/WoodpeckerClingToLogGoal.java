@@ -33,7 +33,7 @@ public class WoodpeckerClingToLogGoal extends MoveToTargetPosGoal {
         this.ticksUnableToReach = 0;
         this.ticksTryingToReach = 0;
 
-        if (!this.woodpecker.isFlying()) this.woodpecker.setFlying(true);
+        if (!this.woodpecker.isFlying() && this.woodpecker.isAbleToFly()) this.woodpecker.setFlying(true);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class WoodpeckerClingToLogGoal extends MoveToTargetPosGoal {
 
         if (this.woodpecker.getNavigation().isIdle()) {
             if (this.ticksUnableToReach >= 100) {
-                if (this.woodpecker.isFlying()) {
+                if (!this.woodpecker.isFlying()) {
                     this.woodpecker.setFlying(true);
                     this.ticksUnableToReach = 0;
                 }

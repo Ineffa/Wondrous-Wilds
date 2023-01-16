@@ -111,6 +111,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     private static final TrackedData<Boolean> TAME = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Optional<UUID>> MATE = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     private static final TrackedData<Boolean> HAS_EGGS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> FAILING_TO_FLY_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(10, 15);
     @Nullable
     private UUID angryAt;
@@ -172,6 +173,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.dataTracker.startTracking(TAME, false);
         this.dataTracker.startTracking(MATE, Optional.empty());
         this.dataTracker.startTracking(HAS_EGGS, false);
+        this.dataTracker.startTracking(FAILING_TO_FLY_TICKS, 0);
     }
 
     @Override
@@ -256,9 +258,12 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public void setFlying(boolean flying) {
-        super.setFlying(flying);
+        boolean clinging = this.isClinging();
 
-        if (flying && this.isClinging()) this.stopClinging();
+        if (this.isAbleToFly()) super.setFlying(flying);
+        else if (flying && !clinging) this.failToFly();
+
+        if (flying && clinging) this.stopClinging();
     }
 
     public BlockPos getClingPos() {
@@ -586,7 +591,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public void onExitingNest(BlockPos nestPos) {
-        if (!this.isFlying()) this.setFlying(true);
+        if (!this.isFlying() && this.isAbleToFly()) this.setFlying(true);
 
         if (!(this.getWorld().getBlockEntity(nestPos) instanceof InhabitableNestBlockEntity nest)) return;
 
@@ -729,6 +734,33 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     public void setBaby(boolean baby) {
         this.setBreedingAge(baby ? -168000 : 0);
+    }
+
+    public boolean isAdolescent() {
+        return this.isBaby() && this.getBreedingAge() >= -72000;
+    }
+
+    @Override
+    public boolean isAbleToFly() {
+        return !this.isBaby() || this.isAdolescent();
+    }
+
+    public int getFailingToFlyTicks() {
+        return this.dataTracker.get(FAILING_TO_FLY_TICKS);
+    }
+
+    public void setFailingToFlyTicks(int ticks) {
+        this.dataTracker.set(FAILING_TO_FLY_TICKS, ticks);
+    }
+
+    public boolean isFailingToFly() {
+        return this.getFailingToFlyTicks() > 0;
+    }
+
+    public void failToFly() {
+        if (this.isFailingToFly()) return;
+
+        this.setFailingToFlyTicks(58);
     }
 
     @Override
@@ -892,6 +924,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             this.tickAngerLogic((ServerWorld) this.getWorld(), false);
 
             if (this.getCannotInhabitNestTicks() > 0) this.setCannotInhabitNestTicks(this.getCannotInhabitNestTicks() - 1);
+
+            if (this.isFailingToFly()) this.setFailingToFlyTicks(this.getFailingToFlyTicks() - 1);
         }
 
         if (this.isClinging()) {
@@ -988,7 +1022,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         if (super.damage(source, amount)) {
             this.resetConsecutivePecks();
 
-            if (!this.isFlying() && !this.isDrumming()) this.setFlying(true);
+            if (!this.getWorld().isClient() && !this.isDrumming() && !this.isFlying() && this.isAbleToFly()) this.setFlying(true);
 
             return true;
         }
@@ -998,6 +1032,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     public void travel(Vec3d movementInput) {
         if (this.isClinging()) return;
+
+        if (this.isFailingToFly()) movementInput = Vec3d.ZERO;
 
         if (!this.isFlying()) {
             super.travel(movementInput);
@@ -1044,7 +1080,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     protected void onSwimmingStart() {
         super.onSwimmingStart();
 
-        if (!this.isFlying()) this.setFlying(true);
+        if (!this.getWorld().isClient() && !this.isFlying()) this.setFlying(true);
     }
 
     @Override
@@ -1153,16 +1189,24 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     private <E extends IAnimatable> PlayState animationPredicate(AnimationEvent<E> event) {
-        if (this.isFlying() && this.limbDistance >= 0.9F)
+        if (!this.shouldPreventMovementAnimations() && this.isFlying() && this.limbDistance >= 0.9F)
             event.getController().setAnimation(new AnimationBuilder().addAnimation("flap"));
 
         else if (this.isDrumming() && this.isClinging())
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
 
+        else if (this.isFailingToFly())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("failToFly"));
+
         else
             event.getController().setAnimation(new AnimationBuilder().addAnimation("empty"));
 
         return PlayState.CONTINUE;
+    }
+
+    @Environment(value = EnvType.CLIENT)
+    public boolean shouldPreventMovementAnimations() {
+        return this.isClinging() || this.isFailingToFly();
     }
 
     private void showTameParticles(boolean positive) {

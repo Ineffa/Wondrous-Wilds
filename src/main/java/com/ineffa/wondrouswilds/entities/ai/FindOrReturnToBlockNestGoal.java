@@ -1,8 +1,8 @@
 package com.ineffa.wondrouswilds.entities.ai;
 
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
-import com.ineffa.wondrouswilds.entities.FlyingAndWalkingAnimalEntity;
 import com.ineffa.wondrouswilds.entities.BlockNester;
+import com.ineffa.wondrouswilds.entities.FlyingAndWalkingAnimalEntity;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -47,7 +47,7 @@ public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
 
         this.shouldStop = false;
 
-        if (this.nesterEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity && !flyingEntity.isFlying()) flyingEntity.setFlying(true);
+        if (this.nesterEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity && !flyingEntity.isFlying() && flyingEntity.isAbleToFly()) flyingEntity.setFlying(true);
     }
 
     @Override

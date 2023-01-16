@@ -41,28 +41,28 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
 
         MolangParser parser = GeckoLibCache.getInstance().parser;
 
-        WoodpeckerEntity entity = (WoodpeckerEntity) animatable;
-        boolean flying = entity.isFlying();
+        WoodpeckerEntity woodpecker = (WoodpeckerEntity) animatable;
+        boolean flying = woodpecker.isFlying();
 
         float delta = MinecraftClient.getInstance().getTickDelta();
 
-        float headPitch = MathHelper.lerp(delta, entity.prevPitch, entity.getPitch());
-        float f = MathHelper.lerpAngleDegrees(delta, entity.prevBodyYaw, entity.getBodyYaw());
-        float f1 = MathHelper.lerpAngleDegrees(delta, entity.prevHeadYaw, entity.getHeadYaw());
+        float headPitch = MathHelper.lerp(delta, woodpecker.prevPitch, woodpecker.getPitch());
+        float f = MathHelper.lerpAngleDegrees(delta, woodpecker.prevBodyYaw, woodpecker.getBodyYaw());
+        float f1 = MathHelper.lerpAngleDegrees(delta, woodpecker.prevHeadYaw, woodpecker.getHeadYaw());
         float headYaw = f1 - f;
 
         parser.setValue("query.head_pitch", headPitch);
         parser.setValue("query.head_yaw", headYaw);
 
-        float swing = entity.limbAngle - entity.limbDistance * (1.0F - delta);
-        float swingAmount = MathHelper.lerp(delta, entity.lastLimbDistance, entity.limbDistance);
+        float swing = woodpecker.shouldPreventMovementAnimations() ? 0.0F : woodpecker.limbAngle - woodpecker.limbDistance * (1.0F - delta);
+        float swingAmount = woodpecker.shouldPreventMovementAnimations() ? 0.0F : MathHelper.lerp(delta, woodpecker.lastLimbDistance, woodpecker.limbDistance);
         float extraSwing = 0.0F;
         if (!flying) extraSwing = 0.5F * MathHelper.clamp(swingAmount * 10.0F, 0.0F, 1.0F);
 
-        parser.setValue("query.swing", swing * (entity.isBaby() ? 0.3D : 0.15D));
+        parser.setValue("query.swing", swing * (woodpecker.isBaby() ? 0.3D : 0.15D));
         parser.setValue("query.swing_amount", MathHelper.clamp(swingAmount + extraSwing, 0.0D, flying ? 1.0D : 1.25D));
 
-        float flapAngle = MathHelper.lerp(delta, entity.prevFlapAngle, entity.flapAngle);
+        float flapAngle = MathHelper.lerp(delta, woodpecker.prevFlapAngle, woodpecker.flapAngle);
 
         parser.setValue("query.flap_angle", flapAngle);
     }
