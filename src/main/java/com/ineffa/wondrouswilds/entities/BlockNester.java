@@ -37,4 +37,6 @@ public interface BlockNester {
     boolean defendsNest();
 
     int getWanderRadiusFromNest();
+
+    int getMaxDistanceFromNest();
 }

@@ -61,7 +61,10 @@ public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
 
         this.nextCheckDelay = 40;
 
-        if (!(this.nesterEntity.getWorld().getBlockEntity(this.getTargetPos()) instanceof InhabitableNestBlockEntity nestBlock)) return;
+        if (!(this.nesterEntity.getWorld().getBlockEntity(this.getTargetPos()) instanceof InhabitableNestBlockEntity nestBlock)) {
+            this.nester.clearNestPos();
+            return;
+        }
 
         if (this.hasReached()) {
             if (!nestBlock.tryAddingInhabitant(this.nester)) {
