@@ -765,7 +765,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public void failToFly() {
         if (this.isFailingToFly()) return;
 
-        this.setFailingToFlyTicks(58);
+        this.setFailingToFlyTicks(55);
     }
 
     @Override
