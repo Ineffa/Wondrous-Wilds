@@ -2,7 +2,9 @@ package com.ineffa.wondrouswilds.blocks.entity;
 
 import com.ineffa.wondrouswilds.blocks.InhabitableNestBlock;
 import com.ineffa.wondrouswilds.entities.BlockNester;
+import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
+import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -29,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import static com.ineffa.wondrouswilds.registry.WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS;
 
 public interface InhabitableNestBlockEntity {
 
@@ -204,14 +204,12 @@ public interface InhabitableNestBlockEntity {
     }
 
     default void addFreshInhabitant(EntityType<? extends BlockNester> entityType, boolean isBaby) {
-        if (!DEFAULT_NESTER_CAPACITY_WEIGHTS.containsKey(entityType)) return;
-
         NbtCompound entityData = new NbtCompound();
         entityData.putString(Entity.ID_KEY, Registry.ENTITY_TYPE.getId(entityType).toString());
         entityData.put(BlockNester.NEST_POS_KEY, NbtHelper.fromBlockPos(this.getNestPos()));
-        if (isBaby) entityData.putInt("Age", PassiveEntity.BABY_AGE);
+        if (isBaby) entityData.putInt("Age", entityType == WondrousWildsEntities.WOODPECKER ? WoodpeckerEntity.WOODPECKER_BABY_AGE : PassiveEntity.BABY_AGE);
 
-        this.getInhabitants().add(new Inhabitant(true, isBaby, entityData, DEFAULT_NESTER_CAPACITY_WEIGHTS.get(entityType), 600, 0));
+        this.getInhabitants().add(new Inhabitant(true, isBaby, entityData, WondrousWildsEntities.getDefaultNestCapacityWeightFor(entityType, isBaby), 600, 0));
     }
 
     default boolean tryAddingEgg(NesterEgg egg) {

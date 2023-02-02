@@ -1,11 +1,13 @@
 package com.ineffa.wondrouswilds.world.features.trees.decorators;
 
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
+import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsFeatures;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.PillarBlock;
+import net.minecraft.util.Pair;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -52,7 +54,18 @@ public class TreeHollowTreeDecorator extends TreeDecorator {
         world.testBlockState(chosenLog, state -> {
             generator.replace(chosenLog, TREE_HOLLOW_MAP.get(state.getBlock()).getDefaultState().with(TreeHollowBlock.FACING, facingDirection));
             world.getBlockEntity(chosenLog, WondrousWildsBlocks.BlockEntities.TREE_HOLLOW).ifPresent(treeHollow -> {
-                treeHollow.addFreshInhabitant(WondrousWildsEntities.WOODPECKER, false); // TODO: Make configurable for use with other entities
+                // TODO: Make variables configurable for use with other mobs
+                treeHollow.addFreshInhabitant(WondrousWildsEntities.WOODPECKER, false);
+
+                int babies = 0;
+                while (babies < 3) if (random.nextBoolean()) ++babies; else break;
+                if (babies > 0) {
+                    boolean eggs = random.nextBoolean();
+                    for (int i = babies; i > 0; --i) {
+                        if (eggs) treeHollow.addEgg(new NesterEgg(WondrousWildsEntities.WOODPECKER, null, false, new Pair<>(48000, 72000), random));
+                        else treeHollow.addFreshInhabitant(WondrousWildsEntities.WOODPECKER, true);
+                    }
+                }
             });
 
             return true;

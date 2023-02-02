@@ -92,8 +92,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public static final String HAS_EGGS_KEY = "HasEggs";
 
     public static final int PECKS_NEEDED_FOR_NEST = 200;
-
-    public static final int BABY_CAPACITY_WEIGHT = 15;
+    public static final int WOODPECKER_BABY_AGE = -168000;
 
     public static final EntityDimensions BABY_SIZE = EntityDimensions.fixed(0.1875F, 0.28125F);
 
@@ -528,7 +527,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public int getNestCapacityWeight() {
-        return this.isBaby() ? BABY_CAPACITY_WEIGHT : WondrousWildsEntities.DEFAULT_NESTER_CAPACITY_WEIGHTS.get(this.getType());
+        return WondrousWildsEntities.getDefaultNestCapacityWeightFor((EntityType<? extends BlockNester>) this.getType(), this.isBaby());
     }
 
     @Nullable
@@ -788,7 +787,13 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public NesterEgg createEggToLay() {
-        return new NesterEgg(BABY_CAPACITY_WEIGHT, WondrousWildsEntities.WOODPECKER, null, false, new Pair<>(48000, 72000), this.getRandom());
+        return new NesterEgg(
+                WondrousWildsEntities.WOODPECKER,
+                null,
+                false,
+                new Pair<>(48000, 72000),
+                this.getRandom()
+        );
     }
 
     @Override

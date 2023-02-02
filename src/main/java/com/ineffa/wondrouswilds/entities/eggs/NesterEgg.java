@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.entities.eggs;
 
 import com.ineffa.wondrouswilds.entities.BlockNester;
+import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
@@ -47,8 +48,8 @@ public class NesterEgg {
     /**
      * Creates a brand-new egg, like when a nester lays one in its nest.
      */
-    public NesterEgg(int capacityWeight, EntityType<? extends BlockNester> entityTypeToHatch, @Nullable NbtCompound dataToInherit, boolean nocturnal, Pair<Integer, Integer> crackCooldownRange, Random random) {
-        this(capacityWeight, entityTypeToHatch, dataToInherit, nocturnal, crackCooldownRange, 0, CRACKS_NEEDED_TO_HATCH);
+    public NesterEgg(EntityType<? extends BlockNester> entityTypeToHatch, @Nullable NbtCompound dataToInherit, boolean nocturnal, Pair<Integer, Integer> crackCooldownRange, Random random) {
+        this(WondrousWildsEntities.getDefaultNestCapacityWeightFor(entityTypeToHatch, true), entityTypeToHatch, dataToInherit, nocturnal, crackCooldownRange, 0, CRACKS_NEEDED_TO_HATCH);
 
         this.rerollCrackCooldown(random);
     }
