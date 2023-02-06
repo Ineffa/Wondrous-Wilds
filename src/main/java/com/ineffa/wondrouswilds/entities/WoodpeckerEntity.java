@@ -37,6 +37,7 @@ import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -673,6 +674,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.goalSelector.add(1, new WoodpeckerEscapeDangerGoal(this, 1.25D, 16, 8));
         this.goalSelector.add(2, new WoodpeckerAttackGoal(this, 1.0D, true));
         this.goalSelector.add(3, new WoodpeckerFleeEntityGoal<>(this, WoodpeckerEntity.class, 24.0F, 1.0D, 1.0D, entity -> AVOID_WOODPECKER_PREDICATE.test((WoodpeckerEntity) entity)));
+        this.goalSelector.add(3, new WoodpeckerFleeEntityGoal<>(this, FoxEntity.class, 24.0F, 1.0D, 1.25D));
         this.goalSelector.add(4, new WoodpeckerFleeEntityGoal<>(this, PlayerEntity.class, 12.0F, 1.0D, 1.25D, entity -> !this.isTame()));
         this.goalSelector.add(5, new WoodpeckerMateGoal(this, 1.0D));
         this.goalSelector.add(6, new FindOrReturnToBlockNestGoal(this, 1.0D, 24, 24));
