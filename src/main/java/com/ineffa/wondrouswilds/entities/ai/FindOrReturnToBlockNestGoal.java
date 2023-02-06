@@ -18,6 +18,7 @@ public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
     private boolean shouldStop = false;
 
     private boolean lookingForNest = false;
+    private int ticksTryingToClaimNest;
 
     public FindOrReturnToBlockNestGoal(BlockNester nester, double speed, int range, int maxYDifference) {
         super((PathAwareEntity) nester, speed, range, maxYDifference);
@@ -46,6 +47,8 @@ public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
         super.start();
 
         this.shouldStop = false;
+
+        this.ticksTryingToClaimNest = 0;
 
         if (this.nesterEntity instanceof FlyingAndWalkingAnimalEntity flyingEntity && !flyingEntity.isFlying()) flyingEntity.setFlying(true);
     }
@@ -76,6 +79,18 @@ public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
 
     @Override
     public void tick() {
+        if (!this.lookingForNest) {
+            if (this.nesterEntity.age % 400 == 0 && !this.nester.shouldReturnToNest()) {
+                this.shouldStop = true;
+                return;
+            }
+        }
+        else if (this.ticksTryingToClaimNest++ >= 400) {
+            this.nester.setCannotInhabitNestTicks(this.nester.getMinTicksOutOfNest());
+            this.shouldStop = true;
+            return;
+        }
+
         super.tick();
 
         if (this.hasReached()) this.shouldStop = true;
