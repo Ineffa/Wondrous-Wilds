@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class FallenLogFeature extends Feature<FallenLogFeatureConfig> {
@@ -31,6 +32,7 @@ public class FallenLogFeature extends Feature<FallenLogFeatureConfig> {
         int minLength = config.minLength;
         int maxLength = config.maxLength;
 
+        Optional<BlockPos> stump = Optional.empty();
         Set<BlockPos> logs = new HashSet<>();
 
         int logLimit = random.nextBetween(minLength, maxLength);
@@ -52,14 +54,21 @@ public class FallenLogFeature extends Feature<FallenLogFeatureConfig> {
                 continue;
             }
 
+            logs.add(tryLogPos);
+
+            if (logs.size() == logLimit && random.nextBoolean()) {
+                BlockPos tryStumpPos = tryLogPos.offset(oneDirectional ? nextOffsetDirection : nextOffsetDirection.getOpposite(), random.nextBoolean() ? 2 : 3);
+                if (TreeFeature.canReplace(world, tryStumpPos) && world.testBlockState(tryStumpPos.down(), state -> state.isOpaqueFullCube(world, tryStumpPos.down())))
+                    stump = Optional.of(tryStumpPos);
+            }
+
             if (axisDirection == Direction.AxisDirection.POSITIVE) ++nextPositiveOffsetDistance;
             else if (axisDirection == Direction.AxisDirection.NEGATIVE) ++nextNegativeOffsetDistance;
-
-            logs.add(tryLogPos);
         }
 
         if (logs.size() < minLength) return false;
 
+        stump.ifPresent(pos -> this.setBlockState(world, pos, config.stumpProvider.getBlockState(random, pos)));
         for (BlockPos pos : logs) {
             BlockState state = config.logProvider.getBlockState(random, pos);
             if (state.getBlock() instanceof PillarBlock) state = state.with(PillarBlock.AXIS, nextOffsetDirection.getAxis());

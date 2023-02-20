@@ -223,7 +223,7 @@ public class WondrousWildsFeatures {
     public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_ROCK_PLACED = registerPlaced("birch_forest_rock", MiscConfiguredFeatures.FOREST_ROCK, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
     private static FallenLogFeatureConfig fallenBirchLogConfig() {
-        return new FallenLogFeatureConfig(BlockStateProvider.of(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG), 3, 8);
+        return new FallenLogFeatureConfig(BlockStateProvider.of(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG), BlockStateProvider.of(WondrousWildsBlocks.DEAD_BIRCH_LOG), 3, 8);
     }
 
     private static VioletPatchFeatureConfig purpleVioletPatchConfig() {
