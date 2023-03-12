@@ -26,7 +26,7 @@ public class WondrousWildsEntities {
             .entityFactory(FireflyEntity::new)
             .defaultAttributes(FireflyEntity::createFireflyAttributes)
             .dimensions(EntityDimensions.fixed(0.1875F, 0.25F))
-            .spawnGroup(SpawnGroup.WATER_AMBIENT)
+            .spawnGroup(WondrousWildsSpawnGroups.FIREFLIES)
             .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, FireflyEntity::canFireflySpawn)
             .build()
     );
@@ -41,7 +41,7 @@ public class WondrousWildsEntities {
     );
 
     public static void initialize() {
-        if (WondrousWilds.config.mobSettings.firefliesSpawnNaturally) BiomeModifications.addSpawn(context -> context.hasTag(ConventionalBiomeTags.IN_OVERWORLD), SpawnGroup.WATER_AMBIENT, FIREFLY, 100, 3, 6);
+        if (WondrousWilds.config.mobSettings.firefliesSpawnNaturally) BiomeModifications.addSpawn(context -> context.hasTag(ConventionalBiomeTags.IN_OVERWORLD), WondrousWildsSpawnGroups.FIREFLIES, FIREFLY, 100, 3, 6);
     }
 
     public static final Map<EntityType<? extends BlockNester>, Pair<Integer, Integer>> DEFAULT_NESTER_CAPACITY_WEIGHTS = new ImmutableMap.Builder<EntityType<? extends BlockNester>, Pair<Integer, Integer>>()
