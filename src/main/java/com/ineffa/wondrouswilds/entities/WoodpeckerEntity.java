@@ -152,6 +152,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Environment(value = EnvType.CLIENT)
     public float flapAngle;
 
+    @Environment(value = EnvType.CLIENT)
+    private int blinkTimer;
+
     public WoodpeckerEntity(EntityType<? extends WoodpeckerEntity> entityType, World world) {
         super(entityType, world);
 
@@ -893,6 +896,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             this.prevFlapAngle = this.flapAngle;
             this.flapAngle += this.flapSpeed;
 
+            if (this.blinkTimer-- <= 0) this.blinkTimer = 20 + this.getRandom().nextInt(41);
+
             if (this.hasEggs() && this.getRandom().nextInt(3) == 0)
                 this.getWorld().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getParticleX(1.0D), this.getRandomBodyY(), this.getParticleZ(1.0D), 0.0D, 0.0D, 0.0D);
         }
@@ -1233,6 +1238,16 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     protected SoundEvent getDeathSound() {
         return null;
+    }
+
+    @Environment(value = EnvType.CLIENT)
+    public int getBlinkTimer() {
+        return this.blinkTimer;
+    }
+
+    @Environment(value = EnvType.CLIENT)
+    public boolean shouldCloseEyes() {
+        return this.getBlinkTimer() <= 1 || (this.isDrumming() && this.getDrummingTicks() <= 45);
     }
 
     private final AnimationFactory factory = new AnimationFactory(this);

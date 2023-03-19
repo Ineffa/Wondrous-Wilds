@@ -14,25 +14,29 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
 
     public static final Identifier MODEL_PATH = new Identifier(WondrousWilds.MOD_ID, "geo/woodpecker.geo.json");
     public static final Identifier TEXTURE_PATH = new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker/woodpecker.png");
+    public static final Identifier CLOSED_EYES_TEXTURE_PATH = new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker/woodpecker_closed_eyes.png");
     public static final Identifier ANIMATION_PATH = new Identifier(WondrousWilds.MOD_ID, "animations/woodpecker.animation.json");
 
     public static final Identifier BABY_MODEL_PATH = new Identifier(WondrousWilds.MOD_ID, "geo/woodpecker_baby.geo.json");
     public static final Identifier BABY_TEXTURE_PATH = new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker/woodpecker_baby.png");
+    public static final Identifier BABY_CLOSED_EYES_TEXTURE_PATH = new Identifier(WondrousWilds.MOD_ID, "textures/entity/woodpecker/woodpecker_baby_closed_eyes.png");
     public static final Identifier BABY_ANIMATION_PATH = new Identifier(WondrousWilds.MOD_ID, "animations/woodpecker_baby.animation.json");
 
     @Override
-    public Identifier getModelResource(WoodpeckerEntity entity) {
-        return entity.isBaby() ? BABY_MODEL_PATH : MODEL_PATH;
+    public Identifier getModelResource(WoodpeckerEntity woodpecker) {
+        return woodpecker.isBaby() ? BABY_MODEL_PATH : MODEL_PATH;
     }
 
     @Override
-    public Identifier getTextureResource(WoodpeckerEntity entity) {
-        return entity.isBaby() ? BABY_TEXTURE_PATH : TEXTURE_PATH;
+    public Identifier getTextureResource(WoodpeckerEntity woodpecker) {
+        if (woodpecker.shouldCloseEyes()) return woodpecker.isBaby() ? BABY_CLOSED_EYES_TEXTURE_PATH : CLOSED_EYES_TEXTURE_PATH;
+
+        return woodpecker.isBaby() ? BABY_TEXTURE_PATH : TEXTURE_PATH;
     }
 
     @Override
-    public Identifier getAnimationResource(WoodpeckerEntity entity) {
-        return entity.isBaby() ? BABY_ANIMATION_PATH : ANIMATION_PATH;
+    public Identifier getAnimationResource(WoodpeckerEntity woodpecker) {
+        return woodpecker.isBaby() ? BABY_ANIMATION_PATH : ANIMATION_PATH;
     }
 
     @Override
