@@ -15,10 +15,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class WondrousWildsUtils {
 
@@ -70,6 +67,13 @@ public class WondrousWildsUtils {
         }
 
         return positions;
+    }
+
+    public static boolean isPosAdjacentToAnyOfPositions(BlockPos pos, Collection<BlockPos> positions) {
+        for (Direction direction : Direction.values())
+            if (positions.stream().anyMatch(pos1 -> pos1.equals(pos.offset(direction)))) return true;
+
+        return false;
     }
 
     public static boolean isPosAtWorldOrigin(BlockPos pos) {

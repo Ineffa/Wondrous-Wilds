@@ -22,7 +22,6 @@
     "ServerPlayerEntityMixin",
     "ShapedRecipeInvoker",
     "SpawnGroupMixin",
-    "TreeConfiguredFeaturesInvoker",
     "TreeDecoratorTypeInvoker",
     "TrunkPlacerTypeInvoker"
   ],
