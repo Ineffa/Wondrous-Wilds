@@ -4,10 +4,14 @@ import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public interface BlockNester {
 
     String NEST_POS_KEY = "NestPos";
+    String TICKS_PEEKING_OUT_OF_NEST_KEY = "TicksPeekingOutOfNest";
 
     int getNestCapacityWeight();
 
@@ -19,6 +23,7 @@ public interface BlockNester {
 
     void setCannotInhabitNestTicks(int ticks);
 
+    @Nullable
     BlockPos getNestPos();
 
     void setNestPos(BlockPos pos);
@@ -32,6 +37,24 @@ public interface BlockNester {
         return nestPos != null && !WondrousWildsUtils.isPosAtWorldOrigin(nestPos);
     }
 
+    Optional<NestTransition> getCurrentNestTransition();
+
+    default int getDurationOfNestTransitionType(NestTransitionType type) {
+        return 0;
+    }
+
+    void startNewNestTransition(NestTransitionType transition);
+
+    default void finishCurrentNestTransition() {
+        this.clearCurrentNestTransition();
+    }
+
+    void clearCurrentNestTransition();
+
+    boolean isPeekingOutOfNest();
+
+    int getTicksPeekingOutOfNest();
+
     default boolean shouldFindNest() {
         return !this.hasNestPos();
     }
@@ -42,9 +65,9 @@ public interface BlockNester {
         return scenario == InhabitableNestBlockEntity.InhabitantAlertScenario.INTRUSION || scenario == InhabitableNestBlockEntity.InhabitantAlertScenario.DESTRUCTION;
     }
 
-    void onExitingNest(BlockPos nestPos);
+    default void beforeExitingNest(BlockPos nestPos) {}
 
-    void afterExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason);
+    default void onBeginExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason) {}
 
     int getWanderRadiusFromNest();
 

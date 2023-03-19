@@ -1,5 +1,6 @@
 package com.ineffa.wondrouswilds.mixin;
 
+import com.ineffa.wondrouswilds.entities.BlockNester;
 import com.ineffa.wondrouswilds.entities.FireflyEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin extends Entity {
@@ -34,5 +36,10 @@ public abstract class MobEntityMixin extends Entity {
         this.goalSelector.setControlEnabled(Goal.Control.LOOK, shouldNotBeControlled);
 
         callback.cancel();
+    }
+
+    @Inject(method = "canMoveVoluntarily", at = @At("HEAD"), cancellable = true)
+    private void canMoveVoluntarily(CallbackInfoReturnable<Boolean> callback) {
+        if (this instanceof BlockNester nester && (nester.isPeekingOutOfNest() || nester.getCurrentNestTransition().isPresent())) callback.setReturnValue(false);
     }
 }

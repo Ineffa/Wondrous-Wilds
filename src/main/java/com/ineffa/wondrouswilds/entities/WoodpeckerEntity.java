@@ -1,11 +1,13 @@
 package com.ineffa.wondrouswilds.entities;
 
+import com.ineffa.wondrouswilds.blocks.InhabitableNestBlock;
 import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.blocks.entity.NestBoxBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.entities.eggs.LaysEggsInNests;
 import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
+import com.ineffa.wondrouswilds.networking.packets.s2c.NestTransitionStartPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
 import com.ineffa.wondrouswilds.registry.*;
@@ -99,6 +101,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     private int playSessionsBeforeTame;
 
+    private int ticksPeekingOutOfNest;
+
     private final Predicate<WoodpeckerEntity> AVOID_WOODPECKER_PREDICATE = otherWoodpecker -> otherWoodpecker.getTarget() == this;
 
     private static final TrackedData<BlockPos> CLING_POS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
@@ -118,6 +122,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     private int consecutivePecks;
 
+    private Optional<NestTransition> currentNestTransition = Optional.empty();
+
     @Environment(value = EnvType.SERVER)
     private Direction clingSide;
 
@@ -126,6 +132,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Nullable
     @Environment(value = EnvType.SERVER)
     private BlockPos nestPos;
+
+    @Environment(value = EnvType.SERVER)
+    private boolean isPeekingOutOfNest;
 
     @Environment(value = EnvType.SERVER)
     private byte chirpCount;
@@ -183,6 +192,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         nbt.put(CLING_POS_KEY, NbtHelper.fromBlockPos(this.getClingPos()));
 
         if (this.hasNestPos()) nbt.put(NEST_POS_KEY, NbtHelper.fromBlockPos(Objects.requireNonNull(this.getNestPos())));
+
+        nbt.putInt(TICKS_PEEKING_OUT_OF_NEST_KEY, this.getTicksPeekingOutOfNest());
 
         nbt.putInt(PLAY_SESSIONS_BEFORE_TAME_KEY, this.getPlaySessionsBeforeTame());
 
@@ -543,6 +554,81 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
+    public Optional<NestTransition> getCurrentNestTransition() {
+        return this.currentNestTransition;
+    }
+
+    @Override
+    public int getDurationOfNestTransitionType(NestTransitionType type) {
+        return switch (type) {
+            case ENTER -> 20;
+            case EXIT -> 0;
+            case PEEK -> 0;
+            case UNPEEK -> 0;
+        };
+    }
+
+    @Override
+    public void startNewNestTransition(NestTransitionType transitionType) {
+        NestTransition transition = new NestTransition(transitionType, this, this.getWorld().isClient());
+        this.currentNestTransition = Optional.of(transition);
+
+        if (this.getWorld().isClient()) return;
+
+        if (this.getNestPos() == null) return;
+        BlockState nestState = this.getWorld().getBlockState(this.getNestPos());
+        if (!(nestState.getBlock() instanceof InhabitableNestBlock)) return;
+
+        this.setFlying(false);
+
+        Direction nestDirection = nestState.get(InhabitableNestBlock.FACING);
+        BlockPos pos = this.getNestPos().offset(nestDirection);
+        this.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+
+        int horizontal = nestDirection.getOpposite().getHorizontal();
+        this.setYaw(horizontal * 90);
+        this.setBodyYaw(this.getYaw());
+        this.setHeadYaw(this.getYaw());
+
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeVarInt(this.getId());
+        buf.writeEnumConstant(transitionType);
+        buf.writeByte(horizontal);
+        for (ServerPlayerEntity receiver : PlayerLookup.tracking(this)) ServerPlayNetworking.send(receiver, NestTransitionStartPacket.ID, buf);
+    }
+
+    @Override
+    public void finishCurrentNestTransition() {
+        if (!this.getWorld().isClient()) {
+            this.getCurrentNestTransition().ifPresent((nestTransition) -> {
+                if (nestTransition.getType() == NestTransitionType.ENTER && this.getWorld().getBlockEntity(this.getNestPos()) instanceof InhabitableNestBlockEntity nestBlock) {
+                    if (!nestBlock.tryAddingInhabitant(this)) {
+                        this.setCannotInhabitNestTicks(this.getMinTicksOutOfNest());
+                        this.clearNestPos();
+                    }
+                }
+            });
+        }
+
+        BlockNester.super.finishCurrentNestTransition();
+    }
+
+    @Override
+    public void clearCurrentNestTransition() {
+        this.currentNestTransition = Optional.empty();
+    }
+
+    @Override
+    public boolean isPeekingOutOfNest() {
+        return false;
+    }
+
+    @Override
+    public int getTicksPeekingOutOfNest() {
+        return this.ticksPeekingOutOfNest;
+    }
+
+    @Override
     public int getMinTicksInNest() {
         return 200;
     }
@@ -590,7 +676,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
-    public void onExitingNest(BlockPos nestPos) {
+    public void beforeExitingNest(BlockPos nestPos) {
         if (!this.isFlying() && this.isAbleToFly()) this.setFlying(true);
 
         if (!(this.getWorld().getBlockEntity(nestPos) instanceof InhabitableNestBlockEntity nest)) return;
@@ -620,7 +706,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     @Override
-    public void afterExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason) {
+    public void onBeginExitingNest(BlockPos nestPos, InhabitableNestBlockEntity.InhabitantReleaseReason reason) {
         if (reason == InhabitableNestBlockEntity.InhabitantReleaseReason.NATURAL && this.isTame() && this.getRandom().nextInt(10) == 0) this.dropItem(WondrousWildsItems.WOODPECKER_CREST_FEATHER);
     }
 
@@ -950,6 +1036,8 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
             if (straightenHead) this.setPitch(0.0F);
         }
         else if (this.getClingAngle() != 0) this.setClingAngle(0);
+
+        this.getCurrentNestTransition().ifPresent(NestTransition::tick);
     }
 
     @Override
@@ -1207,6 +1295,9 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
         else if (this.isDrumming() && this.isClinging())
             event.getController().setAnimation(new AnimationBuilder().addAnimation("drum"));
+
+        else if (this.getCurrentNestTransition().isPresent())
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(this.getCurrentNestTransition().get().getType().getAnimationName()));
 
         else if (this.isFailingToFly())
             event.getController().setAnimation(new AnimationBuilder().addAnimation("failToFly"));

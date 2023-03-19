@@ -3,6 +3,7 @@ package com.ineffa.wondrouswilds.entities.ai;
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.entities.BlockNester;
 import com.ineffa.wondrouswilds.entities.FlyingAndWalkingAnimalEntity;
+import com.ineffa.wondrouswilds.entities.NestTransitionType;
 import net.minecraft.entity.ai.goal.MoveToTargetPosGoal;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -67,10 +68,11 @@ public class FindOrReturnToBlockNestGoal extends MoveToTargetPosGoal {
         }
 
         if (this.hasReached()) {
-            if (!nestBlock.tryAddingInhabitant(this.nester)) {
-                this.nester.setCannotInhabitNestTicks(this.nester.getMinTicksOutOfNest());
-                this.nester.clearNestPos();
+            if (nestBlock.testAddingInhabitant(this.nester)) {
+                this.nester.setNestPos(this.getTargetPos());
+                this.nester.startNewNestTransition(NestTransitionType.ENTER);
             }
+            else this.nester.setCannotInhabitNestTicks(this.nester.getMinTicksOutOfNest());
         }
     }
 

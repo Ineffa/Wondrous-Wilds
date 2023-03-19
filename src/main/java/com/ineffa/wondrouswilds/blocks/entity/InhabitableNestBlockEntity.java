@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.blocks.entity;
 
 import com.ineffa.wondrouswilds.blocks.InhabitableNestBlock;
 import com.ineffa.wondrouswilds.entities.BlockNester;
+import com.ineffa.wondrouswilds.entities.NestTransitionType;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
@@ -165,19 +166,34 @@ public interface InhabitableNestBlockEntity {
         return egg.capacityWeight <= this.getRemainingCapacity() && !this.isFullWithBabies();
     }
 
-    default boolean tryAddingInhabitant(BlockNester nester) {
+    default boolean testAddingInhabitant(BlockNester nester) {
         if (!(nester instanceof MobEntity nesterEntity)) return false;
 
         boolean canFit = !this.isCapacityFilled() && this.canFitNester(nester) && !(nesterEntity.isBaby() && this.isFullWithBabies());
 
         if (this.hasInhabitants() && this.alertInhabitants(InhabitantReleaseReason.ALERT, canFit ? InhabitantAlertScenario.VISITOR : InhabitantAlertScenario.INTRUSION, nesterEntity)) return false;
 
-        if (!canFit) return false;
+        return canFit;
+    }
+
+    default boolean tryAddingInhabitant(BlockNester nester) {
+        // As a fail-safe, tests the availability of the nest again before the nester finishes entering it
+        if (!this.testAddingInhabitant(nester)) return false;
+
+        this.addInhabitant(nester);
+        return true;
+    }
+
+    default void addInhabitant(BlockNester nester) {
+        if (!(nester instanceof MobEntity nesterEntity)) return;
 
         nesterEntity.stopRiding();
         nesterEntity.removeAllPassengers();
 
-        this.addInhabitant(nester);
+        NbtCompound entityData = new NbtCompound();
+        nesterEntity.saveNbt(entityData);
+
+        this.getInhabitants().add(new Inhabitant(false, nesterEntity.isBaby(), entityData, nester.getNestCapacityWeight(), nester.getMinTicksInNest(), 0));
 
         World world = this.getNestWorld();
         if (world != null) {
@@ -190,17 +206,6 @@ public interface InhabitableNestBlockEntity {
         nesterEntity.discard();
 
         this.markNestDirty();
-
-        return true;
-    }
-
-    default void addInhabitant(BlockNester inhabitant) {
-        if (!(inhabitant instanceof MobEntity entity)) return;
-
-        NbtCompound entityData = new NbtCompound();
-        entity.saveNbt(entityData);
-
-        this.getInhabitants().add(new Inhabitant(false, entity.isBaby(), entityData, inhabitant.getNestCapacityWeight(), inhabitant.getMinTicksInNest(), 0));
     }
 
     default void addFreshInhabitant(EntityType<? extends BlockNester> entityType, boolean isBaby) {
@@ -289,7 +294,7 @@ public interface InhabitableNestBlockEntity {
                 if (!nesterInhabitant.hasNestPos()) nesterInhabitant.setNestPos(nestPos);
             }
 
-            nesterInhabitant.onExitingNest(nestPos);
+            nesterInhabitant.beforeExitingNest(nestPos);
 
             if (inhabitantGetter != null) inhabitantGetter.add(nesterInhabitant);
 
@@ -297,7 +302,7 @@ public interface InhabitableNestBlockEntity {
             world.emitGameEvent(GameEvent.BLOCK_CHANGE, nestPos, GameEvent.Emitter.of(inhabitantEntity, world.getBlockState(nestPos)));
 
             if (world.spawnEntity(inhabitantEntity)) {
-                nesterInhabitant.afterExitingNest(nestPos, reason);
+                nesterInhabitant.onBeginExitingNest(nestPos, reason);
                 return true;
             }
             else return false;
