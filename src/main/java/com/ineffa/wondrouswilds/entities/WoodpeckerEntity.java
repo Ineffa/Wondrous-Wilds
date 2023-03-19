@@ -324,6 +324,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     public void stopClinging() {
         this.setClingPos(BlockPos.ORIGIN);
+        this.clingSide = null;
 
         if (this.isPecking()) this.stopPecking(true);
         else this.resetConsecutivePecks();
@@ -828,7 +829,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Override
     public void setBaby(boolean baby) {
-        this.setBreedingAge(baby ? -168000 : 0);
+        this.setBreedingAge(baby ? WOODPECKER_BABY_AGE : 0);
     }
 
     public boolean isAdolescent() {

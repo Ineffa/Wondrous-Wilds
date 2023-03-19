@@ -1,4 +1,4 @@
-package com.ineffa.wondrouswilds.entities.ai;
+package com.ineffa.wondrouswilds.entities.ai.navigation;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.pathing.BirdNavigation;

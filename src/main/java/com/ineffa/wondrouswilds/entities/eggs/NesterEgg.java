@@ -56,7 +56,7 @@ public class NesterEgg {
 
     /**
      * Constructs an egg with fully specified data.
-     * <p>Normally used to load an existing one from NBT.
+     * <p> Normally used to load an existing one from NBT.
      */
     public NesterEgg(int capacityWeight, EntityType<? extends BlockNester> entityTypeToHatch, @Nullable NbtCompound dataToInherit, boolean nocturnal, Pair<Integer, Integer> crackCooldownRange, int crackCooldown, int cracksUntilHatch) {
         this.capacityWeight = capacityWeight;

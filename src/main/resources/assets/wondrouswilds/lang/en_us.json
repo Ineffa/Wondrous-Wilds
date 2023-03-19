@@ -1,6 +1,7 @@
 {
   "entity.wondrouswilds.firefly": "Firefly",
   "entity.wondrouswilds.woodpecker": "Woodpecker",
+
   "block.wondrouswilds.purple_violet": "Violet",
   "block.wondrouswilds.pink_violet": "Pink Violet",
   "block.wondrouswilds.red_violet": "Red Violet",
@@ -67,7 +68,9 @@
   "block.wondrouswilds.dark_oak_tree_hollow": "Dark Oak Tree Hollow",
   "block.wondrouswilds.mangrove_tree_hollow": "Mangrove Tree Hollow",
   "block.wondrouswilds.birch_nest_box": "Birch Nest Box",
+
   "container.wondrouswilds.nest_box": "Nest Box",
+
   "item.wondrouswilds.woodpecker_crest_feather": "Woodpecker Crest Feather",
   "item.wondrouswilds.black_bycocket": "Black Bycocket",
   "item.wondrouswilds.scroll_of_secrets_nest_box": "Scroll of Secrets",
@@ -77,8 +80,11 @@
   "item.wondrouswilds.woodpecker_spawn_egg": "Woodpecker Spawn Egg",
   "item.wondrouswilds.lovifier": "Lovifier",
   "item.wondrouswilds.lovifier.desc": "Used to instantly tame any tameable Wondrous Wilds mob",
+
   "itemGroup.wondrouswilds.wondrous_wilds": "Wondrous Wilds",
+
   "enchantment.wondrouswilds.versatility": "Versatility",
+
   "advancement.wondrouswilds.crawl_inside_hollow_log.title": "Extremely Claustrophobic",
   "advancement.wondrouswilds.crawl_inside_hollow_log.description": "Squeeze your way into a Hollow Log",
   "advancement.wondrouswilds.firefly_land_on_head.title": "Hitchin' a Ride",
@@ -93,8 +99,10 @@
   "advancement.wondrouswilds.obtain_nest_box.description": "Construct a Nest Box",
   "advancement.wondrouswilds.sharpshot_kill.title": "Sharpshooter",
   "advancement.wondrouswilds.sharpshot_kill.description": "Use a Bycocket to kill something with a sharpshot",
+
   "subtitles.wondrouswilds.entity.woodpecker.chirp": "Woodpecker chirps",
   "subtitles.wondrouswilds.entity.woodpecker.drum": "Woodpecker drums",
+
   "mod.wondrouswilds.warning.shaders": "WARNING: Currently, Wondrous Wilds (and other mods using GeckoLib) will not work properly with shader mods such as Iris Shaders or OptiFine. You most likely won't crash, but animations will be severely if not completely broken. This is NOT an issue with Wondrous Wilds itself, but rather an issue between these shader mods and GeckoLib. You can disable this warning in the client settings of the mod's config",
 
   "text.autoconfig.wondrouswilds.title": "Wondrous Wilds Configuration",

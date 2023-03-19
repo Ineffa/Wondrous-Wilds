@@ -7,9 +7,11 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class BycocketModel extends AnimatedGeoModel<BycocketItem> {
 
+    public static final Identifier MODEL_PATH = new Identifier(WondrousWilds.MOD_ID, "geo/bycocket.geo.json");
+
     @Override
-    public Identifier getModelResource(BycocketItem object) {
-        return new Identifier(WondrousWilds.MOD_ID, "geo/bycocket.geo.json");
+    public Identifier getModelResource(BycocketItem bycocket) {
+        return MODEL_PATH;
     }
 
     @Override
@@ -18,7 +20,7 @@ public class BycocketModel extends AnimatedGeoModel<BycocketItem> {
     }
 
     @Override
-    public Identifier getAnimationResource(BycocketItem animatable) {
+    public Identifier getAnimationResource(BycocketItem bycocket) {
         return null;
     }
 }

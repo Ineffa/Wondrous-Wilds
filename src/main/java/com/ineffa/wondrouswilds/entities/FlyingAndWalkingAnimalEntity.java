@@ -1,6 +1,6 @@
 package com.ineffa.wondrouswilds.entities;
 
-import com.ineffa.wondrouswilds.entities.ai.BetterFlyNavigation;
+import com.ineffa.wondrouswilds.entities.ai.navigation.BetterFlyNavigation;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.ai.control.FlightMoveControl;
