@@ -1310,7 +1310,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
 
     @Environment(value = EnvType.CLIENT)
     public boolean shouldPreventMovementAnimations() {
-        return this.isClinging() || this.isFailingToFly();
+        return this.isClinging() || this.getCurrentNestTransition().isPresent() || this.isFailingToFly();
     }
 
     private void showTameParticles(boolean positive) {
