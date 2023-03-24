@@ -6,8 +6,10 @@ import com.ineffa.wondrouswilds.mixin.FoliagePlacerTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TreeDecoratorTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TrunkPlacerTypeInvoker;
 import com.ineffa.wondrouswilds.world.features.FallenLogFeature;
+import com.ineffa.wondrouswilds.world.features.TerrainSplotchFeature;
 import com.ineffa.wondrouswilds.world.features.VioletPatchFeature;
 import com.ineffa.wondrouswilds.world.features.configs.FallenLogFeatureConfig;
+import com.ineffa.wondrouswilds.world.features.configs.TerrainSplotchFeatureConfig;
 import com.ineffa.wondrouswilds.world.features.configs.VioletPatchFeatureConfig;
 import com.ineffa.wondrouswilds.world.features.trees.decorators.*;
 import com.ineffa.wondrouswilds.world.features.trees.foliage.BirchFoliagePlacer;
@@ -15,12 +17,14 @@ import com.ineffa.wondrouswilds.world.features.trees.foliage.FancyBirchFoliagePl
 import com.ineffa.wondrouswilds.world.features.trees.trunks.StraightBranchingTrunkPlacer;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import net.minecraft.util.math.intprovider.ClampedIntProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
@@ -245,6 +249,12 @@ public class WondrousWildsFeatures {
         public static void init() {}
     }
 
+    public static final Feature<TerrainSplotchFeatureConfig> TERRAIN_SPLOTCH = new TerrainSplotchFeature();
+    public static final RegistryEntry<ConfiguredFeature<TerrainSplotchFeatureConfig, ?>> COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED = registerConfigured("coarse_dirt_splotch_on_grass", TERRAIN_SPLOTCH, coarseDirtSplotchOnGrassConfig());
+    public static final RegistryEntry<PlacedFeature> COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED = registerPlaced("coarse_dirt_splotch_on_grass", COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED, RarityFilterPlacementModifier.of(3), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<ConfiguredFeature<TerrainSplotchFeatureConfig, ?>> LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED = registerConfigured("large_coarse_dirt_splotch_on_grass", TERRAIN_SPLOTCH, largeCoarseDirtSplotchOnGrassConfig());
+    public static final RegistryEntry<PlacedFeature> LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED = registerPlaced("large_coarse_dirt_splotch_on_grass", LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED, RarityFilterPlacementModifier.of(60), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
+
     public static final Feature<FallenLogFeatureConfig> FALLEN_LOG = new FallenLogFeature();
     public static final RegistryEntry<ConfiguredFeature<FallenLogFeatureConfig, ?>> FALLEN_BIRCH_LOG_CONFIGURED = registerConfigured("fallen_birch_log", FALLEN_LOG, fallenBirchLogConfig());
     public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(RarityFilterPlacementModifier.of(12), Blocks.BIRCH_SAPLING));
@@ -271,6 +281,14 @@ public class WondrousWildsFeatures {
 
     private static FallenLogFeatureConfig fallenBirchLogConfig() {
         return new FallenLogFeatureConfig(BlockStateProvider.of(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG), BlockStateProvider.of(WondrousWildsBlocks.DEAD_BIRCH_LOG), 3, 8, 3);
+    }
+
+    private static TerrainSplotchFeatureConfig coarseDirtSplotchOnGrassConfig() {
+        return new TerrainSplotchFeatureConfig(BlockStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.GRASS_BLOCK), UniformIntProvider.create(4, 8), UniformIntProvider.create(3, 3), UniformFloatProvider.create(0.5F, 0.8F));
+    }
+
+    private static TerrainSplotchFeatureConfig largeCoarseDirtSplotchOnGrassConfig() {
+        return new TerrainSplotchFeatureConfig(BlockStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.GRASS_BLOCK), UniformIntProvider.create(12, 16), UniformIntProvider.create(5, 5), UniformFloatProvider.create(0.6F, 0.9F));
     }
 
     private static VioletPatchFeatureConfig purpleVioletPatchConfig() {
@@ -308,6 +326,8 @@ public class WondrousWildsFeatures {
         Trees.Decorators.init();
         Trees.Configs.init();
         Trees.init();
+
+        Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "terrain_splotch"), TERRAIN_SPLOTCH);
 
         Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "fallen_log"), FALLEN_LOG);
 
