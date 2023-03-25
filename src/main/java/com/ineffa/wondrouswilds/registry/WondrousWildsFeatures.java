@@ -284,7 +284,7 @@ public class WondrousWildsFeatures {
     }
 
     private static TerrainSplotchFeatureConfig coarseDirtSplotchOnGrassConfig() {
-        return new TerrainSplotchFeatureConfig(BlockStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.GRASS_BLOCK), UniformIntProvider.create(4, 8), UniformIntProvider.create(3, 3), UniformFloatProvider.create(0.5F, 0.8F));
+        return new TerrainSplotchFeatureConfig(BlockStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.GRASS_BLOCK), UniformIntProvider.create(4, 8), UniformIntProvider.create(3, 3), UniformFloatProvider.create(0.3F, 0.7F));
     }
 
     private static TerrainSplotchFeatureConfig largeCoarseDirtSplotchOnGrassConfig() {
