@@ -251,7 +251,7 @@ public class WondrousWildsFeatures {
 
     public static final Feature<TerrainSplotchFeatureConfig> TERRAIN_SPLOTCH = new TerrainSplotchFeature();
     public static final RegistryEntry<ConfiguredFeature<TerrainSplotchFeatureConfig, ?>> COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED = registerConfigured("coarse_dirt_splotch_on_grass", TERRAIN_SPLOTCH, coarseDirtSplotchOnGrassConfig());
-    public static final RegistryEntry<PlacedFeature> COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED = registerPlaced("coarse_dirt_splotch_on_grass", COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED, RarityFilterPlacementModifier.of(3), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
+    public static final RegistryEntry<PlacedFeature> COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED = registerPlaced("coarse_dirt_splotch_on_grass", COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED, CountPlacementModifier.of(UniformIntProvider.create(0, 2)), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
     public static final RegistryEntry<ConfiguredFeature<TerrainSplotchFeatureConfig, ?>> LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED = registerConfigured("large_coarse_dirt_splotch_on_grass", TERRAIN_SPLOTCH, largeCoarseDirtSplotchOnGrassConfig());
     public static final RegistryEntry<PlacedFeature> LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED = registerPlaced("large_coarse_dirt_splotch_on_grass", LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED, RarityFilterPlacementModifier.of(60), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
 
