@@ -89,10 +89,10 @@ public class WondrousWilds implements ModInitializer {
 		});
 
 		birchForestModifier.add(ModificationPhase.ADDITIONS, ALL_BIRCH_FORESTS, context -> {
+			context.getGenerationSettings().addFeature(GenerationStep.Feature.LOCAL_MODIFICATIONS, WondrousWildsFeatures.BIRCH_FOREST_BOULDER_PLACED.getKey().orElseThrow());
+
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, WondrousWildsFeatures.COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED.getKey().orElseThrow());
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.UNDERGROUND_ORES, WondrousWildsFeatures.LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED.getKey().orElseThrow());
-
-			context.getGenerationSettings().addFeature(GenerationStep.Feature.LOCAL_MODIFICATIONS, WondrousWildsFeatures.BIRCH_FOREST_ROCK_PLACED.getKey().orElseThrow());
 
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, WondrousWildsFeatures.FALLEN_BIRCH_LOG_PLACED.getKey().orElseThrow());
 

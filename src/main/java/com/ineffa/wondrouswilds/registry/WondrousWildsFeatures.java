@@ -5,9 +5,11 @@ import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.mixin.FoliagePlacerTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TreeDecoratorTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TrunkPlacerTypeInvoker;
+import com.ineffa.wondrouswilds.world.features.BoulderFeature;
 import com.ineffa.wondrouswilds.world.features.FallenLogFeature;
 import com.ineffa.wondrouswilds.world.features.TerrainSplotchFeature;
 import com.ineffa.wondrouswilds.world.features.VioletPatchFeature;
+import com.ineffa.wondrouswilds.world.features.configs.BoulderFeatureConfig;
 import com.ineffa.wondrouswilds.world.features.configs.FallenLogFeatureConfig;
 import com.ineffa.wondrouswilds.world.features.configs.TerrainSplotchFeatureConfig;
 import com.ineffa.wondrouswilds.world.features.configs.VioletPatchFeatureConfig;
@@ -15,12 +17,14 @@ import com.ineffa.wondrouswilds.world.features.trees.decorators.*;
 import com.ineffa.wondrouswilds.world.features.trees.foliage.BirchFoliagePlacer;
 import com.ineffa.wondrouswilds.world.features.trees.foliage.FancyBirchFoliagePlacer;
 import com.ineffa.wondrouswilds.world.features.trees.trunks.StraightBranchingTrunkPlacer;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DataPool;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
-import net.minecraft.util.math.intprovider.ClampedIntProvider;
-import net.minecraft.util.math.intprovider.ConstantIntProvider;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.util.math.intprovider.*;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
@@ -30,12 +34,15 @@ import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 import net.minecraft.world.gen.trunk.TrunkPlacerType;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class WondrousWildsFeatures {
 
@@ -224,7 +231,7 @@ public class WondrousWildsFeatures {
                 new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.075F),
                 new RandomFeatureEntry(DYING_FANCY_BIRCH_PLACED, 0.05F)
         ), TALL_BIRCH_PLACED));
-        public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(Stream.of(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1)), VegetationPlacedFeatures.modifiersWithWouldSurvive(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), Blocks.BIRCH_SAPLING).stream()).collect(Collectors.toList()));
 
         public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(
                 new RandomFeatureEntry(FANCY_BIRCH_PLACED, 0.2125F),
@@ -244,7 +251,7 @@ public class WondrousWildsFeatures {
                 new RandomFeatureEntry(DYING_ORANGE_FANCY_BIRCH_PLACED, 0.0125F),
                 new RandomFeatureEntry(DYING_RED_FANCY_BIRCH_PLACED, 0.0125F)
         ), TALL_BIRCH_PLACED));
-        public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(Stream.of(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1)), VegetationPlacedFeatures.modifiersWithWouldSurvive(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), Blocks.BIRCH_SAPLING).stream()).collect(Collectors.toList()));
 
         public static void init() {}
     }
@@ -255,9 +262,13 @@ public class WondrousWildsFeatures {
     public static final RegistryEntry<ConfiguredFeature<TerrainSplotchFeatureConfig, ?>> LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED = registerConfigured("large_coarse_dirt_splotch_on_grass", TERRAIN_SPLOTCH, largeCoarseDirtSplotchOnGrassConfig());
     public static final RegistryEntry<PlacedFeature> LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_PLACED = registerPlaced("large_coarse_dirt_splotch_on_grass", LARGE_COARSE_DIRT_SPLOTCH_ON_GRASS_CONFIGURED, RarityFilterPlacementModifier.of(60), SquarePlacementModifier.of(), PlacedFeatures.WORLD_SURFACE_WG_HEIGHTMAP, BiomePlacementModifier.of());
 
+    public static final Feature<BoulderFeatureConfig> BOULDER = new BoulderFeature();
+    public static final RegistryEntry<ConfiguredFeature<BoulderFeatureConfig, ?>> BIRCH_FOREST_BOULDER_CONFIGURED = registerConfigured("birch_forest_boulder", BOULDER, birchForestBoulderConfig());
+    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_BOULDER_PLACED = registerPlaced("birch_forest_boulder", BIRCH_FOREST_BOULDER_CONFIGURED, RarityFilterPlacementModifier.of(5), CountPlacementModifier.of(new WeightedListIntProvider(new DataPool.Builder<IntProvider>().add(ConstantIntProvider.create(1), 7).add(BiasedToBottomIntProvider.create(3, 4), 1).build())), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), BlockFilterPlacementModifier.of(BlockPredicate.anyOf(BlockPredicate.matchingBlockTag(Direction.DOWN.getVector(), BlockTags.DIRT), BlockPredicate.matchingBlockTag(Direction.DOWN.getVector(), BlockTags.BASE_STONE_OVERWORLD))), BiomePlacementModifier.of());
+
     public static final Feature<FallenLogFeatureConfig> FALLEN_LOG = new FallenLogFeature();
     public static final RegistryEntry<ConfiguredFeature<FallenLogFeatureConfig, ?>> FALLEN_BIRCH_LOG_CONFIGURED = registerConfigured("fallen_birch_log", FALLEN_LOG, fallenBirchLogConfig());
-    public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, VegetationPlacedFeatures.modifiersWithWouldSurvive(RarityFilterPlacementModifier.of(12), Blocks.BIRCH_SAPLING));
+    public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, Stream.concat(Stream.of(RarityFilterPlacementModifier.of(12)), VegetationPlacedFeatures.modifiersWithWouldSurvive(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), Blocks.BIRCH_SAPLING).stream()).collect(Collectors.toList()));
 
     public static final RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>> LILY_OF_THE_VALLEY_PATCH_CONFIGURED = ConfiguredFeatures.register("lily_of_the_valley_patch", Feature.FLOWER, new RandomPatchFeatureConfig(64, 6, 2, PlacedFeatures.createEntry(Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.LILY_OF_THE_VALLEY)))));
     public static final RegistryEntry<PlacedFeature> LILY_OF_THE_VALLEY_PATCH_PLACED = registerPlaced("lily_of_the_valley_patch", LILY_OF_THE_VALLEY_PATCH_CONFIGURED, RarityFilterPlacementModifier.of(10), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
@@ -277,18 +288,25 @@ public class WondrousWildsFeatures {
     public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_GRASS_PATCH_PLACED = registerPlaced("birch_forest_grass_patch", VegetationConfiguredFeatures.PATCH_GRASS, VegetationPlacedFeatures.modifiers(8));
     public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TALL_GRASS_PATCH_PLACED = PlacedFeatures.register("birch_forest_tall_grass_patch", VegetationConfiguredFeatures.PATCH_TALL_GRASS, RarityFilterPlacementModifier.of(8), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
 
-    public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_ROCK_PLACED = registerPlaced("birch_forest_rock", MiscConfiguredFeatures.FOREST_ROCK, RarityFilterPlacementModifier.of(5), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
-
-    private static FallenLogFeatureConfig fallenBirchLogConfig() {
-        return new FallenLogFeatureConfig(BlockStateProvider.of(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG), BlockStateProvider.of(WondrousWildsBlocks.DEAD_BIRCH_LOG), 3, 8, 3);
-    }
-
     private static TerrainSplotchFeatureConfig coarseDirtSplotchOnGrassConfig() {
         return new TerrainSplotchFeatureConfig(BlockStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.GRASS_BLOCK), UniformIntProvider.create(4, 8), UniformIntProvider.create(3, 3), UniformFloatProvider.create(0.3F, 0.7F));
     }
 
     private static TerrainSplotchFeatureConfig largeCoarseDirtSplotchOnGrassConfig() {
         return new TerrainSplotchFeatureConfig(BlockStateProvider.of(Blocks.COARSE_DIRT), BlockPredicate.matchingBlocks(Blocks.GRASS_BLOCK), UniformIntProvider.create(12, 16), UniformIntProvider.create(5, 5), UniformFloatProvider.create(0.6F, 0.9F));
+    }
+
+    private static BoulderFeatureConfig birchForestBoulderConfig() {
+        return new BoulderFeatureConfig(
+                new WeightedBlockStateProvider(new DataPool.Builder<BlockState>().add(Blocks.MOSSY_COBBLESTONE.getDefaultState(), 3).add(Blocks.COBBLESTONE.getDefaultState(), 2).add(Blocks.MOSS_BLOCK.getDefaultState(), 1).build()),
+                BoulderFeatureConfig.DEFAULT_BOULDER_REPLACE_PREDICATE,
+                new WeightedListIntProvider(new DataPool.Builder<IntProvider>().add(new WeightedListIntProvider(new DataPool.Builder<IntProvider>().add(ConstantIntProvider.create(1), 6).add(ConstantIntProvider.create(2), 3).add(ConstantIntProvider.create(3), 1).build()), 19).add(BiasedToBottomIntProvider.create(4, 6), 1).build()),
+                BiasedToBottomIntProvider.create(1, 3)
+        );
+    }
+
+    private static FallenLogFeatureConfig fallenBirchLogConfig() {
+        return new FallenLogFeatureConfig(BlockStateProvider.of(WondrousWildsBlocks.HOLLOW_DEAD_BIRCH_LOG), BlockStateProvider.of(WondrousWildsBlocks.DEAD_BIRCH_LOG), 3, 8, 3);
     }
 
     private static VioletPatchFeatureConfig purpleVioletPatchConfig() {
@@ -328,6 +346,7 @@ public class WondrousWildsFeatures {
         Trees.init();
 
         Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "terrain_splotch"), TERRAIN_SPLOTCH);
+        Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "boulder"), BOULDER);
 
         Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "fallen_log"), FALLEN_LOG);
 
