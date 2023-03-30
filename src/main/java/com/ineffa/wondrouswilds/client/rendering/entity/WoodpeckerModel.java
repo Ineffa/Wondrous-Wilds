@@ -6,9 +6,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.molang.MolangParser;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.resource.GeckoLibCache;
-import software.bernie.shadowed.eliotlash.molang.MolangParser;
 
 public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
 
@@ -55,19 +55,18 @@ public class WoodpeckerModel extends AnimatedGeoModel<WoodpeckerEntity> {
         float f1 = MathHelper.lerpAngleDegrees(delta, woodpecker.prevHeadYaw, woodpecker.getHeadYaw());
         float headYaw = f1 - f;
 
-        parser.setValue("query.head_pitch", headPitch);
-        parser.setValue("query.head_yaw", headYaw);
+        parser.setValue("query.head_pitch", () -> headPitch);
+        parser.setValue("query.head_yaw", () -> headYaw);
 
         float swing = woodpecker.shouldPreventMovementAnimations() ? 0.0F : woodpecker.limbAngle - woodpecker.limbDistance * (1.0F - delta);
         float swingAmount = woodpecker.shouldPreventMovementAnimations() ? 0.0F : MathHelper.lerp(delta, woodpecker.lastLimbDistance, woodpecker.limbDistance);
-        float extraSwing = 0.0F;
-        if (!flying) extraSwing = 0.5F * MathHelper.clamp(swingAmount * 10.0F, 0.0F, 1.0F);
+        float extraSwing = flying ? 0.0F : 0.5F * MathHelper.clamp(swingAmount * 10.0F, 0.0F, 1.0F);
 
-        parser.setValue("query.swing", swing * (woodpecker.isBaby() ? 0.3D : 0.15D));
-        parser.setValue("query.swing_amount", MathHelper.clamp(swingAmount + extraSwing, 0.0D, flying ? 1.0D : 1.25D));
+        parser.setValue("query.swing", () -> swing * (woodpecker.isBaby() ? 0.3D : 0.15D));
+        parser.setValue("query.swing_amount", () -> MathHelper.clamp(swingAmount + extraSwing, 0.0D, flying ? 1.0D : 1.25D));
 
         float flapAngle = MathHelper.lerp(delta, woodpecker.prevFlapAngle, woodpecker.flapAngle);
 
-        parser.setValue("query.flap_angle", flapAngle);
+        parser.setValue("query.flap_angle", () -> flapAngle);
     }
 }
