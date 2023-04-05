@@ -1,0 +1,41 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"StandingConstant": {
+			"loop": true,
+			"bones": {
+				"headConstant": {
+					"rotation": {
+						"vector": ["query.head_pitch", "query.head_yaw * 0.4", 0]
+					}
+				},
+				"bellyConstant": {
+					"rotation": {
+						"vector": ["query.tilt_angle", 0, 0]
+					}
+				},
+				"frontFeetConstant": {
+					"rotation": {
+						"vector": ["query.tilt_angle * -0.8", 0, 0]
+					}
+				},
+				"backFeetConstant": {
+					"rotation": {
+						"vector": ["(query.tilt_angle > 0) ? ((query.tilt_angle * 0.1) + (math.max(0, query.tilt_angle - 60) * 5.6)) : query.tilt_angle * -2;", 0, 0]
+					}
+				},
+				"rightBackFootConstant": {
+					"rotation": {
+						"vector": [0, 10, 0]
+					}
+				},
+				"leftBackFootConstant": {
+					"rotation": {
+						"vector": [0, -10, 0]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

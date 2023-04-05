@@ -3,6 +3,7 @@ package com.ineffa.wondrouswilds.registry;
 import com.google.common.collect.ImmutableMap;
 import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.entities.BlockNester;
+import com.ineffa.wondrouswilds.entities.ChipmunkEntity;
 import com.ineffa.wondrouswilds.entities.FireflyEntity;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -35,6 +36,15 @@ public class WondrousWildsEntities {
             .entityFactory(WoodpeckerEntity::new)
             .defaultAttributes(WoodpeckerEntity::createWoodpeckerAttributes)
             .dimensions(EntityDimensions.fixed(0.3125F, 0.5F))
+            .spawnGroup(SpawnGroup.CREATURE)
+            .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::isValidNaturalSpawn)
+            .build()
+    );
+
+    public static final EntityType<ChipmunkEntity> CHIPMUNK = Registry.register(Registry.ENTITY_TYPE, new Identifier(WondrousWilds.MOD_ID, "chipmunk"), FabricEntityTypeBuilder.createMob()
+            .entityFactory(ChipmunkEntity::new)
+            .defaultAttributes(ChipmunkEntity::createChipmunkAttributes)
+            .dimensions(EntityDimensions.fixed(0.25F, 0.34375F))
             .spawnGroup(SpawnGroup.CREATURE)
             .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::isValidNaturalSpawn)
             .build()

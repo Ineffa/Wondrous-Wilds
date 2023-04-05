@@ -7,10 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
@@ -97,5 +94,11 @@ public class WondrousWildsUtils {
         Vec3d raycastStart = new Vec3d(entity.getX(), entity.getEyeY(), entity.getZ());
         Vec3d raycastEnd = blockBoundingBox.getCenter().add(posToCheck.getX(), posToCheck.getY(), posToCheck.getZ());
         return world.raycast(new RaycastContext(raycastStart, raycastEnd, RaycastContext.ShapeType.COLLIDER, ignoreFluids ? RaycastContext.FluidHandling.NONE : RaycastContext.FluidHandling.ANY, entity)).getBlockPos().equals(posToCheck);
+    }
+
+    public static double stepTowards(double from, double to, double step) {
+        step = Math.abs(step);
+        if (from < to) return MathHelper.clamp(from + step, from, to);
+        return MathHelper.clamp(from - step, to, from);
     }
 }

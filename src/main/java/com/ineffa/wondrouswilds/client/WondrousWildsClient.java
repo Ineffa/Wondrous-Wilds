@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.client;
 
 import com.ineffa.wondrouswilds.client.particle.SharpshotHitParticle;
 import com.ineffa.wondrouswilds.client.rendering.WondrousWildsColorProviders;
+import com.ineffa.wondrouswilds.client.rendering.entity.ChipmunkRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.FireflyRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.WoodpeckerRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.armor.BycocketRenderer;
@@ -27,6 +28,7 @@ public class WondrousWildsClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(WondrousWildsEntities.FIREFLY, FireflyRenderer::new);
         EntityRendererRegistry.register(WondrousWildsEntities.WOODPECKER, WoodpeckerRenderer::new);
+        EntityRendererRegistry.register(WondrousWildsEntities.CHIPMUNK, ChipmunkRenderer::new);
 
         GeoArmorRenderer.registerArmorRenderer(new BycocketRenderer(),
                 WondrousWildsItems.BLACK_BYCOCKET

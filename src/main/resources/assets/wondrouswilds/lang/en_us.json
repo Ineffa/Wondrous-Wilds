@@ -1,6 +1,7 @@
 {
   "entity.wondrouswilds.firefly": "Firefly",
   "entity.wondrouswilds.woodpecker": "Woodpecker",
+  "entity.wondrouswilds.chipmunk": "Chipmunk",
 
   "block.wondrouswilds.purple_violet": "Violet",
   "block.wondrouswilds.pink_violet": "Pink Violet",
@@ -71,6 +72,7 @@
 
   "container.wondrouswilds.nest_box": "Nest Box",
 
+  "item.wondrouswilds.acorn": "Acorn",
   "item.wondrouswilds.woodpecker_crest_feather": "Woodpecker Crest Feather",
   "item.wondrouswilds.black_bycocket": "Black Bycocket",
   "item.wondrouswilds.scroll_of_secrets_nest_box": "Scroll of Secrets",
@@ -78,6 +80,7 @@
   "item.wondrouswilds.music_disc_avian.desc": "LudoCrypt - Avian",
   "item.wondrouswilds.firefly_spawn_egg": "Firefly Spawn Egg",
   "item.wondrouswilds.woodpecker_spawn_egg": "Woodpecker Spawn Egg",
+  "item.wondrouswilds.chipmunk_spawn_egg": "Chipmunk Spawn Egg",
   "item.wondrouswilds.lovifier": "Lovifier",
   "item.wondrouswilds.lovifier.desc": "Used to instantly tame any tameable Wondrous Wilds mob",
 

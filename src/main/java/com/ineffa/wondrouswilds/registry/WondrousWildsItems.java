@@ -105,6 +105,8 @@ public class WondrousWildsItems {
 
     public static final BlockItem BIRCH_NEST_BOX = registerBlockItem(WondrousWildsBlocks.BIRCH_NEST_BOX);
 
+    public static final Item ACORN = registerItem("acorn", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
+
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
     public static final Item BLACK_BYCOCKET = registerItem("black_bycocket", new BycocketItem(DyeColor.BLACK));
 
@@ -114,6 +116,7 @@ public class WondrousWildsItems {
 
     public static final Item FIREFLY_SPAWN_EGG = registerItem("firefly_spawn_egg", new SpawnEggItem(WondrousWildsEntities.FIREFLY, 2563094, 14876540, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
     public static final Item WOODPECKER_SPAWN_EGG = registerItem("woodpecker_spawn_egg", new SpawnEggItem(WondrousWildsEntities.WOODPECKER, 2761271, 16740713, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
+    public static final Item CHIPMUNK_SPAWN_EGG = registerItem("chipmunk_spawn_egg", new SpawnEggItem(WondrousWildsEntities.CHIPMUNK, 6171159, 16112839, new Item.Settings().group(WONDROUS_WILDS_ITEM_GROUP)));
 
     public static final Item LOVIFIER = registerItem("lovifier", new LovifierItem(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP).maxCount(1)));
 
