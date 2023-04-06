@@ -83,7 +83,7 @@ public class JumpNavigation extends MobNavigation {
 
     protected boolean tryJumpingToCurrentNode() {
         Vec3d nodePos = Vec3d.ofBottomCenter(this.getCurrentPath().getCurrentNodePos());
-        Vec3d jumpVec = tryCreatingJumpBetween(this.entity, this.entity.getPos(), nodePos);
+        Vec3d jumpVec = tryCreatingJumpBetween(this.entity, this.entity.getPos(), nodePos, 40, 80);
         if (jumpVec != null) {
             this.entity.setVelocity(jumpVec);
 
@@ -99,13 +99,24 @@ public class JumpNavigation extends MobNavigation {
     }
 
     @Nullable
-    public static Vec3d tryCreatingJumpBetween(MobEntity entity, Vec3d from, Vec3d to) {
+    public static Vec3d tryCreatingJumpBetween(MobEntity entity, Vec3d from, Vec3d to, int lowerAngleBound, int upperAngleBound) {
         int density = 5;
-        int currentJumpAngle = 40;
-        while (currentJumpAngle <= 80) {
-            Vec3d jumpVec = getJumpVector(from, to, currentJumpAngle);
-            currentJumpAngle += 5;
+        int angleBound = upperAngleBound;
+        int currentAngle = lowerAngleBound;
+        boolean reverse = false;
+        while (reverse ? currentAngle >= angleBound : currentAngle <= angleBound) {
+            Vec3d jumpVec = getJumpVector(from, to, currentAngle);
+            currentAngle += reverse ? -5 : 5;
             if (jumpVec == null) continue;
+
+            if (Double.isNaN(jumpVec.x) || Double.isNaN(jumpVec.y) || Double.isNaN(jumpVec.z)) {
+                if (reverse) break;
+
+                reverse = true;
+                angleBound = lowerAngleBound;
+                currentAngle = upperAngleBound;
+                continue;
+            }
 
             boolean validJump = true;
             double e = 5.0D * (5.0D * jumpVec.y + Math.sqrt(25.0D * jumpVec.y * jumpVec.y - 4.0D * (to.y - from.y))) * density;
@@ -113,15 +124,18 @@ public class JumpNavigation extends MobNavigation {
                 double x = t * jumpVec.x;
                 double y = t * jumpVec.y - 0.04D * t * t;
                 double z = t * jumpVec.z;
+                Vec3d vec3d = from.add(x, y, z);
 
                 EntityDimensions entityDimensions = entity.getDimensions(EntityPose.LONG_JUMPING);
-                Vec3d vec3d = from.add(x, y, z);
                 Box box = entityDimensions.getBoxAt(vec3d.add(0.0D, entityDimensions.height / 2, 0.0D));
                 if (!entity.getWorld().containsFluid(box) && entity.getWorld().isSpaceEmpty(entity, box)) {
                     // Debug
                     ((ServerWorld) entity.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, vec3d.getX(), vec3d.getY(), vec3d.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
                     continue;
                 }
+
+                if (vec3d.distanceTo(to) <= 0.5D) break;
+
                 // Debug
                 ((ServerWorld) entity.getWorld()).spawnParticles(ParticleTypes.ANGRY_VILLAGER, vec3d.getX(), vec3d.getY(), vec3d.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
                 validJump = false;
