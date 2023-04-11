@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.control.BodyControl;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
@@ -22,6 +23,7 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -100,6 +102,56 @@ public class ChipmunkEntity extends AnimalEntity implements HoppingMob, IAnimata
     @Override
     protected EntityNavigation createNavigation(World world) {
         return new JumpNavigation(this, world);
+    }
+
+    @Override
+    protected Vec3d adjustMovementForSneaking(Vec3d movement, MovementType type) {
+        if (movement.getY() <= 0.0D && type == MovementType.SELF && (this.isOnGround() || this.fallDistance < this.stepHeight && !this.getWorld().isSpaceEmpty(this, this.getBoundingBox().offset(0.0, this.fallDistance - this.stepHeight, 0.0)))) {
+            double d = movement.x;
+            double e = movement.z;
+            double f = 0.05D;
+            while (d != 0.0D && this.getWorld().isSpaceEmpty(this, this.getBoundingBox().offset(d, -this.stepHeight, 0.0D))) {
+                if (d < f && d >= -f) {
+                    d = 0.0D;
+                    continue;
+                }
+                if (d > 0.0D) {
+                    d -= f;
+                    continue;
+                }
+                d += f;
+            }
+            while (e != 0.0D && this.getWorld().isSpaceEmpty(this, this.getBoundingBox().offset(0.0D, -this.stepHeight, e))) {
+                if (e < f && e >= -f) {
+                    e = 0.0D;
+                    continue;
+                }
+                if (e > 0.0D) {
+                    e -= f;
+                    continue;
+                }
+                e += f;
+            }
+            while (d != 0.0D && e != 0.0D && this.getWorld().isSpaceEmpty(this, this.getBoundingBox().offset(d, -this.stepHeight, e))) {
+                d = d < f && d >= -f ? 0.0D : (d > 0.0D ? d - f : d + f);
+                if (e < f && e >= -f) {
+                    e = 0.0D;
+                    continue;
+                }
+                if (e > 0.0D) {
+                    e -= f;
+                    continue;
+                }
+                e += f;
+            }
+            movement = new Vec3d(d, movement.y, e);
+        }
+        return movement;
+    }
+
+    @Override
+    public boolean isSneaking() {
+        return this.isOnGround() && super.isSneaking();
     }
 
     @Override
