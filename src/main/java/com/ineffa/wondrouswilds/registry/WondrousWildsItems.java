@@ -1,7 +1,9 @@
 package com.ineffa.wondrouswilds.registry;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
+import com.ineffa.wondrouswilds.entities.projectiles.BodkinArrowEntity;
 import com.ineffa.wondrouswilds.items.LovifierItem;
+import com.ineffa.wondrouswilds.items.BodkinArrowItem;
 import com.ineffa.wondrouswilds.items.ScrollOfSecretsItem;
 import com.ineffa.wondrouswilds.items.armor.BycocketItem;
 import com.ineffa.wondrouswilds.items.armor.WondrousWildsArmorMaterial;
@@ -13,6 +15,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.item.*;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
@@ -108,6 +111,7 @@ public class WondrousWildsItems {
     public static final Item ACORN = registerItem("acorn", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
 
     public static final Item WOODPECKER_CREST_FEATHER = registerItem("woodpecker_crest_feather", new Item(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
+    public static final Item BODKIN_ARROW = registerItem("bodkin_arrow", new BodkinArrowItem(new FabricItemSettings().group(WONDROUS_WILDS_ITEM_GROUP)));
     public static final Item BLACK_BYCOCKET = registerItem("black_bycocket", new BycocketItem(DyeColor.BLACK));
 
     public static final Item MUSIC_DISC_AVIAN = registerItem("music_disc_avian", MusicDiscItemInvoker.createNewMusicDisc(14, WondrousWildsSounds.MUSIC_DISC_AVIAN, new FabricItemSettings().maxCount(1).rarity(Rarity.EPIC).group(WONDROUS_WILDS_ITEM_GROUP), 218));
@@ -144,6 +148,8 @@ public class WondrousWildsItems {
         ComposterBlockInvoker.addCompostableItem(0.3F, YELLOW_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, ORANGE_BIRCH_LEAVES);
         ComposterBlockInvoker.addCompostableItem(0.3F, RED_BIRCH_LEAVES);
+
+        DispenserBlock.registerBehavior(BODKIN_ARROW, BodkinArrowEntity.getDispenserBehavior());
 
         Trades.addWandererTrade(false, 16, PURPLE_VIOLET, 2, 1);
         Trades.addWandererTrade(false, 16, PINK_VIOLET, 2, 1);

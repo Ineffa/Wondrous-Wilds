@@ -6,6 +6,7 @@ import com.ineffa.wondrouswilds.entities.BlockNester;
 import com.ineffa.wondrouswilds.entities.ChipmunkEntity;
 import com.ineffa.wondrouswilds.entities.FireflyEntity;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
+import com.ineffa.wondrouswilds.entities.projectiles.BodkinArrowEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
@@ -47,6 +48,14 @@ public class WondrousWildsEntities {
             .dimensions(EntityDimensions.fixed(0.25F, 0.34375F))
             .spawnGroup(SpawnGroup.CREATURE)
             .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, AnimalEntity::isValidNaturalSpawn)
+            .build()
+    );
+
+    public static final EntityType<BodkinArrowEntity> BODKIN_ARROW = Registry.register(Registry.ENTITY_TYPE, new Identifier(WondrousWilds.MOD_ID, "bodkin_arrow"), FabricEntityTypeBuilder.<BodkinArrowEntity>create()
+            .entityFactory(BodkinArrowEntity::new)
+            .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
+            .trackRangeBlocks(4)
+            .trackedUpdateRate(20)
             .build()
     );
 

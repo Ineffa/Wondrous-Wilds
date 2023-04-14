@@ -6,6 +6,7 @@ import com.ineffa.wondrouswilds.client.rendering.entity.ChipmunkRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.FireflyRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.WoodpeckerRenderer;
 import com.ineffa.wondrouswilds.client.rendering.entity.armor.BycocketRenderer;
+import com.ineffa.wondrouswilds.client.rendering.entity.projectile.BodkinArrowRenderer;
 import com.ineffa.wondrouswilds.client.screen.WondrousWildsScreens;
 import com.ineffa.wondrouswilds.networking.WondrousWildsNetwork;
 import com.ineffa.wondrouswilds.registry.WondrousWildsBlocks;
@@ -33,6 +34,8 @@ public class WondrousWildsClient implements ClientModInitializer {
         GeoArmorRenderer.registerArmorRenderer(new BycocketRenderer(),
                 WondrousWildsItems.BLACK_BYCOCKET
         );
+        EntityRendererRegistry.register(WondrousWildsEntities.BODKIN_ARROW, BodkinArrowRenderer::new);
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.SMALL_POLYPORE, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(WondrousWildsBlocks.BIG_POLYPORE, RenderLayer.getCutout());

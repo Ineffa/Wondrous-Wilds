@@ -20,6 +20,7 @@
     "MusicDiscItemInvoker",
     "PathNodeMixin",
     "PathNodeNavigatorMixin",
+    "PersistentProjectileEntityMixin",
     "ProjectileUtilMixin",
     "RecipeUnlockerMixin",
     "SaplingGeneratorMixin",
