@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "S",
+    "F"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "F": {
+      "item": "wondrouswilds:woodpecker_crest_feather"
+    }
+  },
+  "result": {
+    "item": "wondrouswilds:bodkin_arrow",
+    "count": 4
+  }
+}
