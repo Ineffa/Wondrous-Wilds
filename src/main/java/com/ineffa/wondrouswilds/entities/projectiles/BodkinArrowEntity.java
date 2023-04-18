@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BodkinArrowEntity extends PersistentProjectileEntity implements BlockBreakingProjectile {
+public class BodkinArrowEntity extends PersistentProjectileEntity implements BlockBreakingProjectile, HasCustomGravity {
 
     public BodkinArrowEntity(EntityType<? extends BodkinArrowEntity> entityType, World world) {
         super(entityType, world);
@@ -63,6 +63,11 @@ public class BodkinArrowEntity extends PersistentProjectileEntity implements Blo
                 this.discard();
             }
         }
+    }
+
+    @Override
+    public double getGravity() {
+        return 0.075D;
     }
 
     @Override
