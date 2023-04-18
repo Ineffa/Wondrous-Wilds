@@ -7,14 +7,8 @@ import javax.annotation.Nullable;
 
 public interface BlockBreakingProjectile {
 
-    float getHardBlockCeiling();
-
-    float getSoftBlockCeiling();
-
-    double getStrongSpeedThreshold();
+    double getStrongVelocityThreshold();
 
     @Nullable
-    ProjectileBlockBreakType testBlockBreakCapability(World world, BlockPos pos);
-
-    boolean canPenetratePos(World world, BlockPos pos);
+    ProjectileBlockDamageType testBlockDamageCapability(World world, BlockPos pos);
 }

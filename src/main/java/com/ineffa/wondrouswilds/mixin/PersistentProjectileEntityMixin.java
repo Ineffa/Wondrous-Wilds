@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.mixin;
 
 import com.ineffa.wondrouswilds.entities.projectiles.BlockBreakingProjectile;
+import com.ineffa.wondrouswilds.entities.projectiles.ProjectileBlockDamageType;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -18,21 +19,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class PersistentProjectileEntityMixin extends ProjectileEntity {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;raycast(Lnet/minecraft/world/RaycastContext;)Lnet/minecraft/util/hit/BlockHitResult;", ordinal = 0))
-    private BlockHitResult penetrateSoftBlocks(World world, RaycastContext raycastContext) {
+    private BlockHitResult pierceSoftBlocks(World world, RaycastContext raycastContext) {
         if (!this.getWorld().isClient() && this.getType() == WondrousWildsEntities.BODKIN_ARROW) {
             BlockBreakingProjectile projectile = (BlockBreakingProjectile) this;
-            if (this.getVelocity().length() >= projectile.getStrongSpeedThreshold()) {
-                boolean finishedPenetrating = false;
-                while (!finishedPenetrating) {
+            if (this.getVelocity().length() >= projectile.getStrongVelocityThreshold()) {
+                boolean finishedPiercing = false;
+                while (!finishedPiercing) {
                     BlockHitResult result = world.raycast(raycastContext);
                     if (result.getType() == HitResult.Type.BLOCK) {
                         BlockPos hitPos = result.getBlockPos();
-                        if (projectile.canPenetratePos(this.getWorld(), hitPos)) {
+                        if (projectile.testBlockDamageCapability(this.getWorld(), hitPos) == ProjectileBlockDamageType.PIERCE) {
                             this.getWorld().breakBlock(hitPos, true, this.getOwner());
                             continue;
                         }
                     }
-                    finishedPenetrating = true;
+                    finishedPiercing = true;
                 }
             }
         }

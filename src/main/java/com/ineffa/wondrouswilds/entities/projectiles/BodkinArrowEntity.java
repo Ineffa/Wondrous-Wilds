@@ -2,6 +2,7 @@ package com.ineffa.wondrouswilds.entities.projectiles;
 
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
+import com.ineffa.wondrouswilds.util.blockdamage.BlockDamageManager;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -31,52 +32,33 @@ public class BodkinArrowEntity extends PersistentProjectileEntity implements Blo
     }
 
     @Override
-    public float getHardBlockCeiling() {
-        return 3.0F;
-    }
-
-    @Override
-    public float getSoftBlockCeiling() {
-        return 0.3F;
-    }
-
-    @Override
-    public double getStrongSpeedThreshold() {
+    public double getStrongVelocityThreshold() {
         return 1.0D;
     }
 
     @Nullable
     @Override
-    public ProjectileBlockBreakType testBlockBreakCapability(World world, BlockPos pos) {
+    public ProjectileBlockDamageType testBlockDamageCapability(World world, BlockPos pos) {
         if (!this.canModifyAt(world, pos)) return null;
 
-        float hardness = world.getBlockState(pos).getBlock().getHardness();
-        if (hardness > this.getHardBlockCeiling() || hardness < 0.0F) return null;
+        ProjectileBlockDamageType damageType = ProjectileBlockDamageType.getTypeForHardness(world.getBlockState(pos).getBlock().getHardness());
+        if (damageType == null || damageType == ProjectileBlockDamageType.PIERCE) return damageType;
 
-        if (hardness <= this.getSoftBlockCeiling()) return ProjectileBlockBreakType.SOFT;
-        return this.getVelocity().length() >= this.getStrongSpeedThreshold() ? ProjectileBlockBreakType.HARD : null;
-    }
-
-    @Override
-    public boolean canPenetratePos(World world, BlockPos pos) {
-        if (!this.canModifyAt(world, pos)) return false;
-
-        float hardness = world.getBlockState(pos).getBlock().getHardness();
-        return hardness <= this.getSoftBlockCeiling() && hardness >= 0.0F;
+        return this.getVelocity().length() >= this.getStrongVelocityThreshold() ? damageType : null;
     }
 
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         BlockPos hitPos = blockHitResult.getBlockPos();
-        ProjectileBlockBreakType breakType = null;
-        if (!this.getWorld().isClient()) breakType = this.testBlockBreakCapability(this.getWorld(), hitPos);
+        ProjectileBlockDamageType damageType = null;
+        if (!this.getWorld().isClient()) damageType = this.testBlockDamageCapability(this.getWorld(), hitPos);
 
         super.onBlockHit(blockHitResult);
 
-        if (breakType != null) {
-            this.getWorld().breakBlock(hitPos, true, this.getOwner());
+        if (damageType != null && this.getWorld() instanceof BlockDamageManager blockDamageManager) {
+            blockDamageManager.applyDamageToBlock(hitPos, damageType.getDamage(), this.getOwner());
 
-            if (breakType == ProjectileBlockBreakType.HARD) {
+            if (damageType != ProjectileBlockDamageType.PIERCE) {
                 this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.25F, 1.4F + (this.random.nextFloat() * 0.4F));
                 this.discard();
             }

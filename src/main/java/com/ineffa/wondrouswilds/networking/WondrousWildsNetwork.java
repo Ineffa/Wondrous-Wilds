@@ -1,6 +1,7 @@
 package com.ineffa.wondrouswilds.networking;
 
 import com.ineffa.wondrouswilds.WondrousWilds;
+import com.ineffa.wondrouswilds.networking.packets.s2c.BlockDamagePacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.NestTransitionStartPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
@@ -17,6 +18,8 @@ public final class WondrousWildsNetwork {
 
     @Environment(value = EnvType.CLIENT)
     public static void registerS2CPackets() {
+        ClientPlayNetworking.registerGlobalReceiver(BlockDamagePacket.ID, BlockDamagePacket::receive);
+
         ClientPlayNetworking.registerGlobalReceiver(NestTransitionStartPacket.ID, NestTransitionStartPacket::receive);
 
         ClientPlayNetworking.registerGlobalReceiver(WoodpeckerDrillPacket.ID, WoodpeckerDrillPacket::receive);

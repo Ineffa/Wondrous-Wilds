@@ -25,6 +25,7 @@
     "RecipeUnlockerMixin",
     "SaplingGeneratorMixin",
     "ServerPlayerEntityMixin",
+    "ServerWorldMixin",
     "ShapedRecipeInvoker",
     "SpawnGroupMixin",
     "TreeDecoratorTypeInvoker",
@@ -32,7 +33,9 @@
   ],
   "client": [
     "ClientPlayNetworkHandlerMixin",
-    "EntityRenderDispatcherMixin"
+    "ClientWorldMixin",
+    "EntityRenderDispatcherMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
