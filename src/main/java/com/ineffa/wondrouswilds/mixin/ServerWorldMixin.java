@@ -8,6 +8,7 @@ import com.ineffa.wondrouswilds.util.blockdamage.ServerBlockDamageInstance;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -81,6 +82,12 @@ public abstract class ServerWorldMixin extends World implements BlockDamageHolde
     @Inject(method = "setBlockBreakingInfo", at = @At("HEAD"))
     private void setBlockBreakingInfo(int entityId, BlockPos pos, int progress, CallbackInfo callback) {
         this.removeDamageAtPos(pos);
+    }
+
+    // This additional injection is only required because ServerWorld lacks a super call for this method
+    @Inject(method = "onBlockChanged", at = @At("HEAD"))
+    private void onBlockChangeClearDamage(BlockPos pos, BlockState oldBlock, BlockState newBlock, CallbackInfo callback) {
+        if (oldBlock.getBlock() != newBlock.getBlock()) this.removeDamageAtPos(pos);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;tickBlockEntities()V", shift = At.Shift.AFTER))

@@ -29,7 +29,8 @@
     "ShapedRecipeInvoker",
     "SpawnGroupMixin",
     "TreeDecoratorTypeInvoker",
-    "TrunkPlacerTypeInvoker"
+    "TrunkPlacerTypeInvoker",
+    "WorldMixin"
   ],
   "client": [
     "ClientPlayNetworkHandlerMixin",
