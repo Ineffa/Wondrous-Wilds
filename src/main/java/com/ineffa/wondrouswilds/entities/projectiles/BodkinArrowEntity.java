@@ -1,14 +1,20 @@
 package com.ineffa.wondrouswilds.entities.projectiles;
 
+import com.ineffa.wondrouswilds.networking.packets.s2c.BlockBreakingParticlesPacket;
 import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
 import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import com.ineffa.wondrouswilds.util.blockdamage.BlockDamageManager;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -60,6 +66,12 @@ public class BodkinArrowEntity extends PersistentProjectileEntity implements Blo
 
             if (damageType != ProjectileBlockDamageType.PIERCE) {
                 this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.25F, 1.4F + (this.random.nextFloat() * 0.4F));
+
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeBlockPos(hitPos);
+                buf.writeEnumConstant(blockHitResult.getSide());
+                for (ServerPlayerEntity receiver : PlayerLookup.tracking(this)) ServerPlayNetworking.send(receiver, BlockBreakingParticlesPacket.ID, buf);
+
                 this.discard();
             }
         }
