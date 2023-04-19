@@ -8,7 +8,7 @@ import com.ineffa.wondrouswilds.entities.ai.*;
 import com.ineffa.wondrouswilds.entities.eggs.LaysEggsInNests;
 import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
 import com.ineffa.wondrouswilds.networking.packets.s2c.NestTransitionStartPacket;
-import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerDrillPacket;
+import com.ineffa.wondrouswilds.networking.packets.s2c.BlockBreakingParticlesPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
 import com.ineffa.wondrouswilds.registry.*;
 import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
@@ -934,7 +934,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                             PacketByteBuf buf = PacketByteBufs.create();
                             buf.writeBlockPos(this.getClingPos());
                             buf.writeEnumConstant(this.clingSide);
-                            for (ServerPlayerEntity receiver : PlayerLookup.tracking(this)) ServerPlayNetworking.send(receiver, WoodpeckerDrillPacket.ID, buf);
+                            for (ServerPlayerEntity receiver : PlayerLookup.tracking(this)) ServerPlayNetworking.send(receiver, BlockBreakingParticlesPacket.ID, buf);
 
                             peckSound = peckState.getSoundGroup().getHitSound();
                         }

@@ -11,17 +11,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public final class WoodpeckerDrillPacket {
+public final class BlockBreakingParticlesPacket {
 
-    public static final Identifier ID = WondrousWildsNetwork.createChannelId("woodpecker_drill");
+    public static final Identifier ID = WondrousWildsNetwork.createChannelId("block_breaking_particles");
 
     @Environment(value = EnvType.CLIENT)
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-        BlockPos drillPos = buf.readBlockPos();
-        Direction drillSide = buf.readEnumConstant(Direction.class);
+        BlockPos pos = buf.readBlockPos();
+        Direction side = buf.readEnumConstant(Direction.class);
 
         client.execute(() -> {
-            for (int i = 0; i < 10; ++i) client.particleManager.addBlockBreakingParticles(drillPos, drillSide);
+            for (int i = 0; i < 10; ++i) client.particleManager.addBlockBreakingParticles(pos, side);
         });
     }
 }
