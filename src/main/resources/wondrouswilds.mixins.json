@@ -13,6 +13,7 @@
     "EntityNavigationInvoker",
     "FoliagePlacerTypeInvoker",
     "LandPathNodeMakerAccessor",
+    "LivingEntityMixin",
     "MixinBycocketAbilityHandler",
     "MixinBycocketAbilityProcessor",
     "MobEntityAccessor",
