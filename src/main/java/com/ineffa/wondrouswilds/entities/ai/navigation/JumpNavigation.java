@@ -83,7 +83,7 @@ public class JumpNavigation extends MobNavigation {
 
     protected boolean tryJumpingToCurrentNode() {
         Vec3d nodePos = Vec3d.ofBottomCenter(this.getCurrentPath().getCurrentNodePos());
-        Vec3d jumpVec = tryCreatingJumpBetween(this.entity, this.entity.getPos(), nodePos, 40, 80);
+        Vec3d jumpVec = tryCreatingJumpBetween(this.entity, this.entity.getPos(), nodePos, 40, 80, 5, this.hoppingMob.getMaxJumpVelocity());
         if (jumpVec != null) {
             this.entity.setVelocity(jumpVec);
 
@@ -99,17 +99,18 @@ public class JumpNavigation extends MobNavigation {
     }
 
     @Nullable
-    public static Vec3d tryCreatingJumpBetween(MobEntity entity, Vec3d from, Vec3d to, int lowerAngleBound, int upperAngleBound) {
+    public static Vec3d tryCreatingJumpBetween(MobEntity entity, Vec3d from, Vec3d to, int lowerAngleBound, int upperAngleBound, int angleIncrement, double maxVelocity) {
+        EntityDimensions entityDimensions = entity.getDimensions(EntityPose.LONG_JUMPING);
         int density = 5;
         int angleBound = upperAngleBound;
         int currentAngle = lowerAngleBound;
         boolean reverse = false;
         while (reverse ? currentAngle >= angleBound : currentAngle <= angleBound) {
-            Vec3d jumpVec = getJumpVector(from, to, currentAngle);
-            currentAngle += reverse ? -5 : 5;
+            Vec3d jumpVec = getJumpVector(from, to, currentAngle, maxVelocity);
+            currentAngle += reverse ? -angleIncrement : angleIncrement;
             if (jumpVec == null) continue;
 
-            if (Double.isNaN(jumpVec.x) || Double.isNaN(jumpVec.y) || Double.isNaN(jumpVec.z)) {
+            if (Double.isNaN(jumpVec.y) || Double.isNaN(jumpVec.x) || Double.isNaN(jumpVec.z)) {
                 if (reverse) break;
 
                 reverse = true;
@@ -119,6 +120,7 @@ public class JumpNavigation extends MobNavigation {
             }
 
             boolean validJump = true;
+            boolean reachedTarget = false;
             double e = 5.0D * (5.0D * jumpVec.y + Math.sqrt(25.0D * jumpVec.y * jumpVec.y - 4.0D * (to.y - from.y))) * density;
             for (double t = 0.0D; t < e; t += (1.0D / density)) {
                 double x = t * jumpVec.x;
@@ -126,18 +128,29 @@ public class JumpNavigation extends MobNavigation {
                 double z = t * jumpVec.z;
                 Vec3d vec3d = from.add(x, y, z);
 
-                EntityDimensions entityDimensions = entity.getDimensions(EntityPose.LONG_JUMPING);
-                Box box = entityDimensions.getBoxAt(vec3d.add(0.0D, entityDimensions.height / 2, 0.0D));
+                if (!reachedTarget && vec3d.distanceTo(to) <= 0.1D) reachedTarget = true;
+
+                Box box = entityDimensions.getBoxAt(vec3d);
                 if (!entity.getWorld().containsFluid(box) && entity.getWorld().isSpaceEmpty(entity, box)) {
                     // Debug
                     ((ServerWorld) entity.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, vec3d.getX(), vec3d.getY(), vec3d.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+
+                    if (reachedTarget && vec3d.distanceTo(to) > 1.0D) {
+                        // Debug
+                        ((ServerWorld) entity.getWorld()).spawnParticles(ParticleTypes.WITCH, vec3d.getX(), vec3d.getY(), vec3d.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+
+                        validJump = false;
+                        break;
+                    }
+
                     continue;
                 }
 
-                if (vec3d.distanceTo(to) <= 0.5D) break;
+                if (reachedTarget) break;
 
                 // Debug
                 ((ServerWorld) entity.getWorld()).spawnParticles(ParticleTypes.ANGRY_VILLAGER, vec3d.getX(), vec3d.getY(), vec3d.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+
                 validJump = false;
                 break;
             }
@@ -150,7 +163,7 @@ public class JumpNavigation extends MobNavigation {
     }
 
     @Nullable
-    public static Vec3d getJumpVector(Vec3d start, Vec3d land, float angle) {
+    public static Vec3d getJumpVector(Vec3d start, Vec3d land, float angle, double maxVelocity) {
         Vec3d to = land.subtract(start);
         double d = Math.sqrt(to.x * to.x + to.z * to.z);
         double s = to.y;
@@ -163,7 +176,8 @@ public class JumpNavigation extends MobNavigation {
         double vz = Math.sin(theta) * vh;
 
         Vec3d vec3d = new Vec3d(vx, vy, vz);
-        if (vec3d.length() <= 0.0D) return null;
+        double length = vec3d.length();
+        if (length <= 0.0D || length > maxVelocity) return null;
 
         return vec3d;
     }
