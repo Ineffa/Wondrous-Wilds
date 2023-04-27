@@ -25,16 +25,21 @@ import javax.annotation.Nullable;
 
 public class BodkinArrowEntity extends PersistentProjectileEntity implements BlockBreakingProjectile, HasCustomGravity {
 
+    public static final double BASE_DAMAGE = 1.75D;
+
     public BodkinArrowEntity(EntityType<? extends BodkinArrowEntity> entityType, World world) {
         super(entityType, world);
+        this.setDamage(BASE_DAMAGE);
     }
 
     public BodkinArrowEntity(World world, LivingEntity owner) {
         super(WondrousWildsEntities.BODKIN_ARROW, owner, world);
+        this.setDamage(BASE_DAMAGE);
     }
 
     public BodkinArrowEntity(World world, double x, double y, double z) {
         super(WondrousWildsEntities.BODKIN_ARROW, x, y, z, world);
+        this.setDamage(BASE_DAMAGE);
     }
 
     @Override
