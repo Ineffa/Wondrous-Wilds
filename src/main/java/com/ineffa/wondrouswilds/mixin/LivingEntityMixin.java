@@ -2,10 +2,8 @@ package com.ineffa.wondrouswilds.mixin;
 
 import com.ineffa.wondrouswilds.entities.HoppingMob;
 import com.ineffa.wondrouswilds.entities.projectiles.BodkinArrowEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import com.ineffa.wondrouswilds.registry.WondrousWildsEntities;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -14,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -37,5 +36,12 @@ public abstract class LivingEntityMixin extends Entity {
             player.clearActiveItem();
             player.getWorld().sendEntityStatus(this, EntityStatuses.BREAK_SHIELD);
         }
+    }
+
+    @Redirect(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damageArmor(Lnet/minecraft/entity/damage/DamageSource;F)V", ordinal = 0))
+    private void bodkinArrowHeavilyDamageArmor(LivingEntity instance, DamageSource source, float amount) {
+        float newAmount = amount;
+        if (source.getSource() != null && source.getSource().getType() == WondrousWildsEntities.BODKIN_ARROW) newAmount *= 3.0F;
+        instance.damageArmor(source, newAmount);
     }
 }
