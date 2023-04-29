@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.RegistryEntry;
@@ -50,6 +51,8 @@ public abstract class ServerWorldMixin extends World implements BlockDamageHolde
     public boolean applyDamageToBlock(BlockPos pos, byte amount, @Nullable Entity damagingEntity) {
         if (amount == 0) return false;
 
+        boolean blockBroken = false;
+
         byte updatedDamageStage = amount;
         ServerBlockDamageInstance existingDamage = (ServerBlockDamageInstance) this.getDamageAtPos(pos);
         boolean hasExistingDamage = existingDamage != null;
@@ -58,7 +61,10 @@ public abstract class ServerWorldMixin extends World implements BlockDamageHolde
         if (updatedDamageStage < BlockDamageInstance.MINIMUM_STAGE || updatedDamageStage >= BlockDamageInstance.MAXIMUM_STAGE) {
             if (hasExistingDamage) this.removeDamageAtPos(pos);
 
-            if (updatedDamageStage >= BlockDamageInstance.MAXIMUM_STAGE) this.breakBlock(pos, true, damagingEntity);
+            if (updatedDamageStage >= BlockDamageInstance.MAXIMUM_STAGE) {
+                this.breakBlock(pos, true, damagingEntity);
+                blockBroken = true;
+            }
         }
         else {
             if (hasExistingDamage) existingDamage.setStage(updatedDamageStage);
@@ -68,7 +74,9 @@ public abstract class ServerWorldMixin extends World implements BlockDamageHolde
 
         this.sendBlockDamageToClient(pos, updatedDamageStage);
 
-        return true;
+        if (!blockBroken && amount > 0) this.playSound(null, pos, this.getBlockState(pos).getSoundGroup().getHitSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+        return blockBroken;
     }
 
     @Override
