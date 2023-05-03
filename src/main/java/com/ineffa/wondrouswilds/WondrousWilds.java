@@ -1,5 +1,6 @@
 package com.ineffa.wondrouswilds;
 
+import com.ineffa.wondrouswilds.client.rendering.WondrousWildsColorProviders;
 import com.ineffa.wondrouswilds.config.WondrousWildsConfig;
 import com.ineffa.wondrouswilds.entities.WoodpeckerEntity;
 import com.ineffa.wondrouswilds.mixin.MobEntityAccessor;
@@ -119,7 +120,7 @@ public class WondrousWilds implements ModInitializer {
 			context.getGenerationSettings().removeBuiltInFeature(VegetationPlacedFeatures.BIRCH_TALL.value());
 			context.getGenerationSettings().addFeature(GenerationStep.Feature.VEGETAL_DECORATION, WondrousWildsFeatures.Trees.OLD_GROWTH_BIRCH_FOREST_TREES_PLACED.getKey().orElseThrow());
 
-			context.getEffects().setGrassColor(12232267);
+			context.getEffects().setGrassColor(WondrousWildsColorProviders.getOldGrowthBirchForestGrassColor());
 		});
 	}
 
