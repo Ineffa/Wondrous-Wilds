@@ -35,7 +35,7 @@ public class WoodpeckerAttackGoal extends MeleeAttackGoal {
             if (!this.woodpecker.isPecking() && this.isCooledDown()) {
                 this.resetCooldown();
 
-                this.woodpecker.startPeckChain(1);
+                this.woodpecker.startPeckChain(1, 10);
             }
         }
 

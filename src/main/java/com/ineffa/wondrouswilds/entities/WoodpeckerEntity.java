@@ -95,6 +95,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     public static final String MATE_KEY = "Mate";
     public static final String HAS_EGGS_KEY = "HasEggs";
 
+    public static final int DEFAULT_PECK_INTERVAL = 10;
     public static final int PECKS_NEEDED_FOR_NEST = 200;
     public static final int WOODPECKER_BABY_AGE = -168000;
 
@@ -110,6 +111,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     private static final TrackedData<Integer> CLING_ANGLE = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> PECK_CHAIN_LENGTH = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> PECK_CHAIN_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Integer> PECK_INTERVAL = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> DRUMMING_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> ANGER_TICKS = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Byte> CHIRP_DELAY = DataTracker.registerData(WoodpeckerEntity.class, TrackedDataHandlerRegistry.BYTE);
@@ -180,6 +182,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.dataTracker.startTracking(CLING_ANGLE, 0);
         this.dataTracker.startTracking(PECK_CHAIN_LENGTH, 0);
         this.dataTracker.startTracking(PECK_CHAIN_TICKS, 0);
+        this.dataTracker.startTracking(PECK_INTERVAL, DEFAULT_PECK_INTERVAL);
         this.dataTracker.startTracking(DRUMMING_TICKS, 0);
         this.dataTracker.startTracking(ANGER_TICKS, 0);
         this.dataTracker.startTracking(CHIRP_DELAY, (byte) 0);
@@ -408,18 +411,28 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
         this.dataTracker.set(PECK_CHAIN_TICKS, ticks);
     }
 
-    public int calculateTicksForPeckChain(int chainLength) {
-        return 10 + (10 * chainLength);
+    public int getPeckInterval() {
+        return this.dataTracker.get(PECK_INTERVAL);
     }
 
-    public void startPeckChain(int length) {
+    public void setPeckInterval(int interval) {
+        this.dataTracker.set(PECK_INTERVAL, interval);
+    }
+
+    public int calculateTicksForPeckChain(int length, int interval) {
+        return interval + (interval * length);
+    }
+
+    public void startPeckChain(int length, int interval) {
         this.setPeckChainLength(length);
-        this.setPeckChainTicks(this.calculateTicksForPeckChain(length));
+        this.setPeckChainTicks(this.calculateTicksForPeckChain(length, interval));
+        this.setPeckInterval(interval);
     }
 
     public void stopPecking(boolean resetConsecutive) {
         this.setPeckChainLength(0);
         this.setPeckChainTicks(0);
+        this.setPeckInterval(DEFAULT_PECK_INTERVAL);
 
         if (resetConsecutive) this.resetConsecutivePecks();
     }
@@ -908,10 +921,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                 if (this.hasNestPos() && !this.getNestPos().isWithinDistance(this.getPos(), this.getMaxDistanceFromNest())) this.clearNestPos();
 
             if (this.isPecking()) {
-                if (this.getPeckChainTicks() <= 0) this.stopPecking(false);
-
+                int peckChainTicks = this.getPeckChainTicks();
+                if (peckChainTicks <= 0) this.stopPecking(false);
                 else {
-                    if (this.getPeckChainTicks() % 10 == 0 && this.getPeckChainTicks() != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength())) {
+                    int currentPeckInterval = this.getPeckInterval();
+                    if (peckChainTicks % currentPeckInterval == 0 && peckChainTicks != this.calculateTicksForPeckChain(this.getCurrentPeckChainLength(), currentPeckInterval)) {
                         SoundEvent peckSound = null;
 
                         if (this.isAttacking() && this.hasAttackTarget()) {
@@ -970,7 +984,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                         if (peckSound != null) this.playSound(peckSound, 0.75F, 1.5F);
                     }
 
-                    this.setPeckChainTicks(this.getPeckChainTicks() - 1);
+                    this.setPeckChainTicks(peckChainTicks - 1);
                 }
             }
 
@@ -984,7 +998,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
                         if (shouldInteract || (canMakeNest && this.shouldFindNest())) {
                             if (this.getRandom().nextInt(shouldInteract ? 40 : 20) == 0 && hasValidClingPos) {
                                 int randomLength = 1 + this.getRandom().nextInt(4);
-                                this.startPeckChain(canMakeNest ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength);
+                                this.startPeckChain(canMakeNest ? Math.min(randomLength, PECKS_NEEDED_FOR_NEST - this.getConsecutivePecks()) : randomLength, this.getRandom().nextBetween(9, 11));
                             }
                         }
                         else if (config.mobSettings.woodpeckersDrum && this.hasNestPos() && this.getRandom().nextInt(config.mobSettings.woodpeckerDrumChance) == 0) this.startDrumming();
@@ -1284,14 +1298,20 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     private <E extends IAnimatable> PlayState overlapAnimationPredicate(AnimationEvent<E> event) {
-        if (this.isPecking())
+        double speed = 1.0D;
+
+        if (this.isPecking()) {
             event.getController().setAnimation(new AnimationBuilder().playOnce(this.getPeckAnimationToPlay()));
+            speed += (this.getPeckInterval() - DEFAULT_PECK_INTERVAL) / (double) -DEFAULT_PECK_INTERVAL;
+        }
 
         else if (this.getChirpDelay() > 0 && this.getChirpDelay() <= 2)
             event.getController().setAnimation(new AnimationBuilder().loop("chirpOverlap"));
 
         else
             event.getController().setAnimation(new AnimationBuilder().loop("empty"));
+
+        event.getController().setAnimationSpeed(speed);
 
         return PlayState.CONTINUE;
     }
