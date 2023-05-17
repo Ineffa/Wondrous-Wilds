@@ -36,9 +36,9 @@ public class WondrousWildsConfig implements ConfigData {
         public int woodpeckerDrumChance = 600;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean woodpeckersInteractWithBlocks = true;
+        public boolean woodpeckersBuildNests = true;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean woodpeckersBuildNests = true;
+        public boolean woodpeckersInteractWithBlocks = true;
     }
 }
