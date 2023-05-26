@@ -1,12 +1,12 @@
 package com.ineffa.wondrouswilds.entities;
 
 import com.ineffa.wondrouswilds.entities.ai.navigation.BetterFlyNavigation;
+import com.ineffa.wondrouswilds.entities.ai.navigation.BetterMobNavigation;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -26,7 +26,7 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
     private final MoveControl landMoveControl;
 
     private final BetterFlyNavigation flyNavigation;
-    private final MobNavigation landNavigation;
+    private final BetterMobNavigation landNavigation;
 
     public FlyingAndWalkingAnimalEntity(EntityType<? extends FlyingAndWalkingAnimalEntity> entityType, World world) {
         super(entityType, world);
@@ -36,7 +36,7 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
         flyNavigation.setCanEnterOpenDoors(true);
         flyNavigation.setCanSwim(false);
         this.flyNavigation = flyNavigation;
-        this.landNavigation = new MobNavigation(this, world);
+        this.landNavigation = new BetterMobNavigation(this, world);
 
         this.airMoveControl = new FlightMoveControl(this, 20, true);
         this.landMoveControl = new MoveControl(this);
@@ -53,7 +53,7 @@ public abstract class FlyingAndWalkingAnimalEntity extends AnimalEntity implemen
             return flyNavigation;
         }
 
-        return new MobNavigation(this, world);
+        return new BetterMobNavigation(this, world);
     }
 
     @Override

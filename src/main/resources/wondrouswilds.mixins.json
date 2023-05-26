@@ -11,6 +11,7 @@
     "ComposterBlockInvoker",
     "EnchantmentHelperMixin",
     "EntityNavigationInvoker",
+    "EntityNavigationMixin",
     "FoliagePlacerTypeInvoker",
     "LandPathNodeMakerAccessor",
     "LivingEntityMixin",

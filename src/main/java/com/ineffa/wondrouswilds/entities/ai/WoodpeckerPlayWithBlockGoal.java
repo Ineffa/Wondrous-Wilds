@@ -148,6 +148,6 @@ public class WoodpeckerPlayWithBlockGoal extends MoveToTargetPosGoal {
 
     @Override
     public double getDesiredDistanceToTarget() {
-        return this.canClingToTarget ? 1.5D : 1.0D;
+        return this.canClingToTarget ? 1.5D : this.woodpecker.getPeckReach();
     }
 }

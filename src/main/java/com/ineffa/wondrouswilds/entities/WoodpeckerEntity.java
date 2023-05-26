@@ -5,10 +5,11 @@ import com.ineffa.wondrouswilds.blocks.TreeHollowBlock;
 import com.ineffa.wondrouswilds.blocks.entity.InhabitableNestBlockEntity;
 import com.ineffa.wondrouswilds.blocks.entity.NestBoxBlockEntity;
 import com.ineffa.wondrouswilds.entities.ai.*;
+import com.ineffa.wondrouswilds.entities.ai.navigation.HasCustomReachedDestinationDistance;
 import com.ineffa.wondrouswilds.entities.eggs.LaysEggsInNests;
 import com.ineffa.wondrouswilds.entities.eggs.NesterEgg;
-import com.ineffa.wondrouswilds.networking.packets.s2c.NestTransitionStartPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.BlockBreakingParticlesPacket;
+import com.ineffa.wondrouswilds.networking.packets.s2c.NestTransitionStartPacket;
 import com.ineffa.wondrouswilds.networking.packets.s2c.WoodpeckerInteractWithBlockPacket;
 import com.ineffa.wondrouswilds.registry.*;
 import com.ineffa.wondrouswilds.util.WondrousWildsUtils;
@@ -87,7 +88,7 @@ import static com.ineffa.wondrouswilds.WondrousWilds.config;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.HORIZONTAL_DIRECTIONS;
 import static com.ineffa.wondrouswilds.util.WondrousWildsUtils.TREE_HOLLOW_MAP;
 
-public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements BlockNester, LaysEggsInNests, Angerable, IAnimatable {
+public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements BlockNester, LaysEggsInNests, Angerable, HasCustomReachedDestinationDistance, IAnimatable {
 
     public static final String CLING_POS_KEY = "ClingPos";
     public static final String PLAY_SESSIONS_BEFORE_TAME_KEY = "PlaySessionsBeforeTame";
@@ -450,7 +451,7 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     }
 
     public double getPeckReach() {
-        return 1.0D;
+        return 1.3D;
     }
 
     public byte getChirpDelay() {
@@ -736,6 +737,11 @@ public class WoodpeckerEntity extends FlyingAndWalkingAnimalEntity implements Bl
     @Override
     public int getMaxDistanceFromNest() {
         return 128;
+    }
+
+    @Override
+    public float getReachedDestinationDistance() {
+        return 0.3F;
     }
 
     @Override
