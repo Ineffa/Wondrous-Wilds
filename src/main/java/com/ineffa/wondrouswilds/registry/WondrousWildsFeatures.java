@@ -231,7 +231,7 @@ public class WondrousWildsFeatures {
                 new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.075F),
                 new RandomFeatureEntry(DYING_FANCY_BIRCH_PLACED, 0.05F)
         ), TALL_BIRCH_PLACED));
-        public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(Stream.of(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1)), VegetationPlacedFeatures.modifiersWithWouldSurvive(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), Blocks.BIRCH_SAPLING).stream()).collect(Collectors.toList()));
+        public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING).stream(), Stream.of(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))))).collect(Collectors.toList()));
 
         public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(
                 new RandomFeatureEntry(FANCY_BIRCH_PLACED, 0.2125F),
@@ -251,7 +251,7 @@ public class WondrousWildsFeatures {
                 new RandomFeatureEntry(DYING_ORANGE_FANCY_BIRCH_PLACED, 0.0125F),
                 new RandomFeatureEntry(DYING_RED_FANCY_BIRCH_PLACED, 0.0125F)
         ), TALL_BIRCH_PLACED));
-        public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(Stream.of(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1)), VegetationPlacedFeatures.modifiersWithWouldSurvive(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), Blocks.BIRCH_SAPLING).stream()).collect(Collectors.toList()));
+        public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING).stream(), Stream.of(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))))).collect(Collectors.toList()));
 
         public static void init() {}
     }
@@ -268,7 +268,7 @@ public class WondrousWildsFeatures {
 
     public static final Feature<FallenLogFeatureConfig> FALLEN_LOG = new FallenLogFeature();
     public static final RegistryEntry<ConfiguredFeature<FallenLogFeatureConfig, ?>> FALLEN_BIRCH_LOG_CONFIGURED = registerConfigured("fallen_birch_log", FALLEN_LOG, fallenBirchLogConfig());
-    public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, Stream.concat(Stream.of(RarityFilterPlacementModifier.of(12)), VegetationPlacedFeatures.modifiersWithWouldSurvive(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))), Blocks.BIRCH_SAPLING).stream()).collect(Collectors.toList()));
+    public static final RegistryEntry<PlacedFeature> FALLEN_BIRCH_LOG_PLACED = registerPlaced("fallen_birch_log", FALLEN_BIRCH_LOG_CONFIGURED, Stream.concat(VegetationPlacedFeatures.modifiersWithWouldSurvive(RarityFilterPlacementModifier.of(12), Blocks.BIRCH_SAPLING).stream(), Stream.of(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))))).collect(Collectors.toList()));
 
     public static final RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>> LILY_OF_THE_VALLEY_PATCH_CONFIGURED = ConfiguredFeatures.register("lily_of_the_valley_patch", Feature.FLOWER, new RandomPatchFeatureConfig(64, 6, 2, PlacedFeatures.createEntry(Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.LILY_OF_THE_VALLEY)))));
     public static final RegistryEntry<PlacedFeature> LILY_OF_THE_VALLEY_PATCH_PLACED = registerPlaced("lily_of_the_valley_patch", LILY_OF_THE_VALLEY_PATCH_CONFIGURED, RarityFilterPlacementModifier.of(10), SquarePlacementModifier.of(), PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP, BiomePlacementModifier.of());
