@@ -11,11 +11,13 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TestableWorld;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,12 +40,10 @@ public class TreeHollowTreeDecorator extends TreeDecorator {
         TestableWorld world = generator.getWorld();
         Random random = generator.getRandom();
 
-        List<BlockPos> suitableLogs = generator.getLogPositions().stream().filter(pos -> world.testBlockState(pos, state -> TREE_HOLLOW_MAP.containsKey(state.getBlock()) && state.contains(PillarBlock.AXIS) && state.get(PillarBlock.AXIS).isVertical()) && hasSpaceAround(generator, pos)).toList();
-
+        List<BlockPos> suitableLogs = generator.getLogPositions().stream().filter(pos -> world.testBlockState(pos, state -> TREE_HOLLOW_MAP.containsKey(state.getBlock()) && state.contains(PillarBlock.AXIS) && state.get(PillarBlock.AXIS).isVertical()) && hasSpaceAround(generator, pos)).sorted(Comparator.reverseOrder()).toList();
         if (suitableLogs.isEmpty()) return;
 
-        BlockPos chosenLog = suitableLogs.get(random.nextInt(suitableLogs.size()));
-
+        BlockPos chosenLog = suitableLogs.get(random.nextInt(MathHelper.ceil(suitableLogs.size() / 3.0D)));
         if (chosenLog == null) return;
 
         Set<Direction> suitableFacingDirections = new HashSet<>();
