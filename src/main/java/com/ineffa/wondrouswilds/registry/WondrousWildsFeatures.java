@@ -5,14 +5,8 @@ import com.ineffa.wondrouswilds.WondrousWilds;
 import com.ineffa.wondrouswilds.mixin.FoliagePlacerTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TreeDecoratorTypeInvoker;
 import com.ineffa.wondrouswilds.mixin.TrunkPlacerTypeInvoker;
-import com.ineffa.wondrouswilds.world.features.BoulderFeature;
-import com.ineffa.wondrouswilds.world.features.FallenLogFeature;
-import com.ineffa.wondrouswilds.world.features.TerrainSplotchFeature;
-import com.ineffa.wondrouswilds.world.features.VioletPatchFeature;
-import com.ineffa.wondrouswilds.world.features.configs.BoulderFeatureConfig;
-import com.ineffa.wondrouswilds.world.features.configs.FallenLogFeatureConfig;
-import com.ineffa.wondrouswilds.world.features.configs.TerrainSplotchFeatureConfig;
-import com.ineffa.wondrouswilds.world.features.configs.VioletPatchFeatureConfig;
+import com.ineffa.wondrouswilds.world.features.*;
+import com.ineffa.wondrouswilds.world.features.configs.*;
 import com.ineffa.wondrouswilds.world.features.trees.decorators.*;
 import com.ineffa.wondrouswilds.world.features.trees.foliage.BirchFoliagePlacer;
 import com.ineffa.wondrouswilds.world.features.trees.foliage.FancyBirchFoliagePlacer;
@@ -45,6 +39,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class WondrousWildsFeatures {
+
+    public static final Feature<RandomFromGroupsFeatureConfig> RANDOM_GROUP_SELECTOR = new RandomFromGroupsFeature();
 
     public static final class Trees {
 
@@ -83,6 +79,30 @@ public class WondrousWildsFeatures {
                 return new TreeFeatureConfig.Builder(
                         BlockStateProvider.of(Blocks.BIRCH_LOG), new StraightTrunkPlacer(8, 4, 0),
                         BlockStateProvider.of(Blocks.BIRCH_LEAVES), new BirchFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 1)
+                ).ignoreVines();
+            }
+
+            public static TreeFeatureConfig.Builder yellowTallBirchConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG), new StraightTrunkPlacer(8, 4, 0),
+                        BlockStateProvider.of(WondrousWildsBlocks.YELLOW_BIRCH_LEAVES), new BirchFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 1)
+                ).ignoreVines();
+            }
+
+            public static TreeFeatureConfig.Builder orangeTallBirchConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG), new StraightTrunkPlacer(8, 4, 0),
+                        BlockStateProvider.of(WondrousWildsBlocks.ORANGE_BIRCH_LEAVES), new BirchFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
+                        new TwoLayersFeatureSize(1, 0, 1)
+                ).ignoreVines();
+            }
+
+            public static TreeFeatureConfig.Builder redTallBirchConfig() {
+                return new TreeFeatureConfig.Builder(
+                        BlockStateProvider.of(Blocks.BIRCH_LOG), new StraightTrunkPlacer(8, 4, 0),
+                        BlockStateProvider.of(WondrousWildsBlocks.RED_BIRCH_LEAVES), new BirchFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
                         new TwoLayersFeatureSize(1, 0, 1)
                 ).ignoreVines();
             }
@@ -224,33 +244,27 @@ public class WondrousWildsFeatures {
 
         public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> TALL_BIRCH_CONFIGURED = registerConfigured("tall_birch", Feature.TREE, Configs.tallBirchConfig().build());
         public static final RegistryEntry<PlacedFeature> TALL_BIRCH_PLACED = registerPlaced("tall_birch", TALL_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> YELLOW_TALL_BIRCH_CONFIGURED = registerConfigured("yellow_tall_birch", Feature.TREE, Configs.yellowTallBirchConfig().build());
+        public static final RegistryEntry<PlacedFeature> YELLOW_TALL_BIRCH_PLACED = registerPlaced("yellow_tall_birch", YELLOW_TALL_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> ORANGE_TALL_BIRCH_CONFIGURED = registerConfigured("orange_tall_birch", Feature.TREE, Configs.orangeTallBirchConfig().build());
+        public static final RegistryEntry<PlacedFeature> ORANGE_TALL_BIRCH_PLACED = registerPlaced("orange_tall_birch", ORANGE_TALL_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
+        public static final RegistryEntry<ConfiguredFeature<TreeFeatureConfig, ?>> RED_TALL_BIRCH_CONFIGURED = registerConfigured("red_tall_birch", Feature.TREE, Configs.redTallBirchConfig().build());
+        public static final RegistryEntry<PlacedFeature> RED_TALL_BIRCH_PLACED = registerPlaced("red_tall_birch", RED_TALL_BIRCH_CONFIGURED, PlacedFeatures.wouldSurvive(Blocks.BIRCH_SAPLING));
 
         public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(
-                new RandomFeatureEntry(FANCY_BIRCH_PLACED, 0.85F),
-                new RandomFeatureEntry(FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.1F),
+                new RandomFeatureEntry(FANCY_BIRCH_PLACED, 0.925F),
                 new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.075F),
-                new RandomFeatureEntry(DYING_FANCY_BIRCH_PLACED, 0.05F)
+                new RandomFeatureEntry(FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.05F),
+                new RandomFeatureEntry(DYING_FANCY_BIRCH_PLACED, 0.025F)
         ), TALL_BIRCH_PLACED));
         public static final RegistryEntry<PlacedFeature> BIRCH_FOREST_TREES_PLACED = registerPlaced("birch_forest_trees", BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING).stream(), Stream.of(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))))).collect(Collectors.toList()));
 
-        public static final RegistryEntry<ConfiguredFeature<RandomFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfig(List.of(
-                new RandomFeatureEntry(FANCY_BIRCH_PLACED, 0.2125F),
-                new RandomFeatureEntry(YELLOW_FANCY_BIRCH_PLACED, 0.2125F),
-                new RandomFeatureEntry(ORANGE_FANCY_BIRCH_PLACED, 0.2125F),
-                new RandomFeatureEntry(RED_FANCY_BIRCH_PLACED, 0.2125F),
-                new RandomFeatureEntry(FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.025F),
-                new RandomFeatureEntry(YELLOW_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.025F),
-                new RandomFeatureEntry(ORANGE_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.025F),
-                new RandomFeatureEntry(RED_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, 0.025F),
-                new RandomFeatureEntry(FANCY_BIRCH_WITH_BEES_PLACED, 0.01875F),
-                new RandomFeatureEntry(YELLOW_FANCY_BIRCH_WITH_BEES_PLACED, 0.01875F),
-                new RandomFeatureEntry(ORANGE_FANCY_BIRCH_WITH_BEES_PLACED, 0.01875F),
-                new RandomFeatureEntry(RED_FANCY_BIRCH_WITH_BEES_PLACED, 0.01875F),
-                new RandomFeatureEntry(DYING_FANCY_BIRCH_PLACED, 0.0125F),
-                new RandomFeatureEntry(DYING_YELLOW_FANCY_BIRCH_PLACED, 0.0125F),
-                new RandomFeatureEntry(DYING_ORANGE_FANCY_BIRCH_PLACED, 0.0125F),
-                new RandomFeatureEntry(DYING_RED_FANCY_BIRCH_PLACED, 0.0125F)
-        ), TALL_BIRCH_PLACED));
+        public static final RegistryEntry<ConfiguredFeature<RandomFromGroupsFeatureConfig, ?>> OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED = registerConfigured("old_growth_birch_forest_trees", RANDOM_GROUP_SELECTOR, new RandomFromGroupsFeatureConfig(List.of(
+                new FeatureGroup.RandomEntry(List.of(FANCY_BIRCH_PLACED, YELLOW_FANCY_BIRCH_PLACED, ORANGE_FANCY_BIRCH_PLACED, RED_FANCY_BIRCH_PLACED), 0.925F),
+                new FeatureGroup.RandomEntry(List.of(FANCY_BIRCH_WITH_BEES_PLACED, YELLOW_FANCY_BIRCH_WITH_BEES_PLACED, ORANGE_FANCY_BIRCH_WITH_BEES_PLACED, RED_FANCY_BIRCH_WITH_BEES_PLACED), 0.075F),
+                new FeatureGroup.RandomEntry(List.of(FANCY_BIRCH_WITH_WOODPECKERS_PLACED, YELLOW_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, ORANGE_FANCY_BIRCH_WITH_WOODPECKERS_PLACED, RED_FANCY_BIRCH_WITH_WOODPECKERS_PLACED), 0.05F),
+                new FeatureGroup.RandomEntry(List.of(DYING_FANCY_BIRCH_PLACED, DYING_YELLOW_FANCY_BIRCH_PLACED, DYING_ORANGE_FANCY_BIRCH_PLACED, DYING_RED_FANCY_BIRCH_PLACED), 0.025F)
+        ), new FeatureGroup(List.of(TALL_BIRCH_PLACED, YELLOW_TALL_BIRCH_PLACED, ORANGE_TALL_BIRCH_PLACED, RED_TALL_BIRCH_PLACED))));
         public static final RegistryEntry<PlacedFeature> OLD_GROWTH_BIRCH_FOREST_TREES_PLACED = registerPlaced("old_growth_birch_forest_trees", OLD_GROWTH_BIRCH_FOREST_TREES_CONFIGURED, Stream.concat(VegetationPlacedFeatures.modifiersWithWouldSurvive(PlacedFeatures.createCountExtraModifier(5, 0.1F, 1), Blocks.BIRCH_SAPLING).stream(), Stream.of(BlockFilterPlacementModifier.of(BlockPredicate.not(BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), Blocks.MOSS_BLOCK))))).collect(Collectors.toList()));
 
         public static void init() {}
@@ -344,6 +358,8 @@ public class WondrousWildsFeatures {
         Trees.Decorators.init();
         Trees.Configs.init();
         Trees.init();
+
+        Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "random_group_selector"), RANDOM_GROUP_SELECTOR);
 
         Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "terrain_splotch"), TERRAIN_SPLOTCH);
         Registry.register(Registry.FEATURE, new Identifier(WondrousWilds.MOD_ID, "boulder"), BOULDER);
