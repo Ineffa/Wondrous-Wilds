@@ -38,6 +38,7 @@
     "ClientPlayNetworkHandlerMixin",
     "ClientWorldMixin",
     "EntityRenderDispatcherMixin",
+    "GeoArmorRendererMixin",
     "WorldRendererMixin"
   ],
   "injectors": {

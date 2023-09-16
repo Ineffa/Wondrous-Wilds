@@ -4,6 +4,7 @@ import com.ineffa.wondrouswilds.registry.WondrousWildsItems;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -24,6 +25,11 @@ public class BycocketItem extends ArmorItem implements IAnimatable {
 
     public DyeColor getColor() {
         return this.color;
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return false;
     }
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
